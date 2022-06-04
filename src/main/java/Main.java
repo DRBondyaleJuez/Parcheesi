@@ -1,5 +1,8 @@
+import core.ParcheesiLaunch;
+import javafx.application.Application;
+
 public class Main {
     public static void main(String[] args) {
-        Application.launch(Connect4.class, args);
+        Application.launch(ParcheesiLaunch.class, args);
     }
 }
