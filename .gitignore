@@ -24,3 +24,4 @@ buildNumber.properties
 .classpath
 
 # Documentation extra file
+/src/main/resources/images/BackgroundBoard/BoardAndTokenDesigns.pptx
