@@ -15,10 +15,10 @@ public class Square {
     private Square nextSquare;
     private FinalSquare finalBranchFirstSquare;
 
-    public Square(int squareNumber, Square nextSquare) {
+    public Square(int squareNumber) {
         this.squareNumber = squareNumber;
         this.currentPiece = null;
-        this.nextSquare = nextSquare;
+        this.nextSquare = null;
         //Verifying if the squareNumber is in the array of safeSquares
         isSafe = Arrays.stream(safeSquares).anyMatch(i->i==squareNumber);
         //Determining which players start square if any is this square

@@ -10,6 +10,6 @@ public class FinalSquare {
     public FinalSquare(int squareNumber, Piece currentPiece,Player player) {
         this.squareNumber = squareNumber;
         this.currentPiece = currentPiece;
-        this.next = nextFinalSquare;
+        this.nextFinalSquare = nextFinalSquare;
     }
 }
