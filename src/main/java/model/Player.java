@@ -32,4 +32,16 @@ public class Player {
         }
 
     }
+
+    public int getIdNumber() {
+        return idNumber;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Color getColor() {
+        return color;
+    }
 }
