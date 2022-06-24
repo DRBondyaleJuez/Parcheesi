@@ -35,5 +35,27 @@ public class Board {
             }
         }
     }
-    
+
+    public void pieceExitsHouse(int player){
+        int position = player-1;
+        housePieces[position]--;
+    }
+
+    public void pieceReturnsToHouse(int player){
+        int position = player-1;
+        housePieces[position]++;
+    }
+
+    public int getNumberOfPiecesInHouse(int player){
+        int position = player-1;
+        return housePieces[position];
+    }
+
+    public Square[] getBoardSquares() {
+        return boardSquares;
+    }
+
+    public FinalSquare[][] getFinalSquaresBoard() {
+        return finalSquaresBoard;
+    }
 }
