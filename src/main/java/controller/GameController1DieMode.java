@@ -1,12 +1,11 @@
 package controller;
 
 import model.Board;
-import model.Color;
 import model.Player;
 
 import java.util.Random;
 
-public class GameController {
+public class GameController1DieMode {
 
     Player currentPlayer;
     Player[] players;
@@ -14,7 +13,7 @@ public class GameController {
     Board board;
 
 
-    public GameController() {
+    public GameController1DieMode() {
         createPlayers();
         diceNumber=0;
         board = new Board();
@@ -38,12 +37,29 @@ public class GameController {
 
     public int diceRoll(){
         Random randomGenerator = new Random();
-        int die1 = randomGenerator.nextInt(6);
-        int die2 = randomGenerator.nextInt(6);
-        return die1 + die2;
+        int die1Value = randomGenerator.nextInt(6);
+
+        if(die1Value == 5){
+            if(newPieceEnters(currentPlayer.getIdNumber())){
+                nextPlayer();
+                return 0;
+            } else{
+                return 5;
+            }
+        }
+
+        return die1Value;
     }
 
-    public boolean newPieceEnters()
+    public boolean newPieceEnters(int player){
+        int position = player-1;
+        if(board.getNumberOfPiecesInHouse(position)<1){
+            return false;
+        } else{
+            board.
+        }
+
+    }
 
     public boolean
     
