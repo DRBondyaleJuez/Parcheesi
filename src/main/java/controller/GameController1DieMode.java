@@ -1,6 +1,7 @@
 package controller;
 
 import model.Board;
+import model.Piece;
 import model.Player;
 
 import java.util.Random;
@@ -9,13 +10,14 @@ public class GameController1DieMode {
 
     Player currentPlayer;
     Player[] players;
-    int diceNumber;
+    int dieNumber;
+    int dieRepetition;
     Board board;
 
 
     public GameController1DieMode() {
         createPlayers();
-        diceNumber=0;
+        dieNumber=0;
         board = new Board();
     }
 
@@ -48,19 +50,50 @@ public class GameController1DieMode {
             }
         }
 
+        if(die1Value == 6){
+            dieRepetition++;
+        }
+
         return die1Value;
+    }
+
+    public int dieRoll6(){
+        Random randomGenerator = new Random();
+        int die1Value = randomGenerator.nextInt(6);
+
+        if(die1Value == 5){
+            if(newPieceEnters(currentPlayer.getIdNumber())){
+                nextPlayer();
+                return 0;
+            } else{
+                return 5;
+            }
+        }
+
+        if(die1Value == 6){
+            dieRepetition++;
+        }
+        if(dieRepetition == 3){
+            repetitionPunishment();
+            return 0;
+        }
+
+        return 6+die1Value;
+
     }
 
     public boolean newPieceEnters(int player){
         int position = player-1;
         if(board.getNumberOfPiecesInHouse(position)<1){
             return false;
-        } else{
-            board.
         }
+
+        return board.pieceExitsHouse(player);
 
     }
 
-    public boolean
+    public void repetitionPunishment(){
+
+    }
     
 }
