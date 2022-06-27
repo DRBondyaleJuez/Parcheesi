@@ -5,6 +5,7 @@ public class Board {
     Square[] boardSquares;
     FinalSquare[][] finalSquaresBoard;
     int[] housePieces; //This is the pieces not played by each player
+    int[] finishedPieces; //This is the pieces that have reached the end
 
     public Board() {
         //Setting initial configuration of houses
@@ -57,5 +58,9 @@ public class Board {
 
     public FinalSquare[][] getFinalSquaresBoard() {
         return finalSquaresBoard;
+    }
+    public void pieceReachesTheEnd(int player){
+        int position = player-1;
+        finishedPieces[position]++;
     }
 }
