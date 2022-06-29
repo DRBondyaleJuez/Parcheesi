@@ -5,24 +5,26 @@ import model.Piece;
 public class FinalSquare implements Square{
 
     private int squareNumber;
-    private Piece currentPiece;
+    private int[] currentPieces;
     private int player;
-    private FinalSquare nextFinalSquare;
+    private Square nextFinalSquare;
 
-    public FinalSquare(int squareNumber, Piece currentPiece,int player) {
+    public FinalSquare(int squareNumber, int player) {
         this.squareNumber = squareNumber;
-        this.currentPiece = currentPiece;
-        this.nextFinalSquare = nextFinalSquare;
+        this.player = player;
+        currentPieces[0] = 0;
+        currentPieces[1] = 0;
+        nextFinalSquare = null;
     }
 
     @Override
     public int getSquareNumber() {
-        return 0;
+        return squareNumber;
     }
 
     @Override
     public int[] getCurrentPlayerPieces() {
-        return new int[0];
+        return currentPieces;
     }
 
     @Override
@@ -41,12 +43,13 @@ public class FinalSquare implements Square{
     }
 
     @Override
-    public void exitCurrentPlayerPiece(int player) {
+    public void removeCurrentPlayerPiece(int player) {
 
     }
 
     @Override
     public void setNextSquare(Square nextSquare) {
+        nextFinalSquare = nextSquare;
 
     }
 }

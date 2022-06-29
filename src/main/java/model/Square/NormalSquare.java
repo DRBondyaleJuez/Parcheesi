@@ -4,11 +4,10 @@ import java.util.Arrays;
 
 public class NormalSquare implements Square{
 
-    private int[] startSquares = {4,19,34,49};
-    private int[] safeSquares = {4,11,15,19,26,30,34,41,45,49,56,60};
-    private int[] finalSquares = {45,30,15,60};
+    private int[] startSquaresPositions = {4,19,34,49};
+    private int[] safeSquaresPositions = {4,11,15,19,26,30,34,41,45,49,56,60};
+    private int[] finalSquaresPositions = {45,30,15,60};
     private int squareNumber;
-
     private int[] currentPlayerPiece;
     private boolean isSafe;
     private int isStart;
@@ -21,11 +20,11 @@ public class NormalSquare implements Square{
         this.currentPlayerPiece[1] = 0;
         this.nextSquare = null;
         //Verifying if the squareNumber is in the array of safeSquares
-        isSafe = Arrays.stream(safeSquares).anyMatch(i->i==squareNumber);
+        isSafe = Arrays.stream(safeSquaresPositions).anyMatch(i->i==squareNumber);
         //Determining which players start square if any is this square
         isStart = 0;
-        for (int i = 0; i < startSquares.length; i++) {
-            if (startSquares[i] == squareNumber){
+        for (int i = 0; i < startSquaresPositions.length; i++) {
+            if (startSquaresPositions[i] == squareNumber){
                 isStart = i+1;
             }
         }
@@ -104,7 +103,7 @@ public class NormalSquare implements Square{
         return;
     }
 
-   
+
     public void setFinalBranchFirstSquare(FinalSquare finalBranchFirstSquare) {
         this.finalBranchFirstSquare = finalBranchFirstSquare;
     }

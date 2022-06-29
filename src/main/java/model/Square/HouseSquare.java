@@ -2,6 +2,14 @@ package model.Square;
 
 public class HouseSquare implements Square{
 
+    int player;
+    int squareNumber;
+
+    public HouseSquare(int player, int squareNumber) {
+        this.player = player;
+        this.squareNumber = squareNumber;
+    }
+
     @Override
     public int getSquareNumber() {
         return 0;
@@ -28,7 +36,7 @@ public class HouseSquare implements Square{
     }
 
     @Override
-    public void exitCurrentPlayerPiece(int player) {
+    public void removeCurrentPlayerPiece(int player) {
 
     }
 
