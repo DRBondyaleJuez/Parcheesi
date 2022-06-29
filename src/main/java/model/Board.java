@@ -99,8 +99,8 @@ public class Board {
         return boardNormalSquares;
     }
 
-    public Square getParticularBoardSquare(boardPoistion){
-         boardPosition = (boardposition-1)%60;
+    public Square getParticularBoardSquare(int boardPosition){
+         boardPosition = (boardPosition-1)%60;
          return boardNormalSquares[boardPosition];
     }
 
@@ -113,7 +113,7 @@ public class Board {
     }
     
     public Piece[] getPlayerPieces(int player){
-        Pieces[] playerPieces = new Pieces[4];
+        Piece[] playerPieces = new Piece[4];
         for (int i = 0; i < playerPieces.length; i++) {
             playerPieces[i] = pieces[player-1][i];
         }
