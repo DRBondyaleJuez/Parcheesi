@@ -125,7 +125,7 @@ public class GameController1DieMode {
 
         //Get theoretically piece in the corresponding board position that is about to move the number established by the die
         Piece movingPiece;
-        movingPiece = getPieceinBoardPosition(piecePlayer,boardPosition);
+        movingPiece = getPieceInBoardPosition(piecePlayer,boardPosition);
 
         if(movingPiece == null){
             System.out.println("No piece was found eventhough it fitted all criteria");
@@ -182,8 +182,7 @@ public class GameController1DieMode {
         //Modifying the board to show
         board.getBoardSquares()[movingPiece.getBoardPosition()].setCurrentPlayerPiece(movingPiece.getPlayer());
 
-
-
+        return true;
     }
 
     //Method to verify the presence of a corresponding piece in a position of the board. BoardPosition is an integer asociated with the square in the board
@@ -218,7 +217,7 @@ public class GameController1DieMode {
 
     private Piece getPieceInBoardPosition(int piecePlayer,int boardPosition){
         //Get and modify correct Piece in board position
-        Piece movingPiece;
+        Piece movingPiece = new Piece(0,null);
         Piece[] allPlayerPieces = board.getPlayerPieces(piecePlayer);
         for (int i = 0; i < allPlayerPieces.length; i++) {
             if (boardPosition > 60) {
