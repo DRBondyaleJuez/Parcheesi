@@ -1,8 +1,13 @@
 package model;
 
+import model.Square.FinalSquare;
+import model.Square.HouseSquare;
+import model.Square.NormalSquare;
+import model.Square.Square;
+
 public class Board {
 
-    Square[] boardSquares;
+    NormalSquare[] boardNormalSquares;
     FinalSquare[][] finalSquaresBoard;
     Piece[][] pieces;
     int[] housePieces; //This is the pieces not played by each player
@@ -19,24 +24,24 @@ public class Board {
         };
 
         //Building boardSquares
-        boardSquares = new Square[60];
-        for (int i = 0; i < boardSquares.length; i++) {
-            Square currentSquare = new Square(i+1);
+        boardNormalSquares = new NormalSquare[60];
+        for (int i = 0; i < boardNormalSquares.length; i++) {
+            NormalSquare currentNormalSquare = new NormalSquare(i+1);
             if(i==0){
                 continue;
             }
             if(i==59){
-                currentSquare.setNextSquare(boardSquares[0]);
+                currentNormalSquare.setNextSquare(boardNormalSquares[0]);
                 continue;
             }
-            boardSquares[i-1].setNextSquare(currentSquare);
+            boardNormalSquares[i-1].setNextSquare(currentNormalSquare);
         }
 
         //Building finalSquaresBoard
-        finalSquaresBoard = new FinalSquare[8][4];
+        finalSquaresBoard = new FinalSquare[9][4];
         for (int player = 0; player < finalSquaresBoard[0].length; player++) {
             for (int i = 0; i < finalSquaresBoard.length; i++) {
-                FinalSquare currentFinalSquare = new FinalSquare(i+1,null,player);
+                FinalSquare currentFinalSquare = new FinalSquare(i+1,player);
             }
         }
 
@@ -45,13 +50,14 @@ public class Board {
         for (int player = 0; player < 4; player++) {
             for (int number = 0; number < 4; number++) {
 
-                pieces[player][number] = new Piece(player+1,null);
+                Square initialHouse = new HouseSquare(player+1,number+1);
+                pieces[player][number] = new Piece(player+1,initialHouse);
 
             }
-
         }
     }
 
+    //Piece exiting houseSquares and entering normalSquares
     public boolean pieceExitsHouse(int player){
         int position = player-1; // correction due to player number and position in array being different
 
@@ -60,17 +66,18 @@ public class Board {
             return false;
         }
 
-        //Declaring starting square of the corresponding player
-        Square playerStartingSquare = boardSquares[startSquares[player-1]-1];
-        if (playerStartingSquare.getIsStart() == player){ //Perhaps this is unnecessary but check that the square is confirmed to be a start square
+        //Declaring starting square for the corresponding player
+        NormalSquare playerStartingNormalSquare = boardNormalSquares[startSquares[player-1]-1];
+        if (playerStartingNormalSquare.getIsStart() == player){ //Perhaps this is unnecessary but check that the square is confirmed to be a start square
             //Check if the square is blocked by the presence of two pieces
-            if(playerStartingSquare.isBlocked()){
+            if(playerStartingNormalSquare.isBlocked()){
                 return false;
             }
+
             //Put piece in starting square
-            playerStartingSquare.setCurrentPlayerPiece(player);
+            playerStartingNormalSquare.setCurrentPlayerPiece(player);
             int pieceNumber = 4 - housePieces[position];
-            pieces[position][pieceNumber].setCurrentSquare(playerStartingSquare);
+            pieces[position][pieceNumber].setCurrentSquare(playerStartingNormalSquare);
             housePieces[position]--;
             return true;
         }
@@ -88,8 +95,13 @@ public class Board {
         return housePieces[position];
     }
 
-    public Square[] getBoardSquares() {
-        return boardSquares;
+    public NormalSquare[] getBoardSquares() {
+        return boardNormalSquares;
+    }
+
+    public Square getParticularBoardSquare(boardPoistion){
+         boardPosition = (boardposition-1)%60;
+         return boardNormalSquares[boardPosition];
     }
 
     public FinalSquare[][] getFinalSquaresBoard() {
@@ -98,5 +110,14 @@ public class Board {
     public void pieceReachesTheEnd(int player){
         int position = player-1;
         finishedPieces[position]++;
+    }
+    
+    public Piece[] getPlayerPieces(int player){
+        Pieces[] playerPieces = new Pieces[4];
+        for (int i = 0; i < playerPieces.length; i++) {
+            playerPieces[i] = pieces[player-1][i];
+        }
+        
+        return playerPieces;
     }
 }
