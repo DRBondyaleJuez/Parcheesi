@@ -111,8 +111,8 @@ public class GameController1DieMode {
 
     //Method to remove most advance piece that is not in the final squares
     public void repetitionPunishment(){
+        // TO DO
 
-        //board.
     }
 
     //Moving piece after being selected
@@ -261,6 +261,7 @@ public class GameController1DieMode {
     }
 
     private void pieceCaptured(){
+        //TO DO
 
 
     }
