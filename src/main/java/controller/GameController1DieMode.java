@@ -114,14 +114,15 @@ public class GameController1DieMode {
     public void repetitionPunishment(){
 
         int punishedPlayer = currentPlayer.getIdNumber();
+        int punishedPlayerPosition = punishedPlayer-1;
         //first make sure there is a piece on the board
-        if(board.getNumberOfPiecesInHouse(punishedPlayer) == 4){
+        if(board.getNumberOfPiecesInHouse(punishedPlayerPosition) == 4){
             return;
 
         }
 
-        Piece mostAdvancePunishablePiece = new Piece(punishedPlayer,null);
-        Piece[] playerPieces = board.getPlayerPieces(punishedPlayer);
+        Piece mostAdvancePunishablePiece = new Piece(punishedPlayerPosition,null);
+        Piece[] playerPieces = board.getPlayerPieces(punishedPlayerPosition);
         int pieceHousePosition = -1;
 
         for (int i = 0; i < playerPieces.length; i++) {
@@ -142,9 +143,10 @@ public class GameController1DieMode {
         //If a punishable piece has been selected do the folowing with the piece and the board:
         //Eliminating piece from the board
         int punishablePieceBoardPosition = mostAdvancePunishablePiece.getBoardPosition();
-        board.getBoardSquares()[punishablePieceBoardPosition-1].removeCurrentPlayerPiece(punishedPlayer);
+        board.getBoardSquares()[punishablePieceBoardPosition-1].removeCurrentPlayerPiece(punishedPlayerPosition);
         //Modifying the piece
         mostAdvancePunishablePiece.returnToHouse(pieceHousePosition);
+        board.pieceReturnsToHouse(punishedPlayer);
     }
 
     //Moving piece after being selected
@@ -295,17 +297,16 @@ public class GameController1DieMode {
         return false;
     }
 
-    private void pieceCaptured(int capturedPieceBoardPosition, int playerPieceCaptured){
+    private void pieceCaptured(int capturedPieceBoardPosition, int capturedPiecePlayer){
 
-        Piece[] capturedPlayerPieces = board.getPlayerPieces(playerPieceCaptured);
+        Piece[] capturedPlayerPieces = board.getPlayerPieces(capturedPiecePlayer);
         for (int i = 0; i < capturedPlayerPieces.length; i++) {
             if(capturedPlayerPieces[i].getBoardPosition() == capturedPieceBoardPosition){
-                HouseSquare houseSquare = new HouseSquare(playerPieceCaptured,i);
-                capturedPlayerPieces[i].setCurrentSquare(houseSquare);
+                capturedPlayerPieces[i].returnToHouse(i);
             }
         }
 
-        board.pieceReturnsToHouse(playerPieceCaptured);
+        board.pieceReturnsToHouse(capturedPiecePlayer);
 
     }
 
