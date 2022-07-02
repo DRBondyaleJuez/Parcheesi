@@ -3,6 +3,7 @@ package controller;
 import model.Board;
 import model.Piece;
 import model.Player;
+import model.Square.HouseSquare;
 import model.Square.Square;
 
 import java.util.Random;
@@ -165,18 +166,16 @@ public class GameController1DieMode {
                 board.pieceReachesTheEnd(piecePlayer);
                 movingNumber=10;
                 return true;
-
             }
             board.getFinalSquaresBoard()[piecePlayer][movingPiece.getFinalStepCounter()-1].setCurrentPlayerPiece(piecePlayer);
             movingNumber=0;
             return true;
         }
 
-
-
         if(hasMovingPieceCapturedAnotherPiece(movingPiece)){
             movingNumber = 20;
-            pieceCaptured();
+            board.getBoardSquares()[movingPiece.getBoardPosition()].setCurrentPlayerPiece(movingPiece.getPlayer());
+            return true;
         }
 
         //Modifying the board to show
@@ -253,15 +252,25 @@ public class GameController1DieMode {
 
     private boolean hasMovingPieceCapturedAnotherPiece(Piece movingPiece){
         Square currentSquareOfMovingPiece = movingPiece.getCurrentSquare();
-        if(currentSquareOfMovingPiece.getCurrentPlayerPieces()[0] != movingPiece.getPlayer()){
+        int possibleCapturedPlayerPiece = currentSquareOfMovingPiece.getCurrentPlayerPieces()[0];
+        if(possibleCapturedPlayerPiece != movingPiece.getPlayer()){
+            pieceCaptured(movingPiece.getBoardPosition(),possibleCapturedPlayerPiece);
             return true;
         }
         return false;
     }
 
-    private void pieceCaptured(){
-        //TO DO
+    private void pieceCaptured(int capturedPieceBoardPosition, int playerPieceCaptured){
 
+        Piece[] capturedPlayerPieces = board.getPlayerPieces(playerPieceCaptured);
+        for (int i = 0; i < capturedPlayerPieces.length; i++) {
+            if(capturedPlayerPieces[i].getBoardPosition() == capturedPieceBoardPosition){
+                HouseSquare houseSquare = new HouseSquare(playerPieceCaptured,i);
+                capturedPlayerPieces[i].setCurrentSquare(houseSquare);
+            }
+        }
+
+        board.pieceReturnsToHouse(playerPieceCaptured);
 
     }
 

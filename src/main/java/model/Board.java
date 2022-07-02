@@ -44,7 +44,6 @@ public class Board {
                 FinalSquare currentFinalSquare = new FinalSquare(i+1,player);
             }
         }
-
         //Building Pieces
         pieces = new Piece[4][4];
         for (int player = 0; player < 4; player++) {
