@@ -1,5 +1,6 @@
 package model;
 
+import model.Square.HouseSquare;
 import model.Square.Square;
 
 public class Piece {
@@ -13,8 +14,8 @@ public class Piece {
     public Piece(int player, Square newSquare) {
         this.player = player;
         currentSquare = newSquare;
-        stepCounter = 0;
-        finalStepCounter = 0;
+        stepCounter = -1;
+        finalStepCounter = -1;
         boardPosition = boardPositionCalculator(stepCounter);
     }
 
@@ -38,7 +39,7 @@ public class Piece {
         return boardPosition;
     }
 
-    public void Move(int steps, Square newSquare){
+    public void move(int steps, Square newSquare){
         //Changing the step counter with possible nuance if final squares are reached
         stepCounter = stepCounter + steps;
         if(stepCounter > 60){
@@ -70,6 +71,12 @@ public class Piece {
     }
 
     public int boardPositionCalculator(int currentStepCounter){
+
+        //If piece has not left the house it has boardPosition 0
+        if(currentStepCounter == -1){
+            return 0;
+        }
+
         int startingPosition = 0;
         int newBoardPosition = currentStepCounter;
         switch(player){
@@ -94,6 +101,14 @@ public class Piece {
 
     public int getFinalStepCounter(){
         return finalStepCounter;
+    }
+
+    public void returnToHouse(int housePosition){
+        HouseSquare returningHouseSquare = new HouseSquare(player,housePosition);
+        stepCounter = -1;
+        finalStepCounter = -1;
+        boardPosition = boardPositionCalculator(stepCounter);
+
     }
 
 
