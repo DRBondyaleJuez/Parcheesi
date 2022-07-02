@@ -112,8 +112,39 @@ public class GameController1DieMode {
 
     //Method to remove most advance piece that is not in the final squares
     public void repetitionPunishment(){
-        // TO DO
 
+        int punishedPlayer = currentPlayer.getIdNumber();
+        //first make sure there is a piece on the board
+        if(board.getNumberOfPiecesInHouse(punishedPlayer) == 4){
+            return;
+
+        }
+
+        Piece mostAdvancePunishablePiece = new Piece(punishedPlayer,null);
+        Piece[] playerPieces = board.getPlayerPieces(punishedPlayer);
+        int pieceHousePosition = -1;
+
+        for (int i = 0; i < playerPieces.length; i++) {
+            if(playerPieces[i].getFinalStepCounter()>0){
+                continue;
+            }
+            if(playerPieces[i].getStepCounter() > mostAdvancePunishablePiece.getStepCounter()){
+                mostAdvancePunishablePiece = playerPieces[i];
+                pieceHousePosition = i;
+            }
+        }
+
+        //Stop the punishment if there has not been any piece punishable for that player
+        if(mostAdvancePunishablePiece.getCurrentSquare() == null){
+            return;
+        }
+
+        //If a punishable piece has been selected do the folowing with the piece and the board:
+        //Eliminating piece from the board
+        int punishablePieceBoardPosition = mostAdvancePunishablePiece.getBoardPosition();
+        board.getBoardSquares()[punishablePieceBoardPosition-1].removeCurrentPlayerPiece(punishedPlayer);
+        //Modifying the piece
+        mostAdvancePunishablePiece.returnToHouse(pieceHousePosition);
     }
 
     //Moving piece after being selected
@@ -157,7 +188,7 @@ public class GameController1DieMode {
         }
 
         //Now knowing the steps and the new square we change the moving piece attributes and the board attributes
-        movingPiece.Move(movingNumber,newSquare);
+        movingPiece.move(movingNumber,newSquare);
 
         if(movingPiece.getFinalStepCounter()>0) {
             //Check if piece has reached the end
