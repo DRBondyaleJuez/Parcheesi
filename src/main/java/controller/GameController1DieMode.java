@@ -135,7 +135,7 @@ public class GameController1DieMode {
 
         //Check for barriers. If there is a barrier the moving number will now be steps to barrier minus 1
         int stepsToBarrier = checkForBarriers(piecePlayer,boardPosition,movingNumber);
-        //If the steps of the piece go over 60 before the barrier the barrier position is irrelevant for the movement
+        //If the steps of the piece go over 60 before  the barrier position is irrelevant for the movement
         if(movingPiece.getStepCounter()+stepsToBarrier < 60){
             movingNumber = stepsToBarrier - 1; //if barrier is encounter before reaching final squares the movement becomes steps to barrier minus 1.
         }
@@ -181,6 +181,10 @@ public class GameController1DieMode {
         //Modifying the board to show
         board.getBoardSquares()[movingPiece.getBoardPosition()].setCurrentPlayerPiece(movingPiece.getPlayer());
 
+        movingNumber = 0;
+        if(dieRepetition == 0){
+            nextPlayer();
+        }
         return true;
     }
 
