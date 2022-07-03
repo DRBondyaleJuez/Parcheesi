@@ -6,6 +6,7 @@ import model.Square.Square;
 public class Piece {
 
     private int stepCounter;
+    private int maxSteps = 56;
     private int finalStepCounter;
     private int player;
     private Square currentSquare;
@@ -42,9 +43,9 @@ public class Piece {
     public void move(int steps, Square newSquare){
         //Changing the step counter with possible nuance if final squares are reached
         stepCounter = stepCounter + steps;
-        if(stepCounter > 60){
-            int finalSteps = stepCounter - 60;
-            stepCounter = 60;
+        if(stepCounter > maxSteps){
+            int finalSteps = stepCounter - maxSteps;
+            stepCounter = maxSteps;
             finalStepCounter = finalMoveCalculator(finalSteps);
         }
         //Change the square where the piece is currently after moving
@@ -110,6 +111,5 @@ public class Piece {
         boardPosition = boardPositionCalculator(stepCounter);
 
     }
-
 
 }

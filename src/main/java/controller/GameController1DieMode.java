@@ -15,6 +15,7 @@ public class GameController1DieMode {
     int movingNumber;
     int dieRepetition;
     Board board;
+    private int maxSteps = 56;
 
 
     public GameController1DieMode() {
@@ -162,14 +163,14 @@ public class GameController1DieMode {
         movingPiece = getPieceInBoardPosition(piecePlayer,boardPosition);
 
         if(movingPiece == null){
-            System.out.println("No piece was found eventhough it fitted all criteria");
+            System.out.println("No piece was found even though it fitted all criteria");
             return false;
         }
 
         //Check for barriers. If there is a barrier the moving number will now be steps to barrier minus 1
         int stepsToBarrier = checkForBarriers(piecePlayer,boardPosition,movingNumber);
         //If the steps of the piece go over 60 before  the barrier position is irrelevant for the movement
-        if(movingPiece.getStepCounter()+stepsToBarrier < 60){
+        if(movingPiece.getStepCounter()+stepsToBarrier < maxSteps){
             movingNumber = stepsToBarrier - 1; //if barrier is encounter before reaching final squares the movement becomes steps to barrier minus 1.
         }
 
@@ -177,8 +178,8 @@ public class GameController1DieMode {
         Square newSquare;
         int newPieceStepCounter = movingPiece.getStepCounter() + movingNumber;
 
-        if(newPieceStepCounter > 60){
-            int newPieceFinalStepCounter = newPieceStepCounter-60;
+        if(newPieceStepCounter > maxSteps){
+            int newPieceFinalStepCounter = newPieceStepCounter-maxSteps;
             //The final squares require special procedures if the steps overpass or reach the end
             if(newPieceFinalStepCounter > 8){
                 newPieceFinalStepCounter = movingPiece.finalMoveCalculator(movingNumber);
@@ -230,7 +231,7 @@ public class GameController1DieMode {
             return false;
         }
 
-        //Reject action if no piece in the place clicked. For that board is called to show the corresponding square's two possible positions
+        //Reject action if there is no piece in the place clicked. To verify this, the board is called to show the corresponding square's two possible positions
         //Check format if the piece clicked is on the normal board squares
         if(boardPosition <= 60) {
             int possiblePlayerPieceInSquare1 = board.getBoardSquares()[boardPosition - 1].getCurrentPlayerPieces()[0];
@@ -240,10 +241,10 @@ public class GameController1DieMode {
             }
         }
 
-        //Check format if the piece clicked is on the normal board squares
+        //Check format if the piece clicked is on the final board squares
         if(boardPosition > 60){
             int possiblePlayerPieceInSquare1 = board.getFinalSquaresBoard()[piecePlayer][boardPosition-60].getCurrentPlayerPieces()[0];
-            int possiblePlayerPieceInSquare2 = board.getFinalSquaresBoard()[piecePlayer][boardPosition-60].getCurrentPlayerPieces()[0];
+            int possiblePlayerPieceInSquare2 = board.getFinalSquaresBoard()[piecePlayer][boardPosition-60].getCurrentPlayerPieces()[1];
             if (possiblePlayerPieceInSquare1 != piecePlayer && possiblePlayerPieceInSquare2 != piecePlayer) {
                 return false;
             }
