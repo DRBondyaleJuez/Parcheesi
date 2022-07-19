@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
@@ -21,9 +22,13 @@
                                     <Font name="System Bold" size="40.0" />
                                  </font>
                               </Label>
-                              <HBox prefHeight="44.4" prefWidth="133.3" />
-                              <HBox prefHeight="44.4" prefWidth="133.3" />
-                              <HBox prefHeight="44.4" prefWidth="133.3" />
+                              <HBox fx:id="steps1To6HBox" prefHeight="44.4" prefWidth="133.3" />
+                              <HBox prefHeight="44.4" prefWidth="133.3">
+                                 <children>
+                                    <VBox fx:id="step60VBox" prefHeight="44.4" prefWidth="22.2" />
+                                    <HBox fx:id="finalSteps1To5Player1HBox" prefHeight="44.4" prefWidth="111.1" />
+                                 </children></HBox>
+                              <HBox fx:id="steps54To59HBox" prefHeight="44.4" prefWidth="133.3" />
                               <Label fx:id="house4Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="133.3" prefWidth="133.3" text="4" textAlignment="CENTER" textFill="#8a0404">
                                  <font>
                                     <Font name="System Bold" size="40.0" />
@@ -35,22 +40,75 @@
                            <children>
                               <HBox prefHeight="155.5" prefWidth="133.3">
                                  <children>
-                                    <VBox prefHeight="155.5" prefWidth="44.4" />
-                                    <VBox prefHeight="155.5" prefWidth="44.4" />
-                                    <VBox prefHeight="155.5" prefWidth="44.4" />
+                                    <VBox fx:id="steps8To14VBox" prefHeight="155.5" prefWidth="44.4" />
+                                    <VBox prefHeight="155.5" prefWidth="44.4">
+                                       <children>
+                                          <HBox fx:id="step15HBox" prefHeight="22.2" prefWidth="44.4" />
+                                          <VBox fx:id="finalSteps1To6Player2VBox" prefHeight="133.3" prefWidth="44.4" />
+                                       </children></VBox>
+                                    <VBox fx:id="steps16To22VBox" prefHeight="155.5" prefWidth="44.4" />
                                  </children></HBox>
-                              <VBox prefHeight="89.0" prefWidth="133.3">
+                              <HBox prefHeight="89.0" prefWidth="133.3">
                                  <children>
-                                    <HBox prefHeight="22.3" prefWidth="133.3" />
-                                    <HBox prefHeight="44.4" prefWidth="133.3" />
-                                    <HBox prefHeight="22.3" prefWidth="133.3" />
+                                    <VBox prefHeight="89.0" prefWidth="22.2">
+                                       <children>
+                                          <HBox fx:id="step7HBox" prefHeight="22.2" prefWidth="22.2" />
+                                          <HBox fx:id="finalStep6Player1HBox" prefHeight="44.4" prefWidth="22.2" />
+                                          <HBox fx:id="step53HBox" layoutX="10.0" layoutY="10.0" prefHeight="22.2" prefWidth="22.2" />
+                                       </children></VBox>
+                                    <VBox prefHeight="89.0" prefWidth="89.0">
+                                       <children>
+                                          <BorderPane prefHeight="89.0" prefWidth="89.0">
+                                             <top>
+                                                <Label fx:id="numberPiecesFinished2" alignment="BOTTOM_CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="30.0" text="0" textAlignment="CENTER" textFill="#a6ae03" BorderPane.alignment="CENTER">
+                                                   <font>
+                                                      <Font name="System Bold" size="18.0" />
+                                                   </font>
+                                                </Label>
+                                             </top>
+                                             <left>
+                                                <Label fx:id="numberPiecesFinished1" alignment="CENTER_RIGHT" contentDisplay="CENTER" prefHeight="30.0" prefWidth="30.0" text="0" textAlignment="CENTER" textFill="#050fa4" BorderPane.alignment="CENTER">
+                                                   <font>
+                                                      <Font name="System Bold" size="18.0" />
+                                                   </font>
+                                                </Label>
+                                             </left>
+                                             <right>
+                                                <Label fx:id="numberPiecesFinished3" contentDisplay="CENTER" prefHeight="30.0" prefWidth="30.0" text="0" textAlignment="CENTER" textFill="#059023" BorderPane.alignment="CENTER">
+                                                   <font>
+                                                      <Font name="System Bold" size="18.0" />
+                                                   </font>
+                                                </Label>
+                                             </right>
+                                             <bottom>
+                                                <Label fx:id="numberPiecesFinished4" alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="30.0" text="0" textAlignment="CENTER" textFill="#970404" BorderPane.alignment="CENTER">
+                                                   <font>
+                                                      <Font name="System Bold" size="18.0" />
+                                                   </font>
+                                                </Label>
+                                             </bottom>
+                                          </BorderPane>
+                                       </children>
+                                    </VBox>
+                                    <VBox layoutX="10.0" layoutY="10.0" prefHeight="89.0" prefWidth="22.2">
+                                       <children>
+                                          <HBox fx:id="step23HBox" prefHeight="22.2" prefWidth="22.2" />
+                                          <HBox fx:id="finalStep6Player3HBox" prefHeight="44.4" prefWidth="22.2" />
+                                          <HBox fx:id="step37HBox" layoutX="10.0" layoutY="10.0" prefHeight="22.2" prefWidth="22.2" />
+                                       </children>
+                                    </VBox>
                                  </children>
-                              </VBox>
+                              </HBox>
                               <HBox layoutX="10.0" layoutY="10.0" prefHeight="155.5" prefWidth="133.3">
                                  <children>
-                                    <VBox prefHeight="155.5" prefWidth="44.4" />
-                                    <VBox prefHeight="155.5" prefWidth="44.4" />
-                                    <VBox prefHeight="155.5" prefWidth="44.4" />
+                                    <VBox fx:id="steps46To52VBox" prefHeight="155.5" prefWidth="44.4" />
+                                    <VBox prefHeight="155.5" prefWidth="44.4">
+                                       <children>
+                                          <VBox fx:id="finalSteps1To6Player4VBox" prefHeight="133.3" prefWidth="44.4" />
+                                          <HBox fx:id="step45HBox" prefHeight="22.2" prefWidth="44.4" />
+                                       </children>
+                                    </VBox>
+                                    <VBox fx:id="steps38To44VBox" prefHeight="155.5" prefWidth="44.4" />
                                  </children>
                               </HBox>
                            </children>
@@ -62,9 +120,14 @@
                                     <Font name="System Bold" size="40.0" />
                                  </font>
                               </Label>
-                              <HBox prefHeight="44.4" prefWidth="133.3" />
-                              <HBox prefHeight="44.4" prefWidth="133.3" />
-                              <HBox prefHeight="44.4" prefWidth="133.3" />
+                              <HBox fx:id="steps24To29HBox" prefHeight="44.4" prefWidth="133.3" />
+                              <HBox prefHeight="44.4" prefWidth="133.3">
+                                 <children>
+                                    <HBox fx:id="finalSteps1To5Player3HBox" prefHeight="44.4" prefWidth="111.1" />
+                                    <VBox fx:id="step30VBox" prefHeight="44.4" prefWidth="22.2" />
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="steps31To36HBox" prefHeight="44.4" prefWidth="133.3" />
                               <Label fx:id="house3Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="133.3" prefWidth="133.3" text="4" textAlignment="CENTER" textFill="#049738">
                                  <font>
                                     <Font name="System Bold" size="40.0" />
@@ -87,10 +150,14 @@
             <ImageView fitHeight="150.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
          </right>
          <bottom>
-            <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <HBox prefHeight="90.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="rollDiceButton" mnemonicParsing="false" prefHeight="100.0" prefWidth="156.0" text="Roll Dice" />
+                  <Button fx:id="rollDiceButton" mnemonicParsing="false" prefHeight="80.0" prefWidth="100.0" text="Roll Die" />
+                  <ImageView fx:id="dieRollImageView" fitHeight="80.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
                </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
             </HBox>
          </bottom>
       </BorderPane>
