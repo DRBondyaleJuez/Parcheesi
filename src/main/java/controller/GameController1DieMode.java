@@ -3,7 +3,7 @@ package controller;
 import model.Board;
 import model.Piece;
 import model.Player;
-import model.Square.HouseSquare;
+import model.Square.NormalSquare;
 import model.Square.Square;
 
 import java.util.Random;
@@ -109,9 +109,37 @@ public class GameController1DieMode {
             return false;
         }
 
-        return board.pieceExitsHouse(player);
+        return pieceExitsHouse(player);
 
     }
+    //Piece exiting houseSquares and entering normalSquares
+    public boolean pieceExitsHouse(int player){
+        int playerPosition = player-1; // correction due to player number and position in array being different
+
+        // First checking for pieces in house ready to exit. If this number is 0 no piece can enter and the 5 has to be used for movement i.e. return false to controller
+        if(board.getNumberOfPiecesInHouse(player)<1){
+            return false;
+        }
+
+        //Declaring starting square for the corresponding player
+        int startingBoardPosition = board.getStartSquares()[player-1]-1;
+        NormalSquare playerStartingNormalSquare = board.getBoardSquares()[startingBoardPosition];
+
+        //Check if the square is blocked by the presence of two pieces
+        if(playerStartingNormalSquare.isBlocked()){
+            return false;
+        }
+
+        //Put piece in starting square
+        playerStartingNormalSquare.setCurrentPlayerPiece(player);
+        int pieceNumber = 4 - board.getNumberOfPiecesInHouse(player);
+        Piece enteringPiece = board.getPlayerPiece(playerPosition,pieceNumber);
+        enteringPiece.move(1,playerStartingNormalSquare);
+        board.exitPieceFromHouse(player);
+        return true;
+
+    }
+
 
     //Method to remove most advance piece that is not in the final squares
     public void repetitionPunishment(){
@@ -124,32 +152,35 @@ public class GameController1DieMode {
 
         }
 
-        Piece mostAdvancePunishablePiece = new Piece(punishedPlayerPosition,null);
-        Piece[] playerPieces = board.getPlayerPieces(punishedPlayerPosition);
-        int pieceHousePosition = -1;
+        Piece mostAdvancePunishablePiece;
+        int mostAdvancePosition = 0;
+        int pieceNumberPosition = -1;
 
-        for (int i = 0; i < playerPieces.length; i++) {
-            if(playerPieces[i].getFinalStepCounter()>0){
+        for (int i = 0; i < 4; i++) {
+            Piece currentPiece = board.getPlayerPiece(punishedPlayer,i);
+            if(currentPiece.getFinalStepCounter()>0 || currentPiece.getStepCounter()<0){
                 continue;
             }
-            if(playerPieces[i].getStepCounter() > mostAdvancePunishablePiece.getStepCounter()){
-                mostAdvancePunishablePiece = playerPieces[i];
-                pieceHousePosition = i;
+            if(currentPiece.getStepCounter() > mostAdvancePosition){
+                mostAdvancePosition = currentPiece.getStepCounter();
+                pieceNumberPosition = i;
             }
         }
 
         //Stop the punishment if there has not been any piece punishable for that player
-        if(mostAdvancePunishablePiece.getCurrentSquare() == null){
+        if(pieceNumberPosition == -1){
             return;
+        } else{
+            mostAdvancePunishablePiece = board.getPlayerPiece(punishedPlayer,pieceNumberPosition);
         }
 
-        //If a punishable piece has been selected do the folowing with the piece and the board:
+        //If a punishable piece has been selected do the following with the piece and the board:
         //Eliminating piece from the board
         int punishablePieceBoardPosition = mostAdvancePunishablePiece.getBoardPosition();
         board.getBoardSquares()[punishablePieceBoardPosition-1].removeCurrentPlayerPiece(punishedPlayerPosition);
         //Modifying the piece
-        mostAdvancePunishablePiece.returnToHouse(pieceHousePosition);
-        board.pieceReturnsToHouse(punishedPlayer);
+        mostAdvancePunishablePiece.setCurrentSquare(null);
+        board.returnPieceToHouse(punishedPlayer);
     }
 
     //Moving piece after being selected
@@ -256,17 +287,17 @@ public class GameController1DieMode {
 
     private Piece getPieceInBoardPosition(int piecePlayer,int boardPosition){
         //Get and modify correct Piece in board position
-        Piece movingPiece = new Piece(0,null);
-        Piece[] allPlayerPieces = board.getPlayerPieces(piecePlayer);
-        for (int i = 0; i < allPlayerPieces.length; i++) {
+        Piece movingPiece = new Piece(0);
+        for (int i = 0; i < 4; i++) {
+            Piece currentPiece = board.getPlayerPiece(piecePlayer,i);
             if (boardPosition > 60) {
-                if (allPlayerPieces[i].getFinalStepCounter() == boardPosition) {
-                    movingPiece = allPlayerPieces[i];
+                if (currentPiece.getFinalStepCounter() == boardPosition) {
+                    movingPiece = currentPiece;
                 }
             }
             if (boardPosition <= 60) {
-                if (allPlayerPieces[i].getBoardPosition() == boardPosition) {
-                    movingPiece = allPlayerPieces[i];
+                if (currentPiece.getBoardPosition() == boardPosition) {
+                    movingPiece = currentPiece;
                 }
             }
         }
@@ -302,14 +333,14 @@ public class GameController1DieMode {
 
     private void pieceCaptured(int capturedPieceBoardPosition, int capturedPiecePlayer){
 
-        Piece[] capturedPlayerPieces = board.getPlayerPieces(capturedPiecePlayer);
-        for (int i = 0; i < capturedPlayerPieces.length; i++) {
-            if(capturedPlayerPieces[i].getBoardPosition() == capturedPieceBoardPosition){
-                capturedPlayerPieces[i].returnToHouse(i);
+        for (int i = 0; i < 4; i++) {
+            Piece currentPiece = board.getPlayerPiece(capturedPiecePlayer,i);
+            if(currentPiece.getBoardPosition() == capturedPieceBoardPosition){
+                currentPiece.setCurrentSquare(null);
             }
         }
 
-        board.pieceReturnsToHouse(capturedPiecePlayer);
+        board.returnPieceToHouse(capturedPiecePlayer);
 
     }
 

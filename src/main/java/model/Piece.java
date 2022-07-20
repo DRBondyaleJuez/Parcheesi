@@ -1,6 +1,5 @@
 package model;
 
-import model.Square.HouseSquare;
 import model.Square.Square;
 
 public class Piece {
@@ -12,9 +11,9 @@ public class Piece {
     private Square currentSquare;
     private int boardPosition;
 
-    public Piece(int player, Square newSquare) {
+    public Piece(int player) {
         this.player = player;
-        currentSquare = newSquare;
+        currentSquare = null;
         stepCounter = -1;
         finalStepCounter = -1;
         boardPosition = boardPositionCalculator(stepCounter);
@@ -102,14 +101,6 @@ public class Piece {
 
     public int getFinalStepCounter(){
         return finalStepCounter;
-    }
-
-    public void returnToHouse(int housePosition){
-        HouseSquare returningHouseSquare = new HouseSquare(player,housePosition);
-        stepCounter = -1;
-        finalStepCounter = -1;
-        boardPosition = boardPositionCalculator(stepCounter);
-
     }
 
 }
