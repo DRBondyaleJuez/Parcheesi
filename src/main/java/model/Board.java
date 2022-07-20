@@ -7,11 +7,11 @@ import model.Square.Square;
 
 public class Board {
 
-    NormalSquare[] boardNormalSquares;
-    FinalSquare[][] finalSquaresBoard;
-    Piece[][] pieces;
-    int[] housePieces; //This is the pieces not played by each player
-    int[] finishedPieces; //This is the pieces that have reached the end
+    private NormalSquare[] boardNormalSquares;
+    private FinalSquare[][] finalSquaresBoard;
+    private Piece[][] pieces;
+    private int[] housePieces; //This is the pieces not played by each player
+    private int[] finishedPieces; //This is the pieces that have reached the end
     private int[] startSquares = {4,19,34,49};
     private int[] safeSquares = {4,11,15,19,26,30,34,41,45,49,56,60};
     private int[] finalSquares = {45,30,15,60};

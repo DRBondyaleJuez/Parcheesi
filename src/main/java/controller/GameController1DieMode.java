@@ -10,17 +10,18 @@ import java.util.Random;
 
 public class GameController1DieMode {
 
-    Player currentPlayer;
-    Player[] players;
-    int movingNumber;
-    int dieRepetition;
-    Board board;
+    private Player currentPlayer;
+    private Player[] players;
+    private int movingNumber;
+    private int dieRepetition;
+    private Board board;
     private int maxSteps = 56;
 
 
     public GameController1DieMode() {
         createPlayers();
-        movingNumber=0;
+        movingNumber = 0;
+        dieRepetition = 0;
         board = new Board();
     }
 
@@ -44,7 +45,7 @@ public class GameController1DieMode {
     // Method to simulate die rolling between 1 and 6 with special cases for rolling 5 and 6
     public int diceRoll(){
         Random randomGenerator = new Random();
-        int die1Value = randomGenerator.nextInt(6);
+        int die1Value = randomGenerator.nextInt(6) + 1;
 
         if(die1Value != 6){
             dieRepetition = 0;
@@ -63,6 +64,7 @@ public class GameController1DieMode {
 
         if(dieRepetition == 3){
             repetitionPunishment();
+            nextPlayer();
             return -1;
         }
 
@@ -169,7 +171,7 @@ public class GameController1DieMode {
 
         //Check for barriers. If there is a barrier the moving number will now be steps to barrier minus 1
         int stepsToBarrier = checkForBarriers(piecePlayer,boardPosition,movingNumber);
-        //If the steps of the piece go over 60 before  the barrier position is irrelevant for the movement
+        //If the steps of the piece go over 56 before  the barrier position is irrelevant for the movement
         if(movingPiece.getStepCounter()+stepsToBarrier < maxSteps){
             movingNumber = stepsToBarrier - 1; //if barrier is encounter before reaching final squares the movement becomes steps to barrier minus 1.
         }

@@ -75,11 +75,11 @@ public class Piece {
 
         //If piece has not left the house it has boardPosition 0
         if(currentStepCounter == -1){
-            return 0;
+            return -1;
         }
 
         int startingPosition = 0;
-        int newBoardPosition = currentStepCounter;
+        int newBoardPosition;
         switch(player){
             case 1:
                 startingPosition = 4;
@@ -96,7 +96,7 @@ public class Piece {
             default:
                 break;
         }
-        newBoardPosition = startingPosition + currentStepCounter;
+        newBoardPosition = (startingPosition + currentStepCounter)%60;
         return newBoardPosition;
     }
 
