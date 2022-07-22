@@ -20,8 +20,8 @@ public class Board {
 
         //Setting initial configuration of houses
         housePieces = new int[4];
-        for (int numberOfPieces:housePieces) {
-            numberOfPieces=4;
+        for (int i=0; i<housePieces.length; i++ ) {
+            housePieces[i] = 4;
         };
 
         //Building boardSquares, finalSquares and Pieces
@@ -39,7 +39,7 @@ public class Board {
     private NormalSquare[] buildBoardSquares(){
         NormalSquare[] newBoardSquares = new NormalSquare[60];
 
-        for (int i = 0; i < boardNormalSquares.length; i++) {
+        for (int i = 0; i < newBoardSquares.length; i++) {
             boolean isSafe = isSquareSafe(i+1);
             int isStart = 0;
             for (int j = 0; j < startSquares.length; j++) {
@@ -47,7 +47,7 @@ public class Board {
                     isStart = j+1;
                 }
             }
-            NormalSquare currentNormalSquare = new NormalSquare(i+1,isSafe,isStart);
+            newBoardSquares[i] = new NormalSquare(i+1,isSafe,isStart);
         }
         return newBoardSquares;
     }
@@ -62,7 +62,7 @@ public class Board {
     private FinalSquare[][] buildBoardFinalSquares(){
         FinalSquare[][] newBoardFinalSquares = new FinalSquare[4][7];
         for (int player = 0; player < newBoardFinalSquares.length; player++) {
-            for (int i = 0; i < boardFinalSquares[0].length; i++) {
+            for (int i = 0; i < newBoardFinalSquares[0].length; i++) {
                 newBoardFinalSquares[player][i]= new FinalSquare(i+1,player);
             }
         }
@@ -75,7 +75,7 @@ public class Board {
         for (int player = 0; player < 4; player++) {
             for (int number = 0; number < 4; number++) {
 
-                pieces[player][number] = new Piece(player+1);
+                newPieces[player][number] = new Piece(player+1);
 
             }
         }

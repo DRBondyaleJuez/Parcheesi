@@ -35,6 +35,10 @@ public class Piece {
         return stepCounter;
     }
 
+    public int getFinalStepCounter(){
+        return finalStepCounter;
+    }
+
     public int getBoardPosition() {
         return boardPosition;
     }
@@ -49,6 +53,7 @@ public class Piece {
         }
         //Change the square where the piece is currently after moving
         setCurrentSquare(newSquare);
+        boardPosition = boardPositionCalculator(stepCounter);
     }
 
     public int finalMoveCalculator(int steps){
@@ -99,8 +104,6 @@ public class Piece {
         return newBoardPosition;
     }
 
-    public int getFinalStepCounter(){
-        return finalStepCounter;
-    }
+
 
 }

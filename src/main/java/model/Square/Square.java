@@ -9,6 +9,7 @@ public class Square {
 
     public Square(int squareNumber,boolean isSafe) {
         this.squareNumber = squareNumber;
+        currentPlayerPiece = new int[2];
         this.currentPlayerPiece[0] = 0;
         this.currentPlayerPiece[1] = 0;
     }

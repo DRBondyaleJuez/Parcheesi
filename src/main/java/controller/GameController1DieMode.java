@@ -104,19 +104,7 @@ public class GameController1DieMode {
 
     //Method to handle rolling a 5 which may require a piece entering
     public boolean newPieceEnters(int player){
-        int position = player-1;
-        if(board.getNumberOfPiecesInHouse(position)<1){
-            return false;
-        }
 
-        return pieceExitsHouse(player);
-
-    }
-    //Piece exiting houseSquares and entering normalSquares
-    public boolean pieceExitsHouse(int player){
-        int playerPosition = player-1; // correction due to player number and position in array being different
-
-        // First checking for pieces in house ready to exit. If this number is 0 no piece can enter and the 5 has to be used for movement i.e. return false to controller
         if(board.getNumberOfPiecesInHouse(player)<1){
             return false;
         }
@@ -133,7 +121,7 @@ public class GameController1DieMode {
         //Put piece in starting square
         playerStartingNormalSquare.setCurrentPlayerPiece(player);
         int pieceNumber = 4 - board.getNumberOfPiecesInHouse(player);
-        Piece enteringPiece = board.getPlayerPiece(playerPosition,pieceNumber);
+        Piece enteringPiece = board.getPlayerPiece(player,pieceNumber);
         enteringPiece.move(1,playerStartingNormalSquare);
         board.exitPieceFromHouse(player);
         return true;
@@ -145,15 +133,14 @@ public class GameController1DieMode {
     public void repetitionPunishment(){
 
         int punishedPlayer = currentPlayer.getIdNumber();
-        int punishedPlayerPosition = punishedPlayer-1;
         //first make sure there is a piece on the board
-        if(board.getNumberOfPiecesInHouse(punishedPlayerPosition) == 4){
+        if(board.getNumberOfPiecesInHouse(punishedPlayer) == 4){
             return;
 
         }
 
         Piece mostAdvancePunishablePiece;
-        int mostAdvancePosition = 0;
+        int mostAdvancePosition = -1;
         int pieceNumberPosition = -1;
 
         for (int i = 0; i < 4; i++) {
@@ -177,7 +164,7 @@ public class GameController1DieMode {
         //If a punishable piece has been selected do the following with the piece and the board:
         //Eliminating piece from the board
         int punishablePieceBoardPosition = mostAdvancePunishablePiece.getBoardPosition();
-        board.getBoardSquares()[punishablePieceBoardPosition-1].removeCurrentPlayerPiece(punishedPlayerPosition);
+        board.getBoardSquares()[punishablePieceBoardPosition-1].removeCurrentPlayerPiece(punishedPlayer);
         //Modifying the piece
         mostAdvancePunishablePiece.setCurrentSquare(null);
         board.returnPieceToHouse(punishedPlayer);
