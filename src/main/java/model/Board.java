@@ -33,6 +33,9 @@ public class Board {
         //Building Pieces
         pieces = buildPieces();
 
+        //Initializing the finished array
+        finishedPieces = new int[4];
+
     }
 
     //Method to build the attribute boardSquares
@@ -121,5 +124,9 @@ public class Board {
     public Piece getPlayerPiece(int player, int number){
         
         return pieces[player-1][number];
+    }
+
+    public int getFinishedPieces(int player){
+        return finishedPieces[player-1];
     }
 }
