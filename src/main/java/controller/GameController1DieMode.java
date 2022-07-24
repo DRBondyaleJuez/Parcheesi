@@ -16,6 +16,7 @@ public class GameController1DieMode {
     private int dieRepetition;
     private Board board;
     private int maxSteps = 56;
+    private int isThereAWinner;
 
 
     public GameController1DieMode() {
@@ -23,6 +24,7 @@ public class GameController1DieMode {
         movingNumber = 0;
         dieRepetition = 0;
         board = new Board();
+        isThereAWinner = 0;
     }
 
     private void createPlayers() {
@@ -148,7 +150,7 @@ public class GameController1DieMode {
             if(currentPiece.getFinalStepCounter()>0 || currentPiece.getStepCounter()<0){
                 continue;
             }
-            if(currentPiece.getStepCounter() > mostAdvancePosition){
+            if(currentPiece.getStepCounter() >= mostAdvancePosition){
                 mostAdvancePosition = currentPiece.getStepCounter();
                 pieceNumberPosition = i;
             }
@@ -191,7 +193,7 @@ public class GameController1DieMode {
         int stepsToBarrier = checkForBarriers(piecePlayer,boardPosition,movingNumber);
         //If the steps of the piece go over 56 before  the barrier position is irrelevant for the movement
         if(movingNumber>stepsToBarrier && movingPiece.getStepCounter()+stepsToBarrier < maxSteps){
-            movingNumber = stepsToBarrier - 1; //if barrier is encounter before reaching final squares the movement becomes steps to barrier minus 1.
+            movingNumber = stepsToBarrier; //if barrier is encounter before reaching final squares the movement becomes steps to barrier minus 1.
         }
 
         //Calculate and get square where the piece is moving to
@@ -201,8 +203,8 @@ public class GameController1DieMode {
         if(newPieceStepCounter > maxSteps){
             int newPieceFinalStepCounter = newPieceStepCounter-maxSteps;
             //The final squares require special procedures if the steps overpass or reach the end
-            if(newPieceFinalStepCounter > 8){
-                newPieceFinalStepCounter = movingPiece.finalMoveCalculator(movingNumber);
+            if(newPieceFinalStepCounter > 7){
+                newPieceFinalStepCounter = movingPiece.finalMoveCalculator(newPieceFinalStepCounter);
             }
             newSquare = board.getFinalSquaresBoard()[piecePlayer-1][newPieceFinalStepCounter-1];
         } else {
@@ -216,16 +218,14 @@ public class GameController1DieMode {
         if(movingPiece.getFinalStepCounter()>0) {
             //Check if piece has reached the end
             if (hasMovingPieceReachedTheEnd(movingPiece)) {
-                board.getFinalSquaresBoard()[piecePlayer][8].setCurrentPlayerPiece(piecePlayer);
                 board.pieceReachesTheEnd(piecePlayer);
                 movingNumber=10;
                 return true;
             }
-            board.getFinalSquaresBoard()[piecePlayer][movingPiece.getFinalStepCounter()-1].setCurrentPlayerPiece(piecePlayer);
+            board.getFinalSquaresBoard()[piecePlayer-1][movingPiece.getFinalStepCounter()-1].setCurrentPlayerPiece(piecePlayer);
             movingNumber=0;
             return true;
         }
-
 
         if(hasMovingPieceCapturedAnotherPiece(movingPiece)){
             movingNumber = 20;
@@ -234,7 +234,12 @@ public class GameController1DieMode {
         }
 
         //Modifying the board to show
-        board.getBoardSquares()[movingPiece.getBoardPosition()-1].setCurrentPlayerPiece(movingPiece.getPlayer());
+        int newBoardPosition = movingPiece.getBoardPosition();
+        if(newBoardPosition>60){
+            board.getFinalSquaresBoard()[piecePlayer-1][newBoardPosition - 60-1].setCurrentPlayerPiece(movingPiece.getPlayer());
+        } else {
+            board.getBoardSquares()[movingPiece.getBoardPosition() - 1].setCurrentPlayerPiece(movingPiece.getPlayer());
+        }
 
         movingNumber = 0;
         if(dieRepetition == 0){
@@ -264,8 +269,12 @@ public class GameController1DieMode {
 
         //Check format if the piece clicked is on the final board squares
         if(boardPosition > 60){
-            int possiblePlayerPieceInSquare1 = board.getFinalSquaresBoard()[piecePlayer][boardPosition-60].getCurrentPlayerPieces()[0];
-            int possiblePlayerPieceInSquare2 = board.getFinalSquaresBoard()[piecePlayer][boardPosition-60].getCurrentPlayerPieces()[1];
+            //Solving for scenarios of overpassing final square
+            if(boardPosition > 67){boardPosition = 67 - (boardPosition - 67);}
+            if(boardPosition < 60){boardPosition = 61;}
+
+            int possiblePlayerPieceInSquare1 = board.getFinalSquaresBoard()[piecePlayer-1][boardPosition-60-1].getCurrentPlayerPieces()[0];
+            int possiblePlayerPieceInSquare2 = board.getFinalSquaresBoard()[piecePlayer-1][boardPosition-60-1].getCurrentPlayerPieces()[1];
             if (possiblePlayerPieceInSquare1 != piecePlayer && possiblePlayerPieceInSquare2 != piecePlayer) {
                 return false;
             }
@@ -275,18 +284,12 @@ public class GameController1DieMode {
 
     public Piece getPieceInBoardPosition(int piecePlayer,int boardPosition){
         //Get and modify correct Piece in board position
-        Piece movingPiece = new Piece(0);
+        Piece movingPiece = null;
         for (int i = 0; i < 4; i++) {
             Piece currentPiece = board.getPlayerPiece(piecePlayer,i);
-            if (boardPosition > 60) {
-                if (currentPiece.getFinalStepCounter() == boardPosition) {
-                    movingPiece = currentPiece;
-                }
-            }
-            if (boardPosition <= 60) {
-                if (currentPiece.getBoardPosition() == boardPosition) {
-                    movingPiece = currentPiece;
-                }
+            if (currentPiece.getBoardPosition() == boardPosition) {
+                movingPiece = currentPiece;
+                break;
             }
         }
         return movingPiece;
@@ -294,19 +297,19 @@ public class GameController1DieMode {
 
     //This method goes along the squares a piece goes through if there is a barrier the method returns the steps to the barrier encounter
     private int checkForBarriers(int player, int startingBoardPosition, int movingSteps){
-        int stepsBeforeBarrier = movingSteps;
+        int stepsToBarrier = movingSteps;
         for (int i = 1; i < movingSteps+1; i++) {
            Square testedSquareForBarrier = board.getBoardSquares()[(startingBoardPosition+i)%60];
            if(testedSquareForBarrier.isBlocked()){
-               stepsBeforeBarrier = i-1;
+               stepsToBarrier = i;
                break;
            }
         }
-        return stepsBeforeBarrier;
+        return stepsToBarrier;
     }
 
     private boolean hasMovingPieceReachedTheEnd(Piece movingPiece){
-        return movingPiece.getFinalStepCounter()==8;
+        return movingPiece.getFinalStepCounter()==7;
     }
 
     private boolean hasMovingPieceCapturedAnotherPiece(Piece movingPiece){
@@ -334,6 +337,14 @@ public class GameController1DieMode {
 
         board.returnPieceToHouse(capturedPiecePlayer);
 
+    }
+
+    public int isThereAWinner(int player) {
+        int numberOfPiecesFinished = board.getFinishedPieces(player);
+        if(numberOfPiecesFinished==4) {
+            isThereAWinner = player;
+        }
+        return isThereAWinner;
     }
 
     public boolean onlyForTestSetMovingNumber(int number){
