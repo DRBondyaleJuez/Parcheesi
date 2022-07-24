@@ -28,7 +28,7 @@ public class GameController1DieMode {
     private void createPlayers() {
         players = new Player[4];
         for (int i = 0; i < players.length; i++) {
-            players[i] = new Player(i+1,"Player " + i);
+            players[i] = new Player(i+1,"Player " + (i+1));
         }
         currentPlayer = players[0];
     }
@@ -190,7 +190,7 @@ public class GameController1DieMode {
         //Check for barriers. If there is a barrier the moving number will now be steps to barrier minus 1
         int stepsToBarrier = checkForBarriers(piecePlayer,boardPosition,movingNumber);
         //If the steps of the piece go over 56 before  the barrier position is irrelevant for the movement
-        if(movingPiece.getStepCounter()+stepsToBarrier < maxSteps){
+        if(movingNumber>stepsToBarrier && movingPiece.getStepCounter()+stepsToBarrier < maxSteps){
             movingNumber = stepsToBarrier - 1; //if barrier is encounter before reaching final squares the movement becomes steps to barrier minus 1.
         }
 
@@ -226,14 +226,15 @@ public class GameController1DieMode {
             return true;
         }
 
+
         if(hasMovingPieceCapturedAnotherPiece(movingPiece)){
             movingNumber = 20;
-            board.getBoardSquares()[movingPiece.getBoardPosition()].setCurrentPlayerPiece(movingPiece.getPlayer());
+            board.getBoardSquares()[movingPiece.getBoardPosition()-1].setCurrentPlayerPiece(movingPiece.getPlayer());
             return true;
         }
 
         //Modifying the board to show
-        board.getBoardSquares()[movingPiece.getBoardPosition()].setCurrentPlayerPiece(movingPiece.getPlayer());
+        board.getBoardSquares()[movingPiece.getBoardPosition()-1].setCurrentPlayerPiece(movingPiece.getPlayer());
 
         movingNumber = 0;
         if(dieRepetition == 0){
@@ -244,7 +245,7 @@ public class GameController1DieMode {
 
     //Method to verify the presence of a corresponding piece in a position of the board. BoardPosition is an integer asociated with the square in the board
     // For normal squares goes from 1 to 60 and for final squares from 1 to 8
-    private boolean checkPlayerPieceInBoardPosition(int piecePlayer,int boardPosition){
+    public boolean checkPlayerPieceInBoardPosition(int piecePlayer,int boardPosition){
 
         //Reject action if the piece clicked is not of the player currently playing or the die has not been rolled yet
         if(piecePlayer != currentPlayer.getIdNumber() || movingNumber == 0){
@@ -272,7 +273,7 @@ public class GameController1DieMode {
         return true;
     }
 
-    private Piece getPieceInBoardPosition(int piecePlayer,int boardPosition){
+    public Piece getPieceInBoardPosition(int piecePlayer,int boardPosition){
         //Get and modify correct Piece in board position
         Piece movingPiece = new Piece(0);
         for (int i = 0; i < 4; i++) {
@@ -295,7 +296,7 @@ public class GameController1DieMode {
     private int checkForBarriers(int player, int startingBoardPosition, int movingSteps){
         int stepsBeforeBarrier = movingSteps;
         for (int i = 1; i < movingSteps+1; i++) {
-           Square testedSquareForBarrier = board.getBoardSquares()[startingBoardPosition+i];
+           Square testedSquareForBarrier = board.getBoardSquares()[(startingBoardPosition+i)%60];
            if(testedSquareForBarrier.isBlocked()){
                stepsBeforeBarrier = i-1;
                break;
@@ -310,8 +311,12 @@ public class GameController1DieMode {
 
     private boolean hasMovingPieceCapturedAnotherPiece(Piece movingPiece){
         Square currentSquareOfMovingPiece = movingPiece.getCurrentSquare();
+
+        //Dismiss capturing if square is Safe
+        if(currentSquareOfMovingPiece.isSafe()){return  false;}
+
         int possibleCapturedPlayerPiece = currentSquareOfMovingPiece.getCurrentPlayerPieces()[0];
-        if(possibleCapturedPlayerPiece != movingPiece.getPlayer()){
+        if(possibleCapturedPlayerPiece != 0 && possibleCapturedPlayerPiece != movingPiece.getPlayer()){
             pieceCaptured(movingPiece.getBoardPosition(),possibleCapturedPlayerPiece);
             return true;
         }
@@ -329,6 +334,16 @@ public class GameController1DieMode {
 
         board.returnPieceToHouse(capturedPiecePlayer);
 
+    }
+
+    public boolean onlyForTestSetMovingNumber(int number){
+        movingNumber = number;
+        return true;
+    }
+
+    public int onlyForTestGetMovingNumber(){
+
+        return movingNumber;
     }
 
 }

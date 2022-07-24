@@ -52,6 +52,98 @@ public class testController {
         Assertions.assertArrayEquals(expectedBoolean,piecesEntering,"The method piece entering returns true for the first 4 pieces only");
     }
 
+    @Test
+    public void testMovePiece1(){
+        GameController1DieMode controllerForTests = new GameController1DieMode();
+
+        controllerForTests.newPieceEnters(1);
+
+        int dieValue = controllerForTests.diceRoll();
+
+        System.out.println(dieValue);
+
+        boolean pieceHasMoved = controllerForTests.movePiece(1,4);
+
+        //So the current player is the same and there is moving number
+        for (int i = 0; i < 3; i++) {
+            controllerForTests.nextPlayer();
+        }
+        int dieValue1 = controllerForTests.diceRoll();
+
+        boolean movedPieceInNewPosition = controllerForTests.checkPlayerPieceInBoardPosition(1,4+dieValue);
+
+        boolean[] expectedBoolean = {true,true};
+        boolean[] actualBoolean = {pieceHasMoved,movedPieceInNewPosition};
+
+        Assertions.assertArrayEquals(expectedBoolean,actualBoolean,"The piece from the player moved adequately");
+    }
+
+    @Test
+    public void testPieceCapturePieceInNormalSquare(){
+        GameController1DieMode controllerForTests = new GameController1DieMode();
+
+        controllerForTests.newPieceEnters(1);
+
+        boolean firstPieceMoved = controllerForTests.onlyForTestSetMovingNumber(1);
+
+        controllerForTests.movePiece(1,4);
+
+        //Player 4 to test capture
+        controllerForTests.nextPlayer();
+        controllerForTests.nextPlayer();
+
+        controllerForTests.newPieceEnters(4);
+
+        controllerForTests.onlyForTestSetMovingNumber(16);
+        boolean secondPieceMoved = controllerForTests.movePiece(4,49);
+        boolean movedPieceInNewPosition = controllerForTests.checkPlayerPieceInBoardPosition(4,5);
+        boolean wasAnyPieceCaught = controllerForTests.onlyForTestGetMovingNumber()==20;
+
+
+        boolean[] expectResult = {true,true,true,true};
+        boolean[] actualResult = {firstPieceMoved,secondPieceMoved,movedPieceInNewPosition,wasAnyPieceCaught};
+
+        Assertions.assertArrayEquals(expectResult,actualResult,"It does not seem the piece has capture another piece as expected with their positions");
+
+    }
+    @Test
+    public void testPieceCapturePieceInSafeSquare(){
+        GameController1DieMode controllerForTests = new GameController1DieMode();
+
+        controllerForTests.newPieceEnters(1);
+
+        boolean firstPieceMoved = controllerForTests.onlyForTestSetMovingNumber(1);
+
+        //Player 4 to test capture
+        controllerForTests.nextPlayer();
+        controllerForTests.nextPlayer();
+        controllerForTests.nextPlayer();
+
+        controllerForTests.newPieceEnters(4);
+
+        controllerForTests.onlyForTestSetMovingNumber(15);
+        boolean secondPieceMoved = controllerForTests.movePiece(4,49);
+        boolean wasAnyPieceCaught = controllerForTests.onlyForTestGetMovingNumber()==20;
+
+        //Changing moving number only so the checking could work
+        controllerForTests.onlyForTestSetMovingNumber(1);
+
+        //currentplayer should be on 1
+        boolean movedPieceInNewPosition1 = controllerForTests.checkPlayerPieceInBoardPosition(1,4);
+
+        //change CurrentPlayer to 4 before checking
+        controllerForTests.nextPlayer();
+        controllerForTests.nextPlayer();
+        controllerForTests.nextPlayer();
+        boolean movedPieceInNewPosition4 = controllerForTests.checkPlayerPieceInBoardPosition(4,4);
+
+        boolean[] expectResult = {true,true,true,true,false};
+        boolean[] actualResult = {firstPieceMoved,secondPieceMoved,movedPieceInNewPosition1,movedPieceInNewPosition4,wasAnyPieceCaught};
+
+        Assertions.assertArrayEquals(expectResult,actualResult,"It does not seem the piece moving into a safe square qith another different piece worked properly");
+
+    }
+
 
 
 }

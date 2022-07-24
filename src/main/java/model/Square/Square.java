@@ -12,6 +12,7 @@ public class Square {
         currentPlayerPiece = new int[2];
         this.currentPlayerPiece[0] = 0;
         this.currentPlayerPiece[1] = 0;
+        this.isSafe = isSafe;
     }
 
     public int getSquareNumber() {
@@ -42,6 +43,8 @@ public class Square {
         if(isSafe){
             if(currentPlayerPiece[0]>0){
                 currentPlayerPiece[1] = playerPiece;
+            }else{
+                currentPlayerPiece[0] = playerPiece;
             }
         } else {
             if(currentPlayerPiece[0]==playerPiece){

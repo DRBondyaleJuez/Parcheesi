@@ -43,8 +43,9 @@ public class Board {
             boolean isSafe = isSquareSafe(i+1);
             int isStart = 0;
             for (int j = 0; j < startSquares.length; j++) {
-                if (startSquares[j] == j+1){
+                if (startSquares[j] == i+1){
                     isStart = j+1;
+                    break;
                 }
             }
             newBoardSquares[i] = new NormalSquare(i+1,isSafe,isStart);
@@ -54,7 +55,12 @@ public class Board {
 
     //This method is used to compare a squareNumber with the numbers in the array of safeSquares
     private boolean isSquareSafe(int squareNumber){
-        return Arrays.stream(safeSquares).anyMatch(i->i==squareNumber);
+        for (int i = 0; i < safeSquares.length; i++) {
+            if(squareNumber == safeSquares[i]) {
+                return true;
+            }
+        }
+        return false;
 
     }
 

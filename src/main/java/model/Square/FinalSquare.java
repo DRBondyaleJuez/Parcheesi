@@ -4,7 +4,6 @@ import model.Piece;
 
 public class FinalSquare extends Square{
 
-    private int squareNumber;
     private int[] currentPieces;
     private int player;
 

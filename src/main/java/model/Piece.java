@@ -92,10 +92,10 @@ public class Piece {
                 startingPosition = 19;
                 break;
             case 3:
-                startingPosition = 24;
+                startingPosition = 34;
                 break;
             case 4:
-                startingPosition = 39;
+                startingPosition = 49;
                 break;
             default:
                 break;
