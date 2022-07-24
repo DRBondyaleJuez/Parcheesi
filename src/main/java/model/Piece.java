@@ -15,7 +15,7 @@ public class Piece {
         this.player = player;
         currentSquare = null;
         stepCounter = -1;
-        finalStepCounter = -1;
+        finalStepCounter = 0;
         boardPosition = boardPositionCalculator(stepCounter);
     }
 
@@ -28,6 +28,11 @@ public class Piece {
     }
 
     public void setCurrentSquare(Square currentSquare) {
+        if(currentSquare == null){
+            stepCounter = -1;
+            finalStepCounter = 0;
+            boardPosition = boardPositionCalculator(stepCounter);
+        }
         this.currentSquare = currentSquare;
     }
 
@@ -52,27 +57,34 @@ public class Piece {
             finalStepCounter = finalMoveCalculator(finalSteps);
         }
         //Change the square where the piece is currently after moving
+        //First remove piece information from square
+        if(currentSquare != null){
+            currentSquare.removeCurrentPlayerPiece(player);
+        }
+        //Then set the new square
         setCurrentSquare(newSquare);
-        boardPosition = boardPositionCalculator(stepCounter);
+        if(finalStepCounter>0){
+            boardPosition = 60 + finalStepCounter;
+        } else {
+            boardPosition = boardPositionCalculator(stepCounter);
+        }
     }
 
     public int finalMoveCalculator(int steps){
         int tempFinalStepCounter = finalStepCounter;
         tempFinalStepCounter = tempFinalStepCounter + steps;
         //If the steps go over the end square
-        if(tempFinalStepCounter>8){
-            tempFinalStepCounter = 8 - (tempFinalStepCounter-8);
+        if(tempFinalStepCounter>7){
+            tempFinalStepCounter = 7 - (tempFinalStepCounter-7);
             if(tempFinalStepCounter<1){tempFinalStepCounter = 1;}
             return tempFinalStepCounter;
         }
         //If it reaches the end square
-        if(finalStepCounter==8){
-            finalStepCounter = 10;
-            return finalStepCounter;
+        if(tempFinalStepCounter == 7){
+            return 7;
         }
         //If the steps don't reach the end square
-        return finalStepCounter;
-
+        return tempFinalStepCounter;
     }
 
     public int boardPositionCalculator(int currentStepCounter){
@@ -103,6 +115,7 @@ public class Piece {
         newBoardPosition = (startingPosition + currentStepCounter)%60;
         return newBoardPosition;
     }
+
 
 
 
