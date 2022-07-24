@@ -60,15 +60,12 @@ public class testController {
 
         int dieValue = controllerForTests.diceRoll();
 
-        System.out.println(dieValue);
-
         boolean pieceHasMoved = controllerForTests.movePiece(1,4);
 
         //So the current player is the same and there is moving number
         for (int i = 0; i < 3; i++) {
             controllerForTests.nextPlayer();
         }
-        int dieValue1 = controllerForTests.diceRoll();
 
         boolean movedPieceInNewPosition = controllerForTests.checkPlayerPieceInBoardPosition(1,4+dieValue);
 
@@ -128,7 +125,7 @@ public class testController {
         //Changing moving number only so the checking could work
         controllerForTests.onlyForTestSetMovingNumber(1);
 
-        //currentplayer should be on 1
+        //currentPlayer should be on 1
         boolean movedPieceInNewPosition1 = controllerForTests.checkPlayerPieceInBoardPosition(1,4);
 
         //change CurrentPlayer to 4 before checking
@@ -140,8 +137,132 @@ public class testController {
         boolean[] expectResult = {true,true,true,true,false};
         boolean[] actualResult = {firstPieceMoved,secondPieceMoved,movedPieceInNewPosition1,movedPieceInNewPosition4,wasAnyPieceCaught};
 
-        Assertions.assertArrayEquals(expectResult,actualResult,"It does not seem the piece moving into a safe square qith another different piece worked properly");
+        Assertions.assertArrayEquals(expectResult,actualResult,"It does not seem the piece moving into a safe square with another different piece worked properly");
+    }
 
+    @Test
+    public void testPieceMovingWhenBlockInFront() {
+        GameController1DieMode controllerForTests = new GameController1DieMode();
+
+        //Creating a wall by two pieces at start square of player 1
+        controllerForTests.newPieceEnters(1);
+        controllerForTests.newPieceEnters(1);
+
+        //Player 4 to test capture
+        controllerForTests.nextPlayer();
+        controllerForTests.nextPlayer();
+        controllerForTests.nextPlayer();
+
+        controllerForTests.newPieceEnters(4);
+
+        //Move that will force the piece of player 4 to encounter the block
+        controllerForTests.onlyForTestSetMovingNumber(20);
+        boolean onlyPieceMoved = controllerForTests.movePiece(4, 49);
+
+        controllerForTests.nextPlayer();
+        controllerForTests.nextPlayer();
+        controllerForTests.nextPlayer();
+
+        //Changing moving number only so the checking could work
+        controllerForTests.onlyForTestSetMovingNumber(1);
+        boolean movedPieceInNewPosition4 = controllerForTests.checkPlayerPieceInBoardPosition(4, 3);
+
+        Assertions.assertTrue(movedPieceInNewPosition4,"The piece was not blocked by blocked square");
+    }
+
+    @Test
+    public void testPieceMovingToFinalSquares() {
+        GameController1DieMode controllerForTests = new GameController1DieMode();
+
+        //Player 1 pieces entering
+        controllerForTests.newPieceEnters(1);
+
+        //Move that will force the piece of player 1 to enter the final squares
+        controllerForTests.onlyForTestSetMovingNumber(57);
+        boolean firstPieceMoved = controllerForTests.movePiece(1, 4);
+
+        controllerForTests.nextPlayer();
+        controllerForTests.nextPlayer();
+        controllerForTests.nextPlayer();
+        controllerForTests.nextPlayer();
+
+        //Changing moving number only so the checking could work
+        controllerForTests.onlyForTestSetMovingNumber(1);
+        boolean movedPieceInNewPosition = controllerForTests.checkPlayerPieceInBoardPosition(1, 61);
+
+        Assertions.assertTrue(movedPieceInNewPosition,"The piece was not in expected FinalSquare");
+    }
+
+    @Test
+    public void testPieceMovingInFinalSquares() {
+
+        GameController1DieMode controllerForTests = new GameController1DieMode();
+
+        //Player 1 pieces entering
+        controllerForTests.newPieceEnters(1);
+
+        //Move that will force the piece of player 1 to go past the last final square by 2
+        controllerForTests.onlyForTestSetMovingNumber(65);
+        boolean firstPieceMoved = controllerForTests.movePiece(1, 4);
+
+        //Back to current player 1
+        controllerForTests.nextPlayer();
+        controllerForTests.nextPlayer();
+        controllerForTests.nextPlayer();
+        controllerForTests.nextPlayer();
+
+        //Changing moving number only so the checking could work
+        controllerForTests.onlyForTestSetMovingNumber(1);
+        boolean movedPieceInNewPosition1 = controllerForTests.checkPlayerPieceInBoardPosition(1, 65);
+
+        //Move that will force the piece of player 1 to go past the last final square by a lot
+        controllerForTests.onlyForTestSetMovingNumber(15);
+        boolean secondPieceMoved = controllerForTests.movePiece(1, 65);
+
+        //Back to current player 1
+        controllerForTests.nextPlayer();
+        controllerForTests.nextPlayer();
+        controllerForTests.nextPlayer();
+        controllerForTests.nextPlayer();
+
+        //Changing moving number only so the checking could work
+        controllerForTests.onlyForTestSetMovingNumber(1);
+        boolean movedPieceInNewPosition2 = controllerForTests.checkPlayerPieceInBoardPosition(1, 61);
+
+        boolean[] expectResult = {true,true};
+        boolean[] actualResult = {movedPieceInNewPosition1,movedPieceInNewPosition2};
+
+        Assertions.assertArrayEquals(expectResult,actualResult,"The piece was not in expected FinalSquare");
+    }
+
+    @Test
+    public void test4PiecesFinishingWinner() {
+
+        GameController1DieMode controllerForTests = new GameController1DieMode();
+
+        //Player 1 pieces entering and going to the end repeat 4 times
+        boolean[] movePieceToTheEnd = new boolean[4];
+        for (int i = 0; i < 4; i++) {
+            controllerForTests.newPieceEnters(1);
+            controllerForTests.onlyForTestSetMovingNumber(63);
+            movePieceToTheEnd[i] = controllerForTests.movePiece(1, 4);
+
+            controllerForTests.nextPlayer();
+            controllerForTests.nextPlayer();
+            controllerForTests.nextPlayer();
+            controllerForTests.nextPlayer();
+        }
+
+        boolean isPlayer1Winner = controllerForTests.isThereAWinner(1) == 1;
+
+        boolean[] expectResult = {true, true, true, true, true};
+        boolean[] actualResult = new boolean[5];
+        for (int i = 0; i < movePieceToTheEnd.length; i++) {
+            actualResult[i] = movePieceToTheEnd[i];
+        }
+        actualResult[4] = isPlayer1Winner;
+
+        Assertions.assertArrayEquals(expectResult, actualResult, "Some piece has not reach the end or player 1 is not the winner");
     }
 
 
