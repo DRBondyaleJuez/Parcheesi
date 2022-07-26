@@ -12,7 +12,7 @@
          <center>
             <StackPane prefHeight="450.0" prefWidth="450.0" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="boardBackgroundImageView" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true" />
                   <HBox fx:id="generalHbox" prefHeight="400.0" prefWidth="400.0">
                      <children>
                         <VBox fx:id="vBox1" prefHeight="400.0" prefWidth="133.0">
@@ -151,6 +151,20 @@
                <children>
                   <Button fx:id="rollDiceButton" mnemonicParsing="false" prefHeight="80.0" prefWidth="100.0" text="Roll Die" />
                   <ImageView fx:id="dieRollImageView" fitHeight="80.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                  <VBox prefHeight="80.0" prefWidth="301.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="301.0" text="Instructions, observations and comments" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <TextArea fx:id="instructionsTextArea" prefHeight="200.0" prefWidth="200.0" text="In case their is any doubt consult this section for relevant instructions.&#10;Player 1 starts. Roll the die." wrapText="true">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </TextArea>
+                     </children>
+                  </VBox>
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
