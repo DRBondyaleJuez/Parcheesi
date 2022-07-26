@@ -181,8 +181,7 @@ public class GameController1DieMode {
         }
 
         //Get theoretically piece in the corresponding board position that is about to move the number established by the die
-        Piece movingPiece;
-        movingPiece = getPieceInBoardPosition(piecePlayer,boardPosition);
+        Piece movingPiece = getPieceInBoardPosition(piecePlayer,boardPosition);
 
         if(movingPiece == null){
             System.out.println("No piece was found even though it fitted all criteria");
