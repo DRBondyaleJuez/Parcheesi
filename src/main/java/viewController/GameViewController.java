@@ -139,10 +139,108 @@ public class GameViewController implements Initializable{
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         buildBoardSteps();
+        buildFinalSteps();
 
     }
 
     private void buildBoardSteps(){
+
+        for (int i = 0; i < 60; i++) {
+
+            if(i>-1 && i<6){
+
+            }
+
+            if(i==6){
+
+            }
+
+            if(i>6 && i<14){
+
+            }
+
+            if(i==14){
+
+            }
+
+            if(i>14 && i<22){
+
+            }
+
+            if(i==22){
+
+            }
+
+            if(i>22 && i<29){
+
+            }
+
+            if(i==29){
+
+            }
+
+            if(i>29 && i<36){
+
+            }
+
+            if(i==36){
+
+            }
+
+            if(i>36 && i<44){
+
+            }
+
+            if(i==44){
+
+            }
+
+            if(i>44 && i<52){
+
+            }
+
+            if(i==52){
+
+            }
+
+            if(i>52 && i<59){
+
+            }
+
+            if(i==59){
+
+            }
+
+
+
+
+        }
+
+    }
+    private void buildFinalSteps(){
+
+        //Player 1
+        for (int i = 0; i < 5; i++) {
+
+        }
+        //Step6 is separate
+
+        //Player 2
+        for (int i = 0; i < 5; i++) {
+
+        }
+
+        //Player 3
+        for (int i = 0; i < 5; i++) {
+
+        }
+        //Step6 is separate
+
+        //Player 4
+        for (int i = 0; i < 5; i++) {
+
+        }
+
 
     }
 
