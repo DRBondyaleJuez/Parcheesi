@@ -44,6 +44,17 @@ public class GameController1DieMode {
         currentPlayer = players[nextPlayerPos];
     }
 
+    //Get current player number
+    public Player getCurrentPlayer(){
+        return currentPlayer;
+    }
+
+    //Get moving number
+    public int getMovingNumber(){
+        return movingNumber;
+    }
+
+
     // Method to simulate die rolling between 1 and 6 with special cases for rolling 5 and 6
     public int diceRoll(){
         Random randomGenerator = new Random();
@@ -173,15 +184,55 @@ public class GameController1DieMode {
     }
 
     //Moving piece after being selected
-    public boolean movePiece(int piecePlayer,int boardPosition){
-        //Check for piece presence in boardPosition
-        boolean isCorrectPieceThere = checkPlayerPieceInBoardPosition(piecePlayer,boardPosition);
-        if(!isCorrectPieceThere){
-            return false;
+
+    public boolean verifySquareClickedAndGameState(int position, int playerIfFinalSquare){
+
+        //The die has not been thrown
+        if(movingNumber == 0) return false;
+
+        //If a final square that does not correspond to the current player was clicked
+        if(currentPlayer.getIdNumber() != playerIfFinalSquare && playerIfFinalSquare>0) return false;
+
+        //The square clicked does not have a piece or one that corresponds to the current player
+        boolean isCorrectPieceThere = checkPlayerPieceInBoardPosition(playerIfFinalSquare,position);
+
+        return isCorrectPieceThere;
+    }
+
+    //Method to verify the presence of a corresponding piece in a position of the board. BoardPosition is an integer asociated with the square in the board
+    // For normal squares goes from 1 to 60 and for final squares from 1 to 7
+    public boolean checkPlayerPieceInBoardPosition(int boardPosition,int playerIfFinalSquare){
+
+        int possiblePlayerPieceInSquare1 = 0;
+        int possiblePlayerPieceInSquare2 = 0;
+
+        //Reject action if there is no piece in the place clicked. To verify this, the board is called to show the corresponding square's two possible positions
+        //Check format if the piece clicked is on the normal board squares
+        if(playerIfFinalSquare > 0) {
+            possiblePlayerPieceInSquare1 = board.getBoardSquares()[boardPosition].getCurrentPlayerPieces()[0];
+            possiblePlayerPieceInSquare2 = board.getBoardSquares()[boardPosition].getCurrentPlayerPieces()[1];
+
         }
 
+        //Check format if the piece clicked is on the final board squares
+        if(playerIfFinalSquare == 0){
+            possiblePlayerPieceInSquare1 = board.getFinalSquaresBoard()[playerIfFinalSquare][boardPosition].getCurrentPlayerPieces()[0];
+            possiblePlayerPieceInSquare2 = board.getFinalSquaresBoard()[playerIfFinalSquare][boardPosition].getCurrentPlayerPieces()[1];
+
+        }
+
+        if (possiblePlayerPieceInSquare1 == currentPlayer.getIdNumber() || possiblePlayerPieceInSquare2 != currentPlayer.getIdNumber()) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    public boolean movePiece(int boardPosition){
+
         //Get theoretically piece in the corresponding board position that is about to move the number established by the die
-        Piece movingPiece = getPieceInBoardPosition(piecePlayer,boardPosition);
+        Piece movingPiece = getPieceInBoardPosition(currentPlayer.getIdNumber(), boardPosition);
 
         if(movingPiece == null){
             System.out.println("No piece was found even though it fitted all criteria");
@@ -189,7 +240,7 @@ public class GameController1DieMode {
         }
 
         //Check for barriers. If there is a barrier the moving number will now be steps to barrier minus 1
-        int stepsToBarrier = checkForBarriers(piecePlayer,boardPosition,movingNumber);
+        int stepsToBarrier = checkForBarriers(currentPlayer.getIdNumber(), boardPosition,movingNumber);
         //If the steps of the piece go over 56 before  the barrier position is irrelevant for the movement
         if(movingNumber>stepsToBarrier && movingPiece.getStepCounter()+stepsToBarrier < maxSteps){
             movingNumber = stepsToBarrier; //if barrier is encounter before reaching final squares the movement becomes steps to barrier minus 1.
@@ -205,7 +256,7 @@ public class GameController1DieMode {
             if(newPieceFinalStepCounter > 7){
                 newPieceFinalStepCounter = movingPiece.finalMoveCalculator(newPieceFinalStepCounter);
             }
-            newSquare = board.getFinalSquaresBoard()[piecePlayer-1][newPieceFinalStepCounter-1];
+            newSquare = board.getFinalSquaresBoard()[currentPlayer.getIdNumber()-1][newPieceFinalStepCounter-1];
         } else {
             int newBoardPosition = movingPiece.boardPositionCalculator(newPieceStepCounter);
             newSquare = board.getBoardSquares()[newBoardPosition-1];
@@ -217,11 +268,11 @@ public class GameController1DieMode {
         if(movingPiece.getFinalStepCounter()>0) {
             //Check if piece has reached the end
             if (hasMovingPieceReachedTheEnd(movingPiece)) {
-                board.pieceReachesTheEnd(piecePlayer);
+                board.pieceReachesTheEnd(currentPlayer.getIdNumber());
                 movingNumber=10;
                 return true;
             }
-            board.getFinalSquaresBoard()[piecePlayer-1][movingPiece.getFinalStepCounter()-1].setCurrentPlayerPiece(piecePlayer);
+            board.getFinalSquaresBoard()[currentPlayer.getIdNumber()-1][movingPiece.getFinalStepCounter()-1].setCurrentPlayerPiece(currentPlayer.getIdNumber());
             movingNumber=0;
             return true;
         }
@@ -235,7 +286,7 @@ public class GameController1DieMode {
         //Modifying the board to show
         int newBoardPosition = movingPiece.getBoardPosition();
         if(newBoardPosition>60){
-            board.getFinalSquaresBoard()[piecePlayer-1][newBoardPosition - 60-1].setCurrentPlayerPiece(movingPiece.getPlayer());
+            board.getFinalSquaresBoard()[currentPlayer.getIdNumber()-1][newBoardPosition - 60-1].setCurrentPlayerPiece(movingPiece.getPlayer());
         } else {
             board.getBoardSquares()[movingPiece.getBoardPosition() - 1].setCurrentPlayerPiece(movingPiece.getPlayer());
         }
@@ -243,40 +294,6 @@ public class GameController1DieMode {
         movingNumber = 0;
         if(dieRepetition == 0){
             nextPlayer();
-        }
-        return true;
-    }
-
-    //Method to verify the presence of a corresponding piece in a position of the board. BoardPosition is an integer asociated with the square in the board
-    // For normal squares goes from 1 to 60 and for final squares from 1 to 8
-    public boolean checkPlayerPieceInBoardPosition(int piecePlayer,int boardPosition){
-
-        //Reject action if the piece clicked is not of the player currently playing or the die has not been rolled yet
-        if(piecePlayer != currentPlayer.getIdNumber() || movingNumber == 0){
-            return false;
-        }
-
-        //Reject action if there is no piece in the place clicked. To verify this, the board is called to show the corresponding square's two possible positions
-        //Check format if the piece clicked is on the normal board squares
-        if(boardPosition <= 60) {
-            int possiblePlayerPieceInSquare1 = board.getBoardSquares()[boardPosition - 1].getCurrentPlayerPieces()[0];
-            int possiblePlayerPieceInSquare2 = board.getBoardSquares()[boardPosition - 1].getCurrentPlayerPieces()[1];
-            if (possiblePlayerPieceInSquare1 != piecePlayer && possiblePlayerPieceInSquare2 != piecePlayer) {
-                return false;
-            }
-        }
-
-        //Check format if the piece clicked is on the final board squares
-        if(boardPosition > 60){
-            //Solving for scenarios of overpassing final square
-            if(boardPosition > 67){boardPosition = 67 - (boardPosition - 67);}
-            if(boardPosition < 60){boardPosition = 61;}
-
-            int possiblePlayerPieceInSquare1 = board.getFinalSquaresBoard()[piecePlayer-1][boardPosition-60-1].getCurrentPlayerPieces()[0];
-            int possiblePlayerPieceInSquare2 = board.getFinalSquaresBoard()[piecePlayer-1][boardPosition-60-1].getCurrentPlayerPieces()[1];
-            if (possiblePlayerPieceInSquare1 != piecePlayer && possiblePlayerPieceInSquare2 != piecePlayer) {
-                return false;
-            }
         }
         return true;
     }
