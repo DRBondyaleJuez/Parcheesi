@@ -1,20 +1,26 @@
 package viewController;
 
 import controller.GameController1DieMode;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class GameViewController implements Initializable{
 
     private GameController1DieMode controller;
+    private ImageView[] stepImageViewArray;
+    private ImageView[][] finalStepsImageViewArray;
 
     //ELEMENTS FROM FXML
 
@@ -140,6 +146,8 @@ public class GameViewController implements Initializable{
 
         buildBoardSteps();
         buildFinalSteps();
+        stepImageViewArray = new ImageView[60];
+        finalStepsImageViewArray = new ImageView[4][7];
 
     }
 
@@ -148,6 +156,11 @@ public class GameViewController implements Initializable{
         for (int i = 0; i < 60; i++) {
 
             if(i>-1 && i<6){
+
+                stepImageViewArray[i].setOnMouseClicked(createStepImageViewClickedEventHandler(i,0));
+                steps1To6HBox.getChildren().add(stepImageViewArray[i]);
+
+
 
             }
 
@@ -241,6 +254,38 @@ public class GameViewController implements Initializable{
 
         }
 
+
+    }
+
+    private EventHandler<MouseEvent> createStepImageViewClickedEventHandler(int position, int possiblePlayerFinalSteps){
+        return new EventHandler<>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+
+                if(controller.getMovingNumber() == 0){
+                    int currentPlayerNumber = controller.getCurrentPlayer().getIdNumber();
+                    instructionsTextArea.setText(" Player " + currentPlayerNumber +" must roll the die first.");
+                    return;
+                }
+
+                if(!controller.verifySquareClickedAndGameState(position, possiblePlayerFinalSteps)){
+                    int currentPlayerNumber = controller.getCurrentPlayer().getIdNumber();
+                    instructionsTextArea.setText("It is player " + currentPlayerNumber +"'s turn perhaps you have clicked a wrong square. Try again.");
+                    return;
+                }
+
+                //TO DO: PIECE MOVING CALLING CONTROLLER AND THEN METHOD TO REDRAW BOARD
+
+
+
+            }
+        };
+    }
+
+    //IT MAY BE TOO COMPLICATED TO TELL THE VIEW CONTROLLER TO CHANGE BOARD SQUARES AFTER A PIECE IS CAPTURED AND THINGS LIKE THAT SO THE GAMEVIEW CONTROLER WILL GO THROUGH THE BOARD CHANGING EVERY SQUARE IF NECESARY
+    private void changeBoardSquare(int position, int player){
+
+        //If the position given
 
     }
 
