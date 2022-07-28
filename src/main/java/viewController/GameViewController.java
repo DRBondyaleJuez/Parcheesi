@@ -144,10 +144,14 @@ public class GameViewController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        buildBoardSteps();
-        buildFinalSteps();
         stepImageViewArray = new ImageView[60];
         finalStepsImageViewArray = new ImageView[4][7];
+        buildBoardSteps();
+        buildFinalSteps();
+
+        //Die ImageView building
+        dieRollImageView.setOnMouseClicked(createDieRollImageViewClickedEventHandler());
+
 
     }
 
@@ -288,5 +292,37 @@ public class GameViewController implements Initializable{
         //If the position given
 
     }
+
+    private EventHandler<MouseEvent> createDieRollImageViewClickedEventHandler(){
+        return new EventHandler<>(){
+
+            @Override
+            public void handle(MouseEvent mouseEvent){
+
+                if(controller.getMovingNumber() == 0) {
+                    int currentPlayerNumber = controller.getCurrentPlayer().getIdNumber();
+                    instructionsTextArea.setText("Player " + currentPlayerNumber +" has already rolled the die. Waiting for selection of piece to move.");
+                    return;
+                }
+
+                int playerThatRolled = controller.getCurrentPlayer().getIdNumber();
+                int dieNumber = controller.diceRoll();
+
+                if(dieNumber == 0){
+                    int playerRollingNow = controller.getCurrentPlayer().getIdNumber();
+                    instructionsTextArea.setText("Player " + playerThatRolled +" has rolled a 5. So a piece exited the house and entered to the board. Now is player " + playerRollingNow + "'s turn. First roll the die" );
+                    return;
+                }
+
+                instructionsTextArea.setText("Player " + playerThatRolled +" has rolled a " + dieNumber + ". Click on the piece you want to move " + dieNumber + " squares." );
+
+                Image currentDieImage = new Image(new ByteArrayInputStream(controller.getDieImageData()));
+
+            }
+
+
+        };
+    }
+
 
 }

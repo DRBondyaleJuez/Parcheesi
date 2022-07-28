@@ -5,6 +5,7 @@ import model.Piece;
 import model.Player;
 import model.Square.NormalSquare;
 import model.Square.Square;
+import persistence.DatabaseManager;
 
 import java.util.Random;
 
@@ -18,6 +19,8 @@ public class GameController1DieMode {
     private int maxSteps = 56;
     private int isThereAWinner;
 
+    private final DatabaseManager databaseManager;
+
 
     public GameController1DieMode() {
         createPlayers();
@@ -25,6 +28,7 @@ public class GameController1DieMode {
         dieRepetition = 0;
         board = new Board();
         isThereAWinner = 0;
+        databaseManager = DatabaseManager.getInstance();
     }
 
     private void createPlayers() {
@@ -363,6 +367,21 @@ public class GameController1DieMode {
         return isThereAWinner;
     }
 
+    //METHODS FOR IMAGE HANDLING
+    public byte[] getDieImageData(){
+        return databaseManager.getDieImageData(movingNumber);
+    }
+
+    public byte[] getPieceImageData(){
+        return databaseManager.getDieImageData(currentPlayer.getIdNumber());
+    }
+
+    public byte[] getBoardImageData(){
+        return databaseManager.getBoardImageData(1);
+    }
+
+
+    // METHODS EXCLUSIVE FOR QUICK TESTING
     public boolean onlyForTestSetMovingNumber(int number){
         movingNumber = number;
         return true;
