@@ -4,6 +4,7 @@ import controller.GameController1DieMode;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
@@ -126,6 +127,9 @@ public class GameViewController implements Initializable{
     @FXML
     private ImageView dieRollImageView;
 
+    @FXML
+    private Button rollDiceButton;
+
 
     //Board Background
     @FXML
@@ -151,6 +155,7 @@ public class GameViewController implements Initializable{
 
         //Die ImageView building
         dieRollImageView.setOnMouseClicked(createDieRollImageViewClickedEventHandler());
+        rollDiceButton.setOnMouseClicked(createDieRollImageViewClickedEventHandler());
 
 
     }
