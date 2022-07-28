@@ -108,6 +108,8 @@ public class Board {
         return startSquares;
     }
 
+    public int[] getHousePieces(){ return housePieces;}
+
     public void exitPieceFromHouse(int player){
         housePieces[player-1]--;
     }

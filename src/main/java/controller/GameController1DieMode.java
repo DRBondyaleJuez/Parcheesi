@@ -58,6 +58,8 @@ public class GameController1DieMode {
         return movingNumber;
     }
 
+    public Board getBoard(){return board;}
+
 
     // Method to simulate die rolling between 1 and 6 with special cases for rolling 5 and 6
     public int diceRoll(){
@@ -70,6 +72,7 @@ public class GameController1DieMode {
 
         if(die1Value == 5){
             if(newPieceEnters(currentPlayer.getIdNumber())){
+                movingNumber = 0;
                 nextPlayer();
                 return 0;
             }
@@ -81,6 +84,7 @@ public class GameController1DieMode {
 
         if(dieRepetition == 3){
             repetitionPunishment();
+            movingNumber = 0;
             nextPlayer();
             return -1;
         }
@@ -244,13 +248,13 @@ public class GameController1DieMode {
         }
 
         //Check for barriers. If there is a barrier the moving number will now be steps to barrier minus 1
-        int stepsToBarrier = checkForBarriers(currentPlayer.getIdNumber(), boardPosition,movingNumber);
+        int stepsToBarrier = checkForBarriers(currentPlayer.getIdNumber(), boardPosition, movingNumber);
         //If the steps of the piece go over 56 before  the barrier position is irrelevant for the movement
-        if(movingNumber>stepsToBarrier && movingPiece.getStepCounter()+stepsToBarrier < maxSteps){
+        if(movingNumber > stepsToBarrier && movingPiece.getStepCounter() + stepsToBarrier < maxSteps){
             movingNumber = stepsToBarrier; //if barrier is encounter before reaching final squares the movement becomes steps to barrier minus 1.
         }
 
-        //Calculate and get square where the piece is moving to
+        //Change the step counter and calculate and get square where the piece is moving to
         Square newSquare;
         int newPieceStepCounter = movingPiece.getStepCounter() + movingNumber;
 
@@ -278,6 +282,9 @@ public class GameController1DieMode {
             }
             board.getFinalSquaresBoard()[currentPlayer.getIdNumber()-1][movingPiece.getFinalStepCounter()-1].setCurrentPlayerPiece(currentPlayer.getIdNumber());
             movingNumber=0;
+            if(dieRepetition == 0){
+                nextPlayer();
+            }
             return true;
         }
 
@@ -290,7 +297,7 @@ public class GameController1DieMode {
         //Modifying the board to show
         int newBoardPosition = movingPiece.getBoardPosition();
         if(newBoardPosition>60){
-            board.getFinalSquaresBoard()[currentPlayer.getIdNumber()-1][newBoardPosition - 60-1].setCurrentPlayerPiece(movingPiece.getPlayer());
+            board.getFinalSquaresBoard()[currentPlayer.getIdNumber() - 1][newBoardPosition - 60 - 1].setCurrentPlayerPiece(movingPiece.getPlayer());
         } else {
             board.getBoardSquares()[movingPiece.getBoardPosition() - 1].setCurrentPlayerPiece(movingPiece.getPlayer());
         }
@@ -365,6 +372,10 @@ public class GameController1DieMode {
             isThereAWinner = player;
         }
         return isThereAWinner;
+    }
+
+    public boolean isThereAWinner(){
+        return isThereAWinner != 0;
     }
 
     //METHODS FOR IMAGE HANDLING

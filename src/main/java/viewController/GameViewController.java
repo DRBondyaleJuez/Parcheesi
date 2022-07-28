@@ -23,6 +23,10 @@ public class GameViewController implements Initializable{
     private ImageView[] stepImageViewArray;
     private ImageView[][] finalStepsImageViewArray;
 
+    private Label[] houseLabelArray;
+
+    private Label[] finishedLabelArray;
+
     //ELEMENTS FROM FXML
 
     //Labels
@@ -153,6 +157,19 @@ public class GameViewController implements Initializable{
         buildBoardSteps();
         buildFinalSteps();
 
+        //House Label Array
+        houseLabelArray[0] = house1Label;
+        houseLabelArray[1] = house2Label;
+        houseLabelArray[2] = house3Label;
+        houseLabelArray[3] = house4Label;
+
+        //Number of Pieces Finished
+        finishedLabelArray[0] = numberPiecesFinished1;
+        finishedLabelArray[1] = numberPiecesFinished2;
+        finishedLabelArray[2] = numberPiecesFinished3;
+        finishedLabelArray[3] = numberPiecesFinished4;
+
+
         //Die ImageView building
         dieRollImageView.setOnMouseClicked(createDieRollImageViewClickedEventHandler());
         rollDiceButton.setOnMouseClicked(createDieRollImageViewClickedEventHandler());
@@ -271,6 +288,10 @@ public class GameViewController implements Initializable{
             @Override
             public void handle(MouseEvent mouseEvent) {
 
+                if(controller.isThereAWinner()){
+                    return;
+                }
+
                 if(controller.getMovingNumber() == 0){
                     int currentPlayerNumber = controller.getCurrentPlayer().getIdNumber();
                     instructionsTextArea.setText(" Player " + currentPlayerNumber +" must roll the die first.");
@@ -283,7 +304,19 @@ public class GameViewController implements Initializable{
                     return;
                 }
 
-                //TO DO: PIECE MOVING CALLING CONTROLLER AND THEN METHOD TO REDRAW BOARD
+                //Move Piece
+                int playerBeforeMoving = controller.getCurrentPlayer().getIdNumber();
+                controller.movePiece(position);
+
+                int playerAfterMoving = controller.getCurrentPlayer().getIdNumber();
+
+                applyChangesToBoard();
+
+                if(playerBeforeMoving != playerAfterMoving){
+                    instructionsTextArea.setText("It is still player " + playerAfterMoving +"'s turn. Either the moving piece reached the end or captured another" +
+                            " piece select a piece to move 10 or 20 respectively" +
+                            " or player " + playerAfterMoving + " rolled a 6 so you roll again.");
+                }
 
 
 
@@ -291,10 +324,35 @@ public class GameViewController implements Initializable{
         };
     }
 
+    private void applyChangesToBoard(){
+        for (int i = 0; i < stepImageViewArray.length; i++) {
+           changeBoardSquare(i,0);
+
+        }
+
+        for (int player =0 ; player < finalStepsImageViewArray.length; player++){
+            for (int i =0 ; i < finalStepsImageViewArray.length; i++){
+                changeBoardSquare(i,player);
+            }
+        }
+
+        for (int i = 0; i < houseLabelArray.length; i++) {
+            houseLabelArray[i].setText("" + controller.getBoard().getHousePieces()[i]);
+            finishedLabelArray[i].setText("" + controller.getBoard().getFinishedPieces(i+1));
+        }
+
+
+
+    }
+
     //IT MAY BE TOO COMPLICATED TO TELL THE VIEW CONTROLLER TO CHANGE BOARD SQUARES AFTER A PIECE IS CAPTURED AND THINGS LIKE THAT SO THE GAMEVIEW CONTROLER WILL GO THROUGH THE BOARD CHANGING EVERY SQUARE IF NECESARY
     private void changeBoardSquare(int position, int player){
 
-        //If the position given
+        if(player == 0){
+
+        } else {
+
+        }
 
     }
 
@@ -303,6 +361,10 @@ public class GameViewController implements Initializable{
 
             @Override
             public void handle(MouseEvent mouseEvent){
+
+                if(controller.isThereAWinner()){
+                    return;
+                }
 
                 if(controller.getMovingNumber() == 0) {
                     int currentPlayerNumber = controller.getCurrentPlayer().getIdNumber();
@@ -319,7 +381,13 @@ public class GameViewController implements Initializable{
                     return;
                 }
 
-                instructionsTextArea.setText("Player " + playerThatRolled +" has rolled a " + dieNumber + ". Click on the piece you want to move " + dieNumber + " squares." );
+                if(dieNumber == -1){
+                    int playerRollingNow = controller.getCurrentPlayer().getIdNumber();
+                    instructionsTextArea.setText("Player " + playerThatRolled +" has rolled a 6 3 times in a row. If possible, their most advanced piece returned to the house. Now is player " + playerRollingNow + "'s turn. First roll the die." );
+                    return;
+                }
+
+                instructionsTextArea.setText("Player " + playerThatRolled +" has rolled a " + dieNumber + ". Click on the piece you want to move " + dieNumber + " squares. If it was a 6 after moving you roll again." );
 
                 Image currentDieImage = new Image(new ByteArrayInputStream(controller.getDieImageData()));
 
