@@ -18,11 +18,13 @@ public class DatabaseManager {
         return instance;
     }
 
-    public byte[] getFullChipImageData(String players,String position){
+    public byte[] getPieceImageData(String players,String position){
         return databaseTalker.getPieceImageData(players, position);
     }
 
     public byte[] getBoardImageData(int version) {
         return databaseTalker.getBoardImageData(version);
     }
+
+    public byte[] getDieImageData(int number){ return databaseTalker.getDieImageData(number);}
 }
