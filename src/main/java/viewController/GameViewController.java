@@ -198,6 +198,9 @@ public class GameViewController implements Initializable{
 
     private void buildBoardSteps(){
 
+        //Array crerated to be able to reorder the steps when they go in the other direction
+        ImageView[] temporaryImageViewArray = new ImageView[7];
+
         for (int i = 0; i < 60; i++) {
 
             if(i>-1 && i<6){
@@ -211,66 +214,128 @@ public class GameViewController implements Initializable{
 
             if(i==6){
 
+                stepImageViewArray[i].setOnMouseClicked(createStepImageViewClickedEventHandler(i,0));
+                step7HBox.getChildren().add(stepImageViewArray[i]);
+
             }
 
             if(i>6 && i<14){
+
+                stepImageViewArray[i].setOnMouseClicked(createStepImageViewClickedEventHandler(i,0));
+                temporaryImageViewArray[i-7] = stepImageViewArray[i];
+                if(i == 13) {
+                    for (int j = 6; j > -1; j--) {
+                        step30VBox.getChildren().add(stepImageViewArray[j]);
+                    }
+                }
 
             }
 
             if(i==14){
 
+                stepImageViewArray[i].setOnMouseClicked(createStepImageViewClickedEventHandler(i,0));
+                step15HBox.getChildren().add(stepImageViewArray[i]);
+
             }
 
             if(i>14 && i<22){
+                stepImageViewArray[i].setOnMouseClicked(createStepImageViewClickedEventHandler(i,0));
+                steps16To22VBox.getChildren().add(stepImageViewArray[i]);
 
             }
 
             if(i==22){
 
+                stepImageViewArray[i].setOnMouseClicked(createStepImageViewClickedEventHandler(i,0));
+                step23HBox.getChildren().add(stepImageViewArray[i]);
+
             }
 
             if(i>22 && i<29){
+
+                stepImageViewArray[i].setOnMouseClicked(createStepImageViewClickedEventHandler(i,0));
+                steps24To29HBox.getChildren().add(stepImageViewArray[i]);
+
 
             }
 
             if(i==29){
 
+                stepImageViewArray[i].setOnMouseClicked(createStepImageViewClickedEventHandler(i,0));
+                step30VBox.getChildren().add(stepImageViewArray[i]);
+
             }
 
             if(i>29 && i<36){
+
+                stepImageViewArray[i].setOnMouseClicked(createStepImageViewClickedEventHandler(i,0));
+                temporaryImageViewArray[i-30] = stepImageViewArray[i];
+                if(i == 35) {
+                    for (int j = 5; j > -1; j--) {
+                        step30VBox.getChildren().add(stepImageViewArray[j]);
+                    }
+                }
 
             }
 
             if(i==36){
 
+                stepImageViewArray[i].setOnMouseClicked(createStepImageViewClickedEventHandler(i,0));
+                step37HBox.getChildren().add(stepImageViewArray[i]);
+
             }
 
             if(i>36 && i<44){
+
+                stepImageViewArray[i].setOnMouseClicked(createStepImageViewClickedEventHandler(i,0));
+                steps38To44VBox.getChildren().add(stepImageViewArray[i]);
 
             }
 
             if(i==44){
 
+                stepImageViewArray[i].setOnMouseClicked(createStepImageViewClickedEventHandler(i,0));
+                step45HBox.getChildren().add(stepImageViewArray[i]);
+
             }
 
             if(i>44 && i<52){
+
+                stepImageViewArray[i].setOnMouseClicked(createStepImageViewClickedEventHandler(i,0));
+                temporaryImageViewArray[i-45] = stepImageViewArray[i];
+                if(i == 51) {
+                    for (int j = 6; j > -1; j--) {
+                        steps46To52VBox.getChildren().add(stepImageViewArray[j]);
+                    }
+                }
 
             }
 
             if(i==52){
 
+                stepImageViewArray[i].setOnMouseClicked(createStepImageViewClickedEventHandler(i,0));
+                step53HBox.getChildren().add(stepImageViewArray[i]);
+
             }
 
             if(i>52 && i<59){
+
+                stepImageViewArray[i].setOnMouseClicked(createStepImageViewClickedEventHandler(i,0));
+                temporaryImageViewArray[i-53] = stepImageViewArray[i];
+                if(i == 58) {
+                    for (int j = 6; j > -1; j--) {
+                        steps54To59HBox.getChildren().add(stepImageViewArray[j]);
+                    }
+                }
 
             }
 
             if(i==59){
 
+                stepImageViewArray[i].setOnMouseClicked(createStepImageViewClickedEventHandler(i,0));
+                step60VBox.getChildren().add(stepImageViewArray[i]);
+
             }
-
-
-
 
         }
 
@@ -278,7 +343,16 @@ public class GameViewController implements Initializable{
     private void buildFinalSteps(){
 
         //Player 1
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
+
+            finalStepsImageViewArray[0][i].setOnMouseClicked(createStepImageViewClickedEventHandler(i,1));
+            if(i<5){
+                finalSteps1To5Player1HBox.getChildren().add(stepImageViewArray[i]);
+            }
+            if(i==5){
+                finalStep6Player1HBox.getChildren().add(stepImageViewArray[i]);
+            }
+
 
         }
         //Step6 is separate
@@ -286,10 +360,23 @@ public class GameViewController implements Initializable{
         //Player 2
         for (int i = 0; i < 5; i++) {
 
+            finalStepsImageViewArray[1][i].setOnMouseClicked(createStepImageViewClickedEventHandler(i,2));
+            if(i<5){
+                finalSteps1To6Player2VBox.getChildren().add(stepImageViewArray[i]);
+            }
+
         }
 
         //Player 3
         for (int i = 0; i < 5; i++) {
+
+            finalStepsImageViewArray[2][i].setOnMouseClicked(createStepImageViewClickedEventHandler(i,3));
+            if(i<5){
+                finalSteps1To5Player3HBox.getChildren().add(stepImageViewArray[i]);
+            }
+            if(i==5){
+                finalStep6Player3HBox.getChildren().add(stepImageViewArray[i]);
+            }
 
         }
         //Step6 is separate
@@ -297,8 +384,12 @@ public class GameViewController implements Initializable{
         //Player 4
         for (int i = 0; i < 5; i++) {
 
-        }
+            finalStepsImageViewArray[3][i].setOnMouseClicked(createStepImageViewClickedEventHandler(i,4));
+            if(i<5){
+                finalSteps1To6Player4VBox.getChildren().add(stepImageViewArray[i]);
+            }
 
+        }
 
     }
 
@@ -335,7 +426,7 @@ public class GameViewController implements Initializable{
                 // and must select a piece to move or roll again the die.
                 if(playerBeforeMoving == playerAfterMoving){
                     int movingNumber = controller.getMovingNumber();
-                    String text;
+                    String text = "";
                     if(movingNumber == 10){
                         text = "It is still player" + playerAfterMoving + "'s turn. The piece moved reached the end." +
                                 " Please, select a piece to move 10";
@@ -352,6 +443,7 @@ public class GameViewController implements Initializable{
                     instructionsTextArea.setText(text);
                 }
 
+                instructionsTextArea.setText("It is player " + playerAfterMoving +"'s turn. First roll and then choose a piece to move.");
 
 
             }
@@ -364,7 +456,7 @@ public class GameViewController implements Initializable{
 
         }
 
-        for (int player =0 ; player < finalStepsImageViewArray.length; player++){
+        for (int player = 1 ; player < finalStepsImageViewArray.length+1; player++){
             for (int i =0 ; i < finalStepsImageViewArray.length; i++){
                 changeBoardSquare(i,player);
             }
@@ -403,7 +495,7 @@ public class GameViewController implements Initializable{
                 imageOrientation = "horizontal";
             }
             //Find the information about the pieces in square to retrieve correct image in database
-            int[] playerOfPiecesInSquare = controller.getBoard().getFinalSquaresBoard()[player][position].getCurrentPlayerPieces();
+            int[] playerOfPiecesInSquare = controller.getBoard().getFinalSquaresBoard()[player-1][position].getCurrentPlayerPieces();
             String playerPiecesInfo = "" + playerOfPiecesInSquare[0] + playerOfPiecesInSquare[1];
             setImageInSquare(player, position, playerPiecesInfo, imageOrientation);
 
@@ -417,7 +509,7 @@ public class GameViewController implements Initializable{
             Image currentPieceImage = new Image(new ByteArrayInputStream(controller.getPieceImageData(piecesInSquare, imageOrientation)));
             currentImageView.setImage(currentPieceImage);
         } else {
-            ImageView currentImageView = finalStepsImageViewArray[player][position];
+            ImageView currentImageView = finalStepsImageViewArray[player-1][position];
             Image currentPieceImage = new Image(new ByteArrayInputStream(controller.getPieceImageData(piecesInSquare, imageOrientation)));
             currentImageView.setImage(currentPieceImage);
         }
