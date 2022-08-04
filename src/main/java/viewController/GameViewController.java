@@ -331,10 +331,25 @@ public class GameViewController implements Initializable{
 
                 applyChangesToBoard();
 
-                if(playerBeforeMoving != playerAfterMoving){
-                    instructionsTextArea.setText("It is still player " + playerAfterMoving +"'s turn. Either the moving piece reached the end or captured another" +
-                            " piece select a piece to move 10 or 20 respectively" +
-                            " or player " + playerAfterMoving + " rolled a 6 so you roll again.");
+                //Messages in case a 6 has been rolled, a piece is captured or a piece reaches the end. In these situations the player does not changes
+                // and must select a piece to move or roll again the die.
+                if(playerBeforeMoving == playerAfterMoving){
+                    int movingNumber = controller.getMovingNumber();
+                    String text;
+                    if(movingNumber == 10){
+                        text = "It is still player" + playerAfterMoving + "'s turn. The piece moved reached the end." +
+                                " Please, select a piece to move 10";
+                    }
+                    if(movingNumber == 20){
+                        text = "It is still player" + playerAfterMoving + "'s turn. The piece moved captured another piece." +
+                                " Please, select a piece to move 20";
+                    }
+                    if(movingNumber == 0){
+                        text = "It is still player" + playerAfterMoving + "'s turn. This player rolled a 6 now you must roll the die again." +
+                                " After rolling select a piece to move.";
+                    }
+
+                    instructionsTextArea.setText(text);
                 }
 
 
@@ -369,19 +384,47 @@ public class GameViewController implements Initializable{
         if(player == 0){
             int [] currentPiecesInSquare = controller.getSquare(position, player).getCurrentPlayerPieces();
             //Compare position to know if image should be vertical or horizontal
-            String imageDirection = "horizontal";
+            String imageOrientation = "vertical";
             for (int i = 0; i < 15; i++) {
                 if(position == i+22 || position == i+52%59){
-                    imageDirection = "vertical";
+                    imageOrientation = "horizontal";
                 }
             }
-            //TO DO: create the code to fetch the correct piece image considering the pieces in the square and the orientation.
+
+            //Find the information about the pieces in square to retrieve correct image in database
+            int[] playerOfPiecesInSquare = controller.getBoard().getBoardSquares()[position].getCurrentPlayerPieces();
+            String playerPiecesInfo = "" + playerOfPiecesInSquare[0] + playerOfPiecesInSquare[1];
+            setImageInSquare(player, position, playerPiecesInfo, imageOrientation);
 
         } else {
+
+            String imageOrientation = "vertical";
+            if(player == 1 || player == 3){
+                imageOrientation = "horizontal";
+            }
+            //Find the information about the pieces in square to retrieve correct image in database
+            int[] playerOfPiecesInSquare = controller.getBoard().getFinalSquaresBoard()[player][position].getCurrentPlayerPieces();
+            String playerPiecesInfo = "" + playerOfPiecesInSquare[0] + playerOfPiecesInSquare[1];
+            setImageInSquare(player, position, playerPiecesInfo, imageOrientation);
 
         }
 
     }
+
+    private void setImageInSquare(int player, int position, String piecesInSquare, String imageOrientation){
+        if(player == 0) {
+            ImageView currentImageView = stepImageViewArray[position];
+            Image currentPieceImage = new Image(new ByteArrayInputStream(controller.getPieceImageData(piecesInSquare, imageOrientation)));
+            currentImageView.setImage(currentPieceImage);
+        } else {
+            ImageView currentImageView = finalStepsImageViewArray[player][position];
+            Image currentPieceImage = new Image(new ByteArrayInputStream(controller.getPieceImageData(piecesInSquare, imageOrientation)));
+            currentImageView.setImage(currentPieceImage);
+        }
+
+
+    }
+
 
     private EventHandler<MouseEvent> createDieRollImageViewClickedEventHandler(){
         return new EventHandler<>(){
@@ -393,9 +436,9 @@ public class GameViewController implements Initializable{
                     return;
                 }
 
-                if(controller.getMovingNumber() == 0) {
+                if(controller.getMovingNumber() > 0) {
                     int currentPlayerNumber = controller.getCurrentPlayer().getIdNumber();
-                    instructionsTextArea.setText("Player " + currentPlayerNumber +" has already rolled the die. Waiting for selection of piece to move.");
+                    instructionsTextArea.setText("Player " + currentPlayerNumber +" has already rolled the die or previously captured another piece or reached the end. Waiting for selection of piece to move.");
                     return;
                 }
 
