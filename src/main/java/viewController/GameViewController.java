@@ -29,6 +29,9 @@ public class GameViewController implements Initializable{
 
     //ELEMENTS FROM FXML
 
+    //Start new Game Button
+    @FXML
+    private Button startNewGameButton;
     //Labels
     //Current Player
     @FXML
@@ -152,6 +155,8 @@ public class GameViewController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        startNewGameButton.setOnMouseClicked(newGameReset());
+
         stepImageViewArray = new ImageView[60];
         finalStepsImageViewArray = new ImageView[4][7];
         buildBoardSteps();
@@ -169,10 +174,24 @@ public class GameViewController implements Initializable{
         finishedLabelArray[2] = numberPiecesFinished3;
         finishedLabelArray[3] = numberPiecesFinished4;
 
-
         //Die ImageView building
         dieRollImageView.setOnMouseClicked(createDieRollImageViewClickedEventHandler());
         rollDiceButton.setOnMouseClicked(createDieRollImageViewClickedEventHandler());
+
+
+    }
+
+    private EventHandler<MouseEvent> newGameReset(){
+        return new EventHandler<>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+
+
+
+
+
+            }
+        };
 
 
     }
@@ -345,10 +364,18 @@ public class GameViewController implements Initializable{
 
     }
 
-    //IT MAY BE TOO COMPLICATED TO TELL THE VIEW CONTROLLER TO CHANGE BOARD SQUARES AFTER A PIECE IS CAPTURED AND THINGS LIKE THAT SO THE GAMEVIEW CONTROLER WILL GO THROUGH THE BOARD CHANGING EVERY SQUARE IF NECESARY
     private void changeBoardSquare(int position, int player){
 
         if(player == 0){
+            int [] currentPiecesInSquare = controller.getSquare(position, player).getCurrentPlayerPieces();
+            //Compare position to know if image should be vertical or horizontal
+            String imageDirection = "horizontal";
+            for (int i = 0; i < 15; i++) {
+                if(position == i+22 || position == i+52%59){
+                    imageDirection = "vertical";
+                }
+            }
+            //TO DO: create the code to fetch the correct piece image considering the pieces in the square and the orientation.
 
         } else {
 
@@ -390,6 +417,7 @@ public class GameViewController implements Initializable{
                 instructionsTextArea.setText("Player " + playerThatRolled +" has rolled a " + dieNumber + ". Click on the piece you want to move " + dieNumber + " squares. If it was a 6 after moving you roll again." );
 
                 Image currentDieImage = new Image(new ByteArrayInputStream(controller.getDieImageData()));
+                dieRollImageView.setImage(currentDieImage);
 
             }
 
