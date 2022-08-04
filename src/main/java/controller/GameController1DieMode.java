@@ -63,6 +63,11 @@ public class GameController1DieMode {
 
     // Method to simulate die rolling between 1 and 6 with special cases for rolling 5 and 6
     public int diceRoll(){
+
+        if(movingNumber > 0){
+            return 0;
+        }
+
         Random randomGenerator = new Random();
         int die1Value = randomGenerator.nextInt(6) + 1;
 
@@ -391,8 +396,8 @@ public class GameController1DieMode {
         return databaseManager.getDieImageData(movingNumber);
     }
 
-    public byte[] getPieceImageData(){
-        return databaseManager.getDieImageData(currentPlayer.getIdNumber());
+    public byte[] getPieceImageData(String playerPieces, String orientation){
+        return databaseManager.getPieceImageData(playerPieces, orientation);
     }
 
     public byte[] getBoardImageData(){
