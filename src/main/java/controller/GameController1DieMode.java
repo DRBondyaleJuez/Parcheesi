@@ -322,6 +322,14 @@ public class GameController1DieMode {
         return movingPiece;
     }
 
+    public Square getSquare(int position, int possiblePlayer){
+        if(possiblePlayer == 0){
+            return board.getBoardSquares()[position];
+        } else {
+            return board.getFinalSquaresBoard()[possiblePlayer][position];
+        }
+    }
+
     //This method goes along the squares a piece goes through if there is a barrier the method returns the steps to the barrier encounter
     private int checkForBarriers(int player, int startingBoardPosition, int movingSteps){
         int stepsToBarrier = movingSteps;
