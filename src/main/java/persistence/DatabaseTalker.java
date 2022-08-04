@@ -9,7 +9,7 @@ public interface DatabaseTalker {
      * @param color the chip color
      * @return the file of the specified chip color, or null if that file did not exist in our database
      */
-    byte[] getPieceImageData(String players,String position);
+    byte[] getPieceImageData(String players,String orientation);
 
     byte[] getBoardImageData(int version);
 

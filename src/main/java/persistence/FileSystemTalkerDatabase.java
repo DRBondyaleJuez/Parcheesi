@@ -12,8 +12,8 @@ import java.nio.file.Paths;
 public class FileSystemTalkerDatabase implements DatabaseTalker {
 
     @Override
-    public byte[] getPieceImageData(String players,String position) {
-        String path = "/images/Pieces/" + position + "PiecePlayer" + players + ".png";
+    public byte[] getPieceImageData(String players,String orientation) {
+        String path = "/images/Pieces/" + orientation + "PiecePlayer" + players + ".png";
 
         return loadFileData(path);
     }

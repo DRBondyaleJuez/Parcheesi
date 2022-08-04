@@ -18,8 +18,8 @@ public class DatabaseManager {
         return instance;
     }
 
-    public byte[] getPieceImageData(String players,String position){
-        return databaseTalker.getPieceImageData(players, position);
+    public byte[] getPieceImageData(String players,String orientation){
+        return databaseTalker.getPieceImageData(players, orientation);
     }
 
     public byte[] getBoardImageData(int version) {
