@@ -60,7 +60,7 @@ public class testController {
 
         int dieValue = controllerForTests.diceRoll();
 
-        boolean pieceHasMoved = controllerForTests.movePiece(1,4);
+        boolean pieceHasMoved = controllerForTests.movePiece(4);
 
         //So the current player is the same and there is moving number
         for (int i = 0; i < 3; i++) {
@@ -83,7 +83,7 @@ public class testController {
 
         boolean firstPieceMoved = controllerForTests.onlyForTestSetMovingNumber(1);
 
-        controllerForTests.movePiece(1,4);
+        controllerForTests.movePiece(4);
 
         //Player 4 to test capture
         controllerForTests.nextPlayer();
@@ -92,7 +92,7 @@ public class testController {
         controllerForTests.newPieceEnters(4);
 
         controllerForTests.onlyForTestSetMovingNumber(16);
-        boolean secondPieceMoved = controllerForTests.movePiece(4,49);
+        boolean secondPieceMoved = controllerForTests.movePiece(49);
         boolean movedPieceInNewPosition = controllerForTests.checkPlayerPieceInBoardPosition(4,5);
         boolean wasAnyPieceCaught = controllerForTests.onlyForTestGetMovingNumber()==20;
 
@@ -119,7 +119,7 @@ public class testController {
         controllerForTests.newPieceEnters(4);
 
         controllerForTests.onlyForTestSetMovingNumber(15);
-        boolean secondPieceMoved = controllerForTests.movePiece(4,49);
+        boolean secondPieceMoved = controllerForTests.movePiece(49);
         boolean wasAnyPieceCaught = controllerForTests.onlyForTestGetMovingNumber()==20;
 
         //Changing moving number only so the checking could work
@@ -157,7 +157,7 @@ public class testController {
 
         //Move that will force the piece of player 4 to encounter the block
         controllerForTests.onlyForTestSetMovingNumber(20);
-        boolean onlyPieceMoved = controllerForTests.movePiece(4, 49);
+        boolean onlyPieceMoved = controllerForTests.movePiece(49);
 
         controllerForTests.nextPlayer();
         controllerForTests.nextPlayer();
@@ -179,7 +179,7 @@ public class testController {
 
         //Move that will force the piece of player 1 to enter the final squares
         controllerForTests.onlyForTestSetMovingNumber(57);
-        boolean firstPieceMoved = controllerForTests.movePiece(1, 4);
+        boolean firstPieceMoved = controllerForTests.movePiece(4);
 
         controllerForTests.nextPlayer();
         controllerForTests.nextPlayer();
@@ -203,7 +203,7 @@ public class testController {
 
         //Move that will force the piece of player 1 to go past the last final square by 2
         controllerForTests.onlyForTestSetMovingNumber(65);
-        boolean firstPieceMoved = controllerForTests.movePiece(1, 4);
+        boolean firstPieceMoved = controllerForTests.movePiece(4);
 
         //Back to current player 1
         controllerForTests.nextPlayer();
@@ -217,7 +217,7 @@ public class testController {
 
         //Move that will force the piece of player 1 to go past the last final square by a lot
         controllerForTests.onlyForTestSetMovingNumber(15);
-        boolean secondPieceMoved = controllerForTests.movePiece(1, 65);
+        boolean secondPieceMoved = controllerForTests.movePiece(65);
 
         //Back to current player 1
         controllerForTests.nextPlayer();
@@ -245,7 +245,7 @@ public class testController {
         for (int i = 0; i < 4; i++) {
             controllerForTests.newPieceEnters(1);
             controllerForTests.onlyForTestSetMovingNumber(63);
-            movePieceToTheEnd[i] = controllerForTests.movePiece(1, 4);
+            movePieceToTheEnd[i] = controllerForTests.movePiece(4);
 
             controllerForTests.nextPlayer();
             controllerForTests.nextPlayer();
