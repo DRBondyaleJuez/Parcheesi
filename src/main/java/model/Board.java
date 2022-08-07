@@ -2,6 +2,7 @@ package model;
 
 import model.Square.FinalSquare;
 import model.Square.NormalSquare;
+import model.Square.Square;
 
 import java.util.Arrays;
 
@@ -9,12 +10,12 @@ public class Board {
 
     private NormalSquare[] boardNormalSquares;
     private FinalSquare[][] boardFinalSquares;
-    private Piece[][] pieces;
     private int[] housePieces; //These are the pieces not played by each player
     private int[] finishedPieces; //This is the pieces that have reached the end
     private int[] startSquares = {4,19,34,49};
     private int[] safeSquares = {4,11,15,19,26,30,34,41,45,49,56,60};
-    private int[] finalSquares = {45,30,15,60};
+    private int[] finalSquares = {60,15,30,45};
+    private int maxSteps = 57;
 
     public Board() {
 
@@ -30,8 +31,6 @@ public class Board {
         //Building finalSquaresBoard
         boardFinalSquares = buildBoardFinalSquares();
 
-        //Building Pieces
-        pieces = buildPieces();
 
         //Initializing the finished array
         finishedPieces = new int[4];
@@ -78,18 +77,24 @@ public class Board {
         return newBoardFinalSquares;
     }
 
-    //Method to build the attribute pieces
-    private Piece[][] buildPieces(){
-        Piece[][] newPieces = new Piece[4][4];
-        for (int player = 0; player < 4; player++) {
-            for (int number = 0; number < 4; number++) {
+    public Piece getMostAdvancedPiece(int player){
+        int furthestBoardPosition = finalSquares[player-1];
+        for (int i = furthestBoardPosition-1; i > furthestBoardPosition-maxSteps-1; i--) {
+            int pos=i;
+            if(i<0){
+                pos=60+i;
+            }
+            if(boardNormalSquares[pos].getCurrentPieces()[1].getPlayer() == player) {
+                return boardNormalSquares[pos].getCurrentPieces()[1];
+            }
 
-                newPieces[player][number] = new Piece(player+1);
-
+            if(boardNormalSquares[pos].getCurrentPieces()[0].getPlayer() == player) {
+                return boardNormalSquares[pos].getCurrentPieces()[0];
             }
         }
-        return newPieces;
+        return null;
     }
+
 
     public int getNumberOfPiecesInHouse(int player){
         int position = player-1;
@@ -123,12 +128,36 @@ public class Board {
         finishedPieces[position]++;
     }
     
-    public Piece getPlayerPiece(int player, int number){
-        
-        return pieces[player-1][number];
-    }
-
     public int getFinishedPieces(int player){
         return finishedPieces[player-1];
     }
+
+    public Square getCorrespondingBoardSquare(int player, int finalStepCounter, int stepCounter){
+
+        if(finalStepCounter > -1){
+            return getFinalSquaresBoard()[player-1][finalStepCounter];
+        }
+
+        int startingPosition = 0;
+        int newBoardPosition;
+        switch(player){
+            case 1:
+                startingPosition = 4;
+                break;
+            case 2:
+                startingPosition = 19;
+                break;
+            case 3:
+                startingPosition = 34;
+                break;
+            case 4:
+                startingPosition = 49;
+                break;
+            default:
+                break;
+        }
+        newBoardPosition = (startingPosition + stepCounter)%60;
+        return getBoardSquares()[newBoardPosition-1];
+    }
+
 }

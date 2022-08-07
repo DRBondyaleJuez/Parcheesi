@@ -416,7 +416,7 @@ public class GameViewController implements Initializable{
 
                 //Move Piece
                 int playerBeforeMoving = controller.getCurrentPlayer().getIdNumber();
-                controller.movePiece(position);
+                controller.movePiece(position,possiblePlayerFinalSteps);
 
                 int playerAfterMoving = controller.getCurrentPlayer().getIdNumber();
 
@@ -474,7 +474,6 @@ public class GameViewController implements Initializable{
     private void changeBoardSquare(int position, int player){
 
         if(player == 0){
-            int [] currentPiecesInSquare = controller.getSquare(position, player).getCurrentPlayerPieces();
             //Compare position to know if image should be vertical or horizontal
             String imageOrientation = "vertical";
             for (int i = 0; i < 15; i++) {
@@ -484,8 +483,14 @@ public class GameViewController implements Initializable{
             }
 
             //Find the information about the pieces in square to retrieve correct image in database
-            int[] playerOfPiecesInSquare = controller.getBoard().getBoardSquares()[position].getCurrentPlayerPieces();
-            String playerPiecesInfo = "" + playerOfPiecesInSquare[0] + playerOfPiecesInSquare[1];
+            int[] playersOfPiecesInSquare = new int[2];
+            playersOfPiecesInSquare[0] = controller.getBoard().getBoardSquares()[position].getCurrentPieces()[0].getPlayer();
+            playersOfPiecesInSquare[1] = controller.getBoard().getBoardSquares()[position].getCurrentPieces()[1].getPlayer();
+
+            String playerPiecesInfo = "" + playersOfPiecesInSquare[0] + playersOfPiecesInSquare[1];
+            if(playersOfPiecesInSquare[1] < playersOfPiecesInSquare[0]){
+                playerPiecesInfo = "" + playersOfPiecesInSquare[1] + playersOfPiecesInSquare[0];
+            }
             setImageInSquare(player, position, playerPiecesInfo, imageOrientation);
 
         } else {
@@ -495,8 +500,11 @@ public class GameViewController implements Initializable{
                 imageOrientation = "horizontal";
             }
             //Find the information about the pieces in square to retrieve correct image in database
-            int[] playerOfPiecesInSquare = controller.getBoard().getFinalSquaresBoard()[player-1][position].getCurrentPlayerPieces();
-            String playerPiecesInfo = "" + playerOfPiecesInSquare[0] + playerOfPiecesInSquare[1];
+            int[] playersOfPiecesInSquare = new int[2];
+            playersOfPiecesInSquare[0] = controller.getBoard().getBoardSquares()[position].getCurrentPieces()[0].getPlayer();
+            playersOfPiecesInSquare[1] = controller.getBoard().getBoardSquares()[position].getCurrentPieces()[1].getPlayer();
+
+            String playerPiecesInfo = "" + playersOfPiecesInSquare[0] + playersOfPiecesInSquare[1];
             setImageInSquare(player, position, playerPiecesInfo, imageOrientation);
 
         }
