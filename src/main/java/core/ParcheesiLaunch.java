@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
 
 public class ParcheesiLaunch extends Application {
 
@@ -23,7 +25,7 @@ public class ParcheesiLaunch extends Application {
 
     private void loadingMainScene() {
 
-        FXMLLoader paneLoader = new FXMLLoader(getClass().getResource("/view/GameView.fxml"));
+        FXMLLoader paneLoader = new FXMLLoader(getClass().getResource("/view/mockGameView.fxml"));
         Parent root = loadPaneLoader(paneLoader);
         if(root == null) {
             // This is the extreme case if loaded fxml file is null
