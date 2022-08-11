@@ -95,6 +95,14 @@ public class GameController1DieMode {
         }
 
         movingNumber = die1Value;
+
+        if(board.getHousePieces()[currentPlayer.getIdNumber()-1] == 4){
+            movingNumber = 0;
+            if(die1Value != 6) {
+                nextPlayer();
+            }
+        }
+
         return die1Value;
     }
 
