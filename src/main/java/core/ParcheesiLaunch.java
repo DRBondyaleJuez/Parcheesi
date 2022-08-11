@@ -25,7 +25,7 @@ public class ParcheesiLaunch extends Application {
 
     private void loadingMainScene() {
 
-        FXMLLoader paneLoader = new FXMLLoader(getClass().getResource("/view/mockGameView.fxml"));
+        FXMLLoader paneLoader = new FXMLLoader(getClass().getResource("/view/GameView.fxml"));
         Parent root = loadPaneLoader(paneLoader);
         if(root == null) {
             // This is the extreme case if loaded fxml file is null

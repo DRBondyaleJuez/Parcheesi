@@ -1,11 +1,9 @@
 package model;
 
-import model.Square.Square;
-
 public class Piece {
 
     private int stepCounter;
-    private int maxSteps = 56;
+    private final int MAX_STEPS = 56;
     private int finalStepCounter;
     private int player;
 
@@ -25,9 +23,9 @@ public class Piece {
 
     public void move(int steps){
         stepCounter = stepCounter + steps;
-        if(stepCounter > maxSteps){
-            int finalSteps = stepCounter - maxSteps;
-            stepCounter = maxSteps;
+        if(stepCounter > MAX_STEPS){
+            int finalSteps = stepCounter - MAX_STEPS;
+            stepCounter = MAX_STEPS;
             finalStepCounter = finalMoveCalculator(finalSteps);
         }
     }
