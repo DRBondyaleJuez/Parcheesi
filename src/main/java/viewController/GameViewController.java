@@ -193,19 +193,14 @@ public class GameViewController implements Initializable{
         //Set BoardImage
         Image currentBoardImage = new Image(new ByteArrayInputStream(controller.getBoardImageData()));
         boardBackgroundImageView.setImage(currentBoardImage);
-
-
     }
 
     private EventHandler<MouseEvent> newGameReset(){
         return new EventHandler<>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-
-
-
-
-
+                controller = new GameController1DieMode();
+                applyChangesToBoard();
             }
         };
 
@@ -219,9 +214,7 @@ public class GameViewController implements Initializable{
         for (int i = 0; i < 60; i++) {
 
             if (i > -1 && i < 6) {
-                ImageView xxxxx = stepImageViewArray[i];
-                xxxxx.setOnMouseClicked(createStepImageViewClickedEventHandler(i, 0));
-                //stepImageViewArray[i].setOnMouseClicked(createStepImageViewClickedEventHandler(i, 0));
+                stepImageViewArray[i].setOnMouseClicked(createStepImageViewClickedEventHandler(i, 0));
                 steps1To6HBox.getChildren().add(stepImageViewArray[i]);
             }
 
@@ -443,6 +436,7 @@ public class GameViewController implements Initializable{
             for (int i = 0; i < 15; i++) {
                 if(position == i+22 || position == i+52%59){
                     imageOrientation = "horizontal";
+                    break;
                 }
             }
 
@@ -513,12 +507,14 @@ public class GameViewController implements Initializable{
 
                     int playerRollingNow = controller.getCurrentPlayer().getIdNumber();
                     instructionsTextArea.setText("Player " + playerThatRolled +" has rolled a 5. So a piece exited the house and entered to the board. Now is player " + playerRollingNow + "'s turn. First roll the die" );
+                    applyChangesToBoard();
                     return;
                 }
 
                 if(dieNumber == -1){
                     int playerRollingNow = controller.getCurrentPlayer().getIdNumber();
                     instructionsTextArea.setText("Player " + playerThatRolled +" has rolled a 6 3 times in a row. If possible, their most advanced piece returned to the house. Now is player " + playerRollingNow + "'s turn. First roll the die." );
+                    applyChangesToBoard();
                     return;
                 }
 
@@ -529,6 +525,7 @@ public class GameViewController implements Initializable{
                     } else {
                         instructionsTextArea.setText("Player " + playerThatRolled + " has rolled a " + dieNumber + ". You need a 5 so piece can enter the board. Now is player " + playerRollingNow + "'s turn.");
                     }
+                    return;
                 }
 
                 instructionsTextArea.setText("Player " + playerThatRolled +" has rolled a " + dieNumber + ". Click on the piece you want to move " + dieNumber + " squares. If it was a 6 after moving you roll again." );
