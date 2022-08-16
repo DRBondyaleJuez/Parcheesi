@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 import java.io.ByteArrayInputStream;
 import java.net.URL;
@@ -414,18 +415,39 @@ public class GameViewController implements Initializable{
         }
 
         for (int player = 1 ; player < finalStepsImageViewArray.length+1; player++){
-            for (int i =0 ; i < finalStepsImageViewArray.length; i++){
+            for (int i =0 ; i < finalStepsImageViewArray[player-1].length; i++){
                 changeBoardSquare(i,player);
             }
         }
 
+        applyChangesToLabels();
+
+    }
+
+    private void applyChangesToLabels(){
         for (int i = 0; i < houseLabelArray.length; i++) {
             houseLabelArray[i].setText("" + controller.getBoard().getHousePieces()[i]);
             finishedLabelArray[i].setText("" + controller.getBoard().getFinishedPieces(i+1));
         }
 
-
-
+        String playerText = "Player" + controller.getCurrentPlayer().getIdNumber();
+        playerTurnLabel.setText(playerText);
+        switch (controller.getCurrentPlayer().getIdNumber()){
+            case 1:
+                playerTurnLabel.setTextFill(Color.color(0, 0, 0.9));
+                break;
+            case 2:
+                playerTurnLabel.setTextFill(Color.color(0.8, 0.7, 0.2));
+                break;
+            case 3:
+                playerTurnLabel.setTextFill(Color.color(0, 0.7, 0));
+                break;
+            case 4:
+                playerTurnLabel.setTextFill(Color.color(0.8, 0, 0));
+                break;
+            default:
+                break;
+        }
     }
 
     private void changeBoardSquare(int position, int player){
@@ -464,17 +486,20 @@ public class GameViewController implements Initializable{
             }
             //Find the information about the pieces in square to retrieve correct image in database
             int[] playersOfPiecesInSquare = new int[2];
+            String playerPiecesInfo = "00";
             if(controller.getBoard().getBoardSquares()[position].isBlocked()) {
                 playersOfPiecesInSquare[0] = controller.getBoard().getBoardSquares()[position].getCurrentPieces().get(0).getPlayer();
                 playersOfPiecesInSquare[1] = controller.getBoard().getBoardSquares()[position].getCurrentPieces().get(1).getPlayer();
+                playerPiecesInfo = "" + playersOfPiecesInSquare[0] + playersOfPiecesInSquare[1];
+                if(playersOfPiecesInSquare[0] > playersOfPiecesInSquare[1]){
+                    playerPiecesInfo = "" + playersOfPiecesInSquare[1] + playersOfPiecesInSquare[0];
+                }
             }
             if(!controller.getBoard().getBoardSquares()[position].getCurrentPieces().isEmpty()){
                 playersOfPiecesInSquare[0] = controller.getBoard().getBoardSquares()[position].getCurrentPieces().get(0).getPlayer();
+                playerPiecesInfo = "0" + playersOfPiecesInSquare[0];
             }
-
-            String playerPiecesInfo = "" + playersOfPiecesInSquare[0] + playersOfPiecesInSquare[1];
             setImageInSquare(player, position, playerPiecesInfo, imageOrientation);
-
         }
 
     }
@@ -544,6 +569,7 @@ public class GameViewController implements Initializable{
                     }
                     Image currentDieImage = new Image(new ByteArrayInputStream(controller.getDieImageData(dieNumber)));
                     dieRollImageView.setImage(currentDieImage);
+                    applyChangesToLabels();
                     return;
                 }
 
