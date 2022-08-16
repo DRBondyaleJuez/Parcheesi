@@ -38,12 +38,6 @@ public class Piece {
 
     }
 
-    public void clearPiece(){
-        this.player = 0;
-        stepCounter = -1;
-        finalStepCounter = -1;
-    }
-
 
     public int getStepCounter() {
         return stepCounter;

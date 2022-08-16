@@ -7,6 +7,7 @@ import model.Square.NormalSquare;
 import model.Square.Square;
 import persistence.DatabaseManager;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class GameController1DieMode {
@@ -171,16 +172,14 @@ public class GameController1DieMode {
 
         }
 
-        Piece mostAdvancePunishablePiece = board.getMostAdvancedPiece(punishedPlayer);
+        boolean mostAdvancePunished = board.punishMostAdvancePiece(punishedPlayer);
 
         //Stop the punishment if there has not been any piece punishable for that player
-        if(mostAdvancePunishablePiece == null){
+        if(!mostAdvancePunished){
             return;
         }
 
-        //If a punishable piece has been selected do the following with the piece and the board:
-        //Eliminating piece from the board
-        mostAdvancePunishablePiece.clearPiece();
+        //If a punishable piece has been removed do the following with the board:
         board.returnPieceToHouse(punishedPlayer);
     }
 
@@ -207,19 +206,25 @@ public class GameController1DieMode {
         int possiblePlayerPieceInSquare1 = 0;
         int possiblePlayerPieceInSquare2 = 0;
 
+
+
         //Reject action if there is no piece in the place clicked. To verify this, the board is called to show the corresponding square's two possible positions
         //Check format if the piece clicked is on the normal board squares
-        if(playerIfFinalSquare == 0) {
-            possiblePlayerPieceInSquare1 = board.getBoardSquares()[boardPosition].getCurrentPieces()[0].getPlayer();
-            possiblePlayerPieceInSquare2 = board.getBoardSquares()[boardPosition].getCurrentPieces()[1].getPlayer();
-
+        if(playerIfFinalSquare == 0 && board.getBoardSquares()[boardPosition].getCurrentPieces().isEmpty()) {
+            ArrayList<Piece> currentSquarePieces = board.getBoardSquares()[boardPosition].getCurrentPieces();
+            possiblePlayerPieceInSquare1 = currentSquarePieces.get(0).getPlayer();
+            if(currentSquarePieces.size() == 2) {
+                possiblePlayerPieceInSquare2 = currentSquarePieces.get(1).getPlayer();
+            }
         }
 
         //Check format if the piece clicked is on the final board squares
-        if(playerIfFinalSquare > 0){
-            possiblePlayerPieceInSquare1 = board.getFinalSquaresBoard()[playerIfFinalSquare-1][boardPosition].getCurrentPieces()[0].getPlayer();
-            possiblePlayerPieceInSquare2 = board.getFinalSquaresBoard()[playerIfFinalSquare-1][boardPosition].getCurrentPieces()[1].getPlayer();
-
+        if(playerIfFinalSquare > 0 && board.getFinalSquaresBoard()[playerIfFinalSquare-1][boardPosition].getCurrentPieces().isEmpty()) {
+            ArrayList<Piece> currentSquarePieces = board.getFinalSquaresBoard()[playerIfFinalSquare-1][boardPosition].getCurrentPieces();
+            possiblePlayerPieceInSquare1 = currentSquarePieces.get(0).getPlayer();
+            if(currentSquarePieces.size() == 2) {
+                possiblePlayerPieceInSquare2 = currentSquarePieces.get(1).getPlayer();
+            }
         }
 
         if (possiblePlayerPieceInSquare1 == currentPlayer.getIdNumber() || possiblePlayerPieceInSquare2 == currentPlayer.getIdNumber()) {
@@ -258,23 +263,20 @@ public class GameController1DieMode {
         //Check if piece has reached the end
         if(newSquare.isTheEnd()) {
             newSquare.setCurrentPiece(movingPiece);
-            movingPiece.clearPiece();
             board.pieceReachesTheEnd(currentPlayer.getIdNumber());
-            newSquare.getCurrentPieces()[0].clearPiece();
+            newSquare.getCurrentPieces().remove(0);
             movingNumber = 10;
             return true;
         }
 
         if(hasMovingPieceCapturedAnotherPiece(newSquare)){
             newSquare.setCurrentPiece(movingPiece);
-            movingPiece.clearPiece();
             movingNumber = 20;
             return true;
         }
 
         //If there is no particular event we simply change the attributes of the piece on the new position to match those of the moving piece
         newSquare.setCurrentPiece(movingPiece);
-        movingPiece.clearPiece();
 
         movingNumber = 0;
         if(dieRepetition == 0){
@@ -285,18 +287,21 @@ public class GameController1DieMode {
 
     public Piece getPieceInBoardPosition(int piecePlayer,int boardPosition, int playerIfFinalSquares){
         //Get and modify correct Piece in board position
-        Square tempSquare = board.getBoardSquares()[boardPosition];
+        ArrayList<Piece> currentSquarePieces = board.getBoardSquares()[boardPosition].getCurrentPieces();
         if(playerIfFinalSquares > 0) {
-            tempSquare = board.getFinalSquaresBoard()[playerIfFinalSquares-1][boardPosition];
+            currentSquarePieces = board.getFinalSquaresBoard()[playerIfFinalSquares-1][boardPosition].getCurrentPieces();
         }
         Piece movingPiece = null;
 
-        if(tempSquare.getCurrentPieces()[1].getPlayer() == piecePlayer){
-            movingPiece = tempSquare.getCurrentPieces()[1];
-        } else if(tempSquare.getCurrentPieces()[0].getPlayer() == piecePlayer){
-            movingPiece = tempSquare.getCurrentPieces()[0];
+        if(!currentSquarePieces.isEmpty()) {
+            if (currentSquarePieces.get(0).getPlayer() == piecePlayer) {
+                movingPiece = currentSquarePieces.get(0);
+                currentSquarePieces.remove(0);
+            } else if (currentSquarePieces.get(1).getPlayer() == piecePlayer) {
+                movingPiece = currentSquarePieces.get(1);
+                currentSquarePieces.remove(1);
+            }
         }
-
         return movingPiece;
     }
 
@@ -327,7 +332,10 @@ public class GameController1DieMode {
         //Dismiss capturing if square is Safe
         if(squareWherePieceIsAboutToMoveTo.isSafe()){return  false;}
 
-        int possibleCapturedPlayerPiece = squareWherePieceIsAboutToMoveTo.getCurrentPieces()[0].getPlayer();
+        //Dismiss Capturing if empty
+        if(squareWherePieceIsAboutToMoveTo.getCurrentPieces().isEmpty()){return  false;}
+
+        int possibleCapturedPlayerPiece = squareWherePieceIsAboutToMoveTo.getCurrentPieces().get(0).getPlayer();
         if(possibleCapturedPlayerPiece != 0 && possibleCapturedPlayerPiece != currentPlayer.getIdNumber()){
             board.returnPieceToHouse(possibleCapturedPlayerPiece);
             return true;
@@ -350,6 +358,10 @@ public class GameController1DieMode {
     //METHODS FOR IMAGE HANDLING
     public byte[] getDieImageData(){
         return databaseManager.getDieImageData(movingNumber);
+    }
+
+    public byte[] getDieImageData(int dieNumber){
+        return databaseManager.getDieImageData(dieNumber);
     }
 
     public byte[] getPieceImageData(String playerPieces, String orientation){

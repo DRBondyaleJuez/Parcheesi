@@ -4,6 +4,7 @@ import model.Square.FinalSquare;
 import model.Square.NormalSquare;
 import model.Square.Square;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Board {
@@ -77,22 +78,36 @@ public class Board {
         return newBoardFinalSquares;
     }
 
-    public Piece getMostAdvancedPiece(int player){
+    public boolean punishMostAdvancePiece(int player){
         int furthestBoardPosition = finalSquares[player-1];
         for (int i = furthestBoardPosition-1; i > furthestBoardPosition-maxSteps-1; i--) {
             int pos=i;
             if(i<0){
                 pos=60+i;
             }
-            if(boardNormalSquares[pos].getCurrentPieces()[1].getPlayer() == player) {
-                return boardNormalSquares[pos].getCurrentPieces()[1];
+            ArrayList<Piece> currentSquarePieces = boardNormalSquares[pos].getCurrentPieces();
+            if(currentSquarePieces.isEmpty()) {
+                continue;
+            }
+            if(currentSquarePieces.size() == 1) {
+                if(currentSquarePieces.get(0).getPlayer() == player){
+                    currentSquarePieces.remove(0);
+                    return true;
+                }
             }
 
-            if(boardNormalSquares[pos].getCurrentPieces()[0].getPlayer() == player) {
-                return boardNormalSquares[pos].getCurrentPieces()[0];
+            if(currentSquarePieces.size() == 2) {
+                if(currentSquarePieces.get(1).getPlayer() == player){
+                    currentSquarePieces.remove(1);
+                    return true;
+                }
+                if(currentSquarePieces.get(0).getPlayer() == player){
+                    currentSquarePieces.remove(0);
+                    return true;
+                }
             }
         }
-        return null;
+        return false;
     }
 
 

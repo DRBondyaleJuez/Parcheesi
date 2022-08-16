@@ -18,18 +18,14 @@ public class NormalSquare extends Square{
     }
 
     public boolean enterPiece(int newPlayer){
-        Piece tempPiece = new Piece();
-        tempPiece.setPlayer(newPlayer);
-        tempPiece.move(1);
-        if(getCurrentPieces()[0].getPlayer() == 0){
-            getCurrentPieces()[0].setNewPiece(tempPiece);
-            return true;
+        Piece enteringPiece = new Piece();
+        enteringPiece.setPlayer(newPlayer);
+        enteringPiece.move(1);
+        if(isBlocked()){
+            return  false;
         }
-        if(getCurrentPieces()[1].getPlayer() == 0){
-            getCurrentPieces()[1].setNewPiece(tempPiece);
-            return true;
-        }
-        return  false;
+        setCurrentPiece(enteringPiece);
+        return true;
     }
 
 

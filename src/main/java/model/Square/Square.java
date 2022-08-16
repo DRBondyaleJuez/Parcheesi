@@ -2,10 +2,12 @@ package model.Square;
 
 import model.Piece;
 
+import java.util.ArrayList;
+
 public class Square {
 
     private int squareNumber;
-    private Piece[] currentPlayerPiece;
+    private ArrayList<Piece> currentPlayerPiece;
 
     private boolean isSafe;
 
@@ -13,9 +15,7 @@ public class Square {
 
     public Square(int squareNumber,boolean isSafe) {
         this.squareNumber = squareNumber;
-        currentPlayerPiece = new Piece[2];
-        this.currentPlayerPiece[0] = new Piece();
-        this.currentPlayerPiece[1] = new Piece();
+        currentPlayerPiece = new ArrayList<>();
         this.isSafe = isSafe;
         isTheEnd = false;
     }
@@ -25,7 +25,7 @@ public class Square {
     }
 
 
-    public Piece[] getCurrentPieces() {
+    public ArrayList<Piece> getCurrentPieces() {
         return currentPlayerPiece;
     }
 
@@ -36,40 +36,34 @@ public class Square {
 
 
     public boolean isBlocked(){
-        return currentPlayerPiece[0].getPlayer() > 0 && currentPlayerPiece[1].getPlayer() > 0;
+        return currentPlayerPiece.size() == 2;
     }
 
     public void setCurrentPiece(Piece piece) {
         if(isSafe){
-            if(currentPlayerPiece[0].getPlayer()>0){
-                currentPlayerPiece[1].setNewPiece(piece);
-            }else{
-                currentPlayerPiece[0].setNewPiece(piece);
-            }
+            currentPlayerPiece.add(piece);
         } else {
-            if(currentPlayerPiece[0].getPlayer() == piece.getPlayer()){
-                currentPlayerPiece[1].setNewPiece(piece);
+            if(currentPlayerPiece.size() == 1 ){
+                if(currentPlayerPiece.get(0).getPlayer() == piece.getPlayer()){
+                    currentPlayerPiece.add(piece);
+                } else {
+                    currentPlayerPiece.remove(0);
+                    currentPlayerPiece.add(piece);
+                }
             }else{
-                currentPlayerPiece[0].setNewPiece(piece);
+                currentPlayerPiece.add(piece);
             }
         }
     }
 
     public void removeCurrentPiece(int player){
-        if(currentPlayerPiece[1].getPlayer() == player){
-            currentPlayerPiece[1].clearPiece();
+        if(currentPlayerPiece.get(0).getPlayer() == player){
+            currentPlayerPiece.remove(0);
         } else {
-            currentPlayerPiece[0].clearPiece();
+            currentPlayerPiece.remove(1);
         }
-        reorderPlayerPieces();
     }
 
-    private void reorderPlayerPieces(){
-        if(currentPlayerPiece[0].getPlayer() == 0){
-            currentPlayerPiece[0] = currentPlayerPiece[1];
-            currentPlayerPiece[1].clearPiece();
-        }
-    }
 
     public void changeIsTheEnd() {
         isTheEnd = true;
