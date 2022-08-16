@@ -442,8 +442,13 @@ public class GameViewController implements Initializable{
 
             //Find the information about the pieces in square to retrieve correct image in database
             int[] playersOfPiecesInSquare = new int[2];
-            playersOfPiecesInSquare[0] = controller.getBoard().getBoardSquares()[position].getCurrentPieces()[0].getPlayer();
-            playersOfPiecesInSquare[1] = controller.getBoard().getBoardSquares()[position].getCurrentPieces()[1].getPlayer();
+            if(controller.getBoard().getBoardSquares()[position].isBlocked()) {
+                playersOfPiecesInSquare[0] = controller.getBoard().getBoardSquares()[position].getCurrentPieces().get(0).getPlayer();
+                playersOfPiecesInSquare[1] = controller.getBoard().getBoardSquares()[position].getCurrentPieces().get(1).getPlayer();
+            }
+            if(!controller.getBoard().getBoardSquares()[position].getCurrentPieces().isEmpty()){
+                playersOfPiecesInSquare[0] = controller.getBoard().getBoardSquares()[position].getCurrentPieces().get(0).getPlayer();
+            }
 
             String playerPiecesInfo = "" + playersOfPiecesInSquare[0] + playersOfPiecesInSquare[1];
             if(playersOfPiecesInSquare[1] < playersOfPiecesInSquare[0]){
@@ -459,8 +464,13 @@ public class GameViewController implements Initializable{
             }
             //Find the information about the pieces in square to retrieve correct image in database
             int[] playersOfPiecesInSquare = new int[2];
-            playersOfPiecesInSquare[0] = controller.getBoard().getBoardSquares()[position].getCurrentPieces()[0].getPlayer();
-            playersOfPiecesInSquare[1] = controller.getBoard().getBoardSquares()[position].getCurrentPieces()[1].getPlayer();
+            if(controller.getBoard().getBoardSquares()[position].isBlocked()) {
+                playersOfPiecesInSquare[0] = controller.getBoard().getBoardSquares()[position].getCurrentPieces().get(0).getPlayer();
+                playersOfPiecesInSquare[1] = controller.getBoard().getBoardSquares()[position].getCurrentPieces().get(1).getPlayer();
+            }
+            if(!controller.getBoard().getBoardSquares()[position].getCurrentPieces().isEmpty()){
+                playersOfPiecesInSquare[0] = controller.getBoard().getBoardSquares()[position].getCurrentPieces().get(0).getPlayer();
+            }
 
             String playerPiecesInfo = "" + playersOfPiecesInSquare[0] + playersOfPiecesInSquare[1];
             setImageInSquare(player, position, playerPiecesInfo, imageOrientation);
@@ -525,6 +535,8 @@ public class GameViewController implements Initializable{
                     } else {
                         instructionsTextArea.setText("Player " + playerThatRolled + " has rolled a " + dieNumber + ". You need a 5 so piece can enter the board. Now is player " + playerRollingNow + "'s turn.");
                     }
+                    Image currentDieImage = new Image(new ByteArrayInputStream(controller.getDieImageData(dieNumber)));
+                    dieRollImageView.setImage(currentDieImage);
                     return;
                 }
 
