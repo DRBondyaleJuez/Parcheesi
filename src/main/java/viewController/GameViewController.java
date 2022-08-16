@@ -493,6 +493,7 @@ public class GameViewController implements Initializable{
 
     }
 
+    ////// HANDLE DIE CLICKED
 
     private EventHandler<MouseEvent> createDieRollImageViewClickedEventHandler(){
         return new EventHandler<>(){
@@ -506,14 +507,20 @@ public class GameViewController implements Initializable{
 
                 if(controller.getMovingNumber() > 0) {
                     int currentPlayerNumber = controller.getCurrentPlayer().getIdNumber();
-                    instructionsTextArea.setText("Player " + currentPlayerNumber +" has already rolled the die or previously captured another piece or reached the end. Waiting for selection of piece to move.");
+                    instructionsTextArea.setText("Player " + currentPlayerNumber +" has already rolled the die. Waiting for selection of piece to move.");
+                    if(controller.getMovingNumber() == 20){
+                        instructionsTextArea.setText("Player " + currentPlayerNumber +" has captured another piece. Waiting for selection of piece to move 20.");
+                    }
+                    if(controller.getMovingNumber() == 10){
+                        instructionsTextArea.setText("Player " + currentPlayerNumber +" has reached the end with one piece. Waiting for selection of piece to move 10.");
+                    }
                     return;
                 }
 
                 int playerThatRolled = controller.getCurrentPlayer().getIdNumber();
                 int dieNumber = controller.diceRoll();
 
-                if(dieNumber == 0){
+                if(dieNumber == 5 && controller.getMovingNumber() == 0){
 
                     int playerRollingNow = controller.getCurrentPlayer().getIdNumber();
                     instructionsTextArea.setText("Player " + playerThatRolled +" has rolled a 5. So a piece exited the house and entered to the board. Now is player " + playerRollingNow + "'s turn. First roll the die" );
@@ -523,7 +530,7 @@ public class GameViewController implements Initializable{
 
                 if(dieNumber == -1){
                     int playerRollingNow = controller.getCurrentPlayer().getIdNumber();
-                    instructionsTextArea.setText("Player " + playerThatRolled +" has rolled a 6 3 times in a row. If possible, their most advanced piece returned to the house. Now is player " + playerRollingNow + "'s turn. First roll the die." );
+                    instructionsTextArea.setText("Player " + playerThatRolled +" has rolled a 6 three times in a row. If possible, their most advanced piece returned to the house. Now is player " + playerRollingNow + "'s turn. First roll the die." );
                     applyChangesToBoard();
                     return;
                 }

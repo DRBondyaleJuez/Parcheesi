@@ -80,7 +80,7 @@ public class GameController1DieMode {
             if(newPieceEnters(currentPlayer.getIdNumber())){
                 movingNumber = 0;
                 nextPlayer();
-                return 0;
+                return 5;
             }
         }
 
@@ -107,35 +107,7 @@ public class GameController1DieMode {
         return die1Value;
     }
 
-    //Method to handle rolling a 6 which requires repetition and registering repetitions
-    public int dieRoll6(){
-        Random randomGenerator = new Random();
-        int die1Value = randomGenerator.nextInt(6);
 
-        if(die1Value != 6){
-            dieRepetition = 0;
-        }
-
-        if(die1Value == 5){
-            if(newPieceEnters(currentPlayer.getIdNumber())){
-                nextPlayer();
-                return 0;
-            } else{
-                return 5;
-            }
-        }
-
-        if(die1Value == 6){
-            dieRepetition++;
-        }
-        if(dieRepetition == 3){
-            repetitionPunishment();
-            return 0;
-        }
-
-        return 6+die1Value;
-
-    }
 
     //Method to handle rolling a 5 which may require a piece entering
     public boolean newPieceEnters(int player){
@@ -207,10 +179,9 @@ public class GameController1DieMode {
         int possiblePlayerPieceInSquare2 = 0;
 
 
-
-        //Reject action if there is no piece in the place clicked. To verify this, the board is called to show the corresponding square's two possible positions
-        //Check format if the piece clicked is on the normal board squares
-        if(playerIfFinalSquare == 0 && board.getBoardSquares()[boardPosition].getCurrentPieces().isEmpty()) {
+        //Reject action if there is no piece in the place clicked.
+        //Check if the piece clicked is on the normal board squares
+        if(playerIfFinalSquare == 0 && !board.getBoardSquares()[boardPosition].getCurrentPieces().isEmpty()) {
             ArrayList<Piece> currentSquarePieces = board.getBoardSquares()[boardPosition].getCurrentPieces();
             possiblePlayerPieceInSquare1 = currentSquarePieces.get(0).getPlayer();
             if(currentSquarePieces.size() == 2) {
@@ -218,8 +189,8 @@ public class GameController1DieMode {
             }
         }
 
-        //Check format if the piece clicked is on the final board squares
-        if(playerIfFinalSquare > 0 && board.getFinalSquaresBoard()[playerIfFinalSquare-1][boardPosition].getCurrentPieces().isEmpty()) {
+        //Check if the piece clicked is on the final board squares
+        if(playerIfFinalSquare > 0 && !board.getFinalSquaresBoard()[playerIfFinalSquare-1][boardPosition].getCurrentPieces().isEmpty()) {
             ArrayList<Piece> currentSquarePieces = board.getFinalSquaresBoard()[playerIfFinalSquare-1][boardPosition].getCurrentPieces();
             possiblePlayerPieceInSquare1 = currentSquarePieces.get(0).getPlayer();
             if(currentSquarePieces.size() == 2) {
