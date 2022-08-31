@@ -148,6 +148,8 @@ public class GameViewController implements Initializable{
 
 
 
+
+
     //CONSTRUCTOR
     public GameViewController() {
         controller = new GameController1DieMode();
@@ -156,17 +158,56 @@ public class GameViewController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        //Start NewGame Button
         startNewGameButton.setOnMouseClicked(newGameReset());
 
+        // Normal Steps Creation and addition of corresponding imageView
         stepImageViewArray = new ImageView[60];
         for (int i = 0; i < stepImageViewArray.length; i++) {
             stepImageViewArray[i] = new ImageView();
+            String emptyImagePathOrientation = "horizontal";
+            //Specifying dimensions to avoid image size issues
+            if ((i > 6 && i < 22 ) || (i > 36 && i < 52)){
+                stepImageViewArray[i].setFitHeight(44.4);
+                stepImageViewArray[i].setFitWidth(88.8);
+                emptyImagePathOrientation = "vertical";
+            } else if(i == 6 || i == 22 || i == 36 || i == 52) {
+                stepImageViewArray[i].setFitHeight(44.4);
+                stepImageViewArray[i].setFitWidth(44.4);
+            }else{
+                stepImageViewArray[i].setFitHeight(88.8);
+                stepImageViewArray[i].setFitWidth(44.4);
+            }
+            stepImageViewArray[i].setPreserveRatio(true);
+
+            Image emptyImage = new Image(new ByteArrayInputStream(controller.getPieceImageData("00",emptyImagePathOrientation)));
+            stepImageViewArray[i].setImage(emptyImage);
+
+
+
+
+
+
         }
+
+        // Final Steps creation and addition of corresponding imageView
 
         finalStepsImageViewArray = new ImageView[4][7];
         for (int i = 0; i < finalStepsImageViewArray.length; i++) {
             for (int j = 0; j < finalStepsImageViewArray[0].length; j++) {
                 finalStepsImageViewArray[i][j] = new ImageView();
+                String emptyImagePathOrientation = "vertical";
+                if(i ==0 || i==2){
+                    emptyImagePathOrientation = "horizontal";
+                    finalStepsImageViewArray[i][j].setFitHeight(88.8);
+                    finalStepsImageViewArray[i][j].setFitWidth(44.4);
+                } else {
+                    finalStepsImageViewArray[i][j].setFitHeight(44.4);
+                    finalStepsImageViewArray[i][j].setFitWidth(88.8);
+                }
+
+                Image emptyImage = new Image(new ByteArrayInputStream(controller.getPieceImageData("00",emptyImagePathOrientation)));
+                finalStepsImageViewArray[i][j].setImage(emptyImage);
             }
         }
 
@@ -224,12 +265,13 @@ public class GameViewController implements Initializable{
                 step7HBox.getChildren().add(stepImageViewArray[i]);
             }
 
+
             if (i > 6 && i < 14) {
                 stepImageViewArray[i].setOnMouseClicked(createStepImageViewClickedEventHandler(i, 0));
                 temporaryImageViewArray[i - 7] = stepImageViewArray[i];
                 if (i == 13) {
                     for (int j = 6; j > -1; j--) {
-                        step30VBox.getChildren().add(stepImageViewArray[j]);
+                        steps8To14VBox.getChildren().add(temporaryImageViewArray[j]);
                     }
                 }
             }
@@ -264,7 +306,7 @@ public class GameViewController implements Initializable{
                 temporaryImageViewArray[i - 30] = stepImageViewArray[i];
                 if (i == 35) {
                     for (int j = 5; j > -1; j--) {
-                        steps31To36HBox.getChildren().add(stepImageViewArray[j]);
+                        steps31To36HBox.getChildren().add(temporaryImageViewArray[j]);
                     }
                 }
             }
@@ -273,6 +315,7 @@ public class GameViewController implements Initializable{
                 stepImageViewArray[i].setOnMouseClicked(createStepImageViewClickedEventHandler(i, 0));
                 step37HBox.getChildren().add(stepImageViewArray[i]);
             }
+
 
             if (i > 36 && i < 44) {
                 stepImageViewArray[i].setOnMouseClicked(createStepImageViewClickedEventHandler(i, 0));
@@ -289,7 +332,7 @@ public class GameViewController implements Initializable{
                 temporaryImageViewArray[i - 45] = stepImageViewArray[i];
                 if (i == 51) {
                     for (int j = 6; j > -1; j--) {
-                        steps46To52VBox.getChildren().add(stepImageViewArray[j]);
+                        steps46To52VBox.getChildren().add(temporaryImageViewArray[j]);
                     }
                 }
             }
@@ -303,8 +346,8 @@ public class GameViewController implements Initializable{
                 stepImageViewArray[i].setOnMouseClicked(createStepImageViewClickedEventHandler(i, 0));
                 temporaryImageViewArray[i - 53] = stepImageViewArray[i];
                 if (i == 58) {
-                    for (int j = 6; j > -1; j--) {
-                        steps54To59HBox.getChildren().add(stepImageViewArray[j]);
+                    for (int j = 5; j > -1; j--) {
+                        steps54To59HBox.getChildren().add(temporaryImageViewArray[j]);
                     }
                 }
             }
@@ -315,6 +358,7 @@ public class GameViewController implements Initializable{
             }
         }
     }
+
     private void buildFinalSteps(){
 
         //Player 1
@@ -322,34 +366,32 @@ public class GameViewController implements Initializable{
 
             finalStepsImageViewArray[0][i].setOnMouseClicked(createStepImageViewClickedEventHandler(i,1));
             if(i<5){
-                finalSteps1To5Player1HBox.getChildren().add(stepImageViewArray[i]);
+                finalSteps1To5Player1HBox.getChildren().add(finalStepsImageViewArray[0][i]);
             }
             //Step6 is separate
             if(i==5){
-                finalStep6Player1HBox.getChildren().add(stepImageViewArray[i]);
+                finalStep6Player1HBox.getChildren().add(finalStepsImageViewArray[0][i]);
             }
 
         //Player 2
             finalStepsImageViewArray[1][i].setOnMouseClicked(createStepImageViewClickedEventHandler(i,2));
-            if(i<5){
-                finalSteps1To6Player2VBox.getChildren().add(stepImageViewArray[i]);
-            }
+            finalSteps1To6Player2VBox.getChildren().add(finalStepsImageViewArray[1][i]);
+
 
         //Player 3
             finalStepsImageViewArray[2][i].setOnMouseClicked(createStepImageViewClickedEventHandler(i,3));
             if(i<5){
-                finalSteps1To5Player3HBox.getChildren().add(stepImageViewArray[i]);
+                finalSteps1To5Player3HBox.getChildren().add(finalStepsImageViewArray[2][4-i]);
             }
             //Step6 is separate
             if(i==5){
-                finalStep6Player3HBox.getChildren().add(stepImageViewArray[i]);
+                finalStep6Player3HBox.getChildren().add(finalStepsImageViewArray[2][i]);
             }
 
         //Player 4
             finalStepsImageViewArray[3][i].setOnMouseClicked(createStepImageViewClickedEventHandler(i,4));
-            if(i<5){
-                finalSteps1To6Player4VBox.getChildren().add(stepImageViewArray[i]);
-            }
+            finalSteps1To6Player4VBox.getChildren().add(finalStepsImageViewArray[3][5-i]);
+
         }
     }
 
@@ -388,21 +430,21 @@ public class GameViewController implements Initializable{
                     int movingNumber = controller.getMovingNumber();
                     String text = "";
                     if(movingNumber == 10){
-                        text = "It is still player" + playerAfterMoving + "'s turn. The piece moved reached the end." +
-                                " Please, select a piece to move 10";
+                        text = "It is still player " + playerAfterMoving + "'s turn. The piece moved reached the end." +
+                                "\nPlease, select a piece to move 10";
                     }
                     if(movingNumber == 20){
-                        text = "It is still player" + playerAfterMoving + "'s turn. The piece moved captured another piece." +
-                                " Please, select a piece to move 20";
+                        text = "It is still player " + playerAfterMoving + "'s turn. The piece moved captured another piece." +
+                                "\nPlease, select a piece to move 20";
                     }
                     if(movingNumber == 0){
-                        text = "It is still player" + playerAfterMoving + "'s turn. This player rolled a 6 now you must roll the die again." +
-                                " After rolling select a piece to move.";
+                        text = "It is still player " + playerAfterMoving + "'s turn. This player rolled a 6 now you must roll the die again." +
+                                "\nAfter rolling select a piece to move.";
                     }
 
                     instructionsTextArea.setText(text);
                 } else {
-                    instructionsTextArea.setText("It is player " + playerAfterMoving + "'s turn. First roll and then choose a piece to move.");
+                    instructionsTextArea.setText("It is player " + playerAfterMoving + "'s turn.\nFirst roll and then choose a piece to move.");
                 }
             }
         };
@@ -415,7 +457,7 @@ public class GameViewController implements Initializable{
         }
 
         for (int player = 1 ; player < finalStepsImageViewArray.length+1; player++){
-            for (int i =0 ; i < finalStepsImageViewArray[player-1].length; i++){
+            for (int i = 0 ; i < finalStepsImageViewArray[0].length; i++){
                 changeBoardSquare(i,player);
             }
         }
@@ -450,70 +492,69 @@ public class GameViewController implements Initializable{
         }
     }
 
+    //This method applies the changes to the image on a particular board square to the corresponding one based on the controller's information
     private void changeBoardSquare(int position, int player){
 
+        //Determine the pieces required for the image
+        int[] playerPiecesInSquare = new int[2];
+        String playerPieceInfo = "" + playerPiecesInSquare[0] + playerPiecesInSquare[1]; //Start assuming empty state
+
+        //Determine orientation of the image
+        String imageOrientation = "horizontal"; //Start assuming horizontal orientation
+
+        //The state of the square consultation depends on whether it is a final square or a normal square i.e. if player is 0 or >0
         if(player == 0){
             //Compare position to know if image should be vertical or horizontal
-            String imageOrientation = "vertical";
-            for (int i = 0; i < 15; i++) {
-                if(position == i+22 || position == i+52%59){
-                    imageOrientation = "horizontal";
-                    break;
-                }
+            if ((position > 6 && position < 22 ) || (position > 36 && position < 52)){
+                imageOrientation = "vertical";
             }
 
             //Find the information about the pieces in square to retrieve correct image in database
-            int[] playersOfPiecesInSquare = new int[2];
             if(controller.getBoard().getBoardSquares()[position].isBlocked()) {
-                playersOfPiecesInSquare[0] = controller.getBoard().getBoardSquares()[position].getCurrentPieces().get(0).getPlayer();
-                playersOfPiecesInSquare[1] = controller.getBoard().getBoardSquares()[position].getCurrentPieces().get(1).getPlayer();
-            }
-            if(!controller.getBoard().getBoardSquares()[position].getCurrentPieces().isEmpty()){
-                playersOfPiecesInSquare[0] = controller.getBoard().getBoardSquares()[position].getCurrentPieces().get(0).getPlayer();
+                playerPiecesInSquare[0] = controller.getBoard().getBoardSquares()[position].getCurrentPieces().get(0).getPlayer();
+                playerPiecesInSquare[1] = controller.getBoard().getBoardSquares()[position].getCurrentPieces().get(1).getPlayer();
+            } else if(!controller.getBoard().getBoardSquares()[position].getCurrentPieces().isEmpty()){
+                playerPiecesInSquare[0] = controller.getBoard().getBoardSquares()[position].getCurrentPieces().get(0).getPlayer();
             }
 
-            String playerPiecesInfo = "" + playersOfPiecesInSquare[0] + playersOfPiecesInSquare[1];
-            if(playersOfPiecesInSquare[1] < playersOfPiecesInSquare[0]){
-                playerPiecesInfo = "" + playersOfPiecesInSquare[1] + playersOfPiecesInSquare[0];
+            playerPieceInfo = "" + playerPiecesInSquare[0] + playerPiecesInSquare[1];
+            if(playerPiecesInSquare[1] < playerPiecesInSquare[0]){
+                playerPieceInfo = "" + playerPiecesInSquare[1] + playerPiecesInSquare[0];
             }
-            setImageInSquare(player, position, playerPiecesInfo, imageOrientation);
+            setImageInSquare(player, position, playerPieceInfo, imageOrientation);
 
         } else {
 
-            String imageOrientation = "vertical";
-            if(player == 1 || player == 3){
-                imageOrientation = "horizontal";
+            if(player == 2 || player == 4){
+                imageOrientation = "vertical";
             }
             //Find the information about the pieces in square to retrieve correct image in database
-            int[] playersOfPiecesInSquare = new int[2];
-            String playerPiecesInfo = "00";
-            if(controller.getBoard().getBoardSquares()[position].isBlocked()) {
-                playersOfPiecesInSquare[0] = controller.getBoard().getBoardSquares()[position].getCurrentPieces().get(0).getPlayer();
-                playersOfPiecesInSquare[1] = controller.getBoard().getBoardSquares()[position].getCurrentPieces().get(1).getPlayer();
-                playerPiecesInfo = "" + playersOfPiecesInSquare[0] + playersOfPiecesInSquare[1];
-                if(playersOfPiecesInSquare[0] > playersOfPiecesInSquare[1]){
-                    playerPiecesInfo = "" + playersOfPiecesInSquare[1] + playersOfPiecesInSquare[0];
-                }
+            if(controller.getBoard().getFinalSquaresBoard()[player-1][position].isBlocked()) {
+                playerPiecesInSquare[0] = controller.getBoard().getFinalSquaresBoard()[player-1][position].getCurrentPieces().get(0).getPlayer();
+                playerPiecesInSquare[1] = controller.getBoard().getFinalSquaresBoard()[player-1][position].getCurrentPieces().get(1).getPlayer();
+            } else if(!controller.getBoard().getFinalSquaresBoard()[player-1][position].getCurrentPieces().isEmpty()){
+                playerPiecesInSquare[0] = controller.getBoard().getFinalSquaresBoard()[player-1][position].getCurrentPieces().get(0).getPlayer();
             }
-            if(!controller.getBoard().getBoardSquares()[position].getCurrentPieces().isEmpty()){
-                playersOfPiecesInSquare[0] = controller.getBoard().getBoardSquares()[position].getCurrentPieces().get(0).getPlayer();
-                playerPiecesInfo = "0" + playersOfPiecesInSquare[0];
+
+            playerPieceInfo = "" + playerPiecesInSquare[0] + playerPiecesInSquare[1];
+            if(playerPiecesInSquare[1] < playerPiecesInSquare[0]){
+                playerPieceInfo = "" + playerPiecesInSquare[1] + playerPiecesInSquare[0];
             }
-            setImageInSquare(player, position, playerPiecesInfo, imageOrientation);
+
+            setImageInSquare(player, position, playerPieceInfo, imageOrientation);
         }
 
     }
 
     private void setImageInSquare(int player, int position, String piecesInSquare, String imageOrientation){
+        ImageView currentImageView;
         if(player == 0) {
-            ImageView currentImageView = stepImageViewArray[position];
-            Image currentPieceImage = new Image(new ByteArrayInputStream(controller.getPieceImageData(piecesInSquare, imageOrientation)));
-            currentImageView.setImage(currentPieceImage);
+            currentImageView = stepImageViewArray[position];
         } else {
-            ImageView currentImageView = finalStepsImageViewArray[player-1][position];
-            Image currentPieceImage = new Image(new ByteArrayInputStream(controller.getPieceImageData(piecesInSquare, imageOrientation)));
-            currentImageView.setImage(currentPieceImage);
+            currentImageView = finalStepsImageViewArray[player - 1][position];
         }
+        Image currentPieceImage = new Image(new ByteArrayInputStream(controller.getPieceImageData(piecesInSquare, imageOrientation)));
+        currentImageView.setImage(currentPieceImage);
 
 
     }
@@ -532,12 +573,18 @@ public class GameViewController implements Initializable{
 
                 if(controller.getMovingNumber() > 0) {
                     int currentPlayerNumber = controller.getCurrentPlayer().getIdNumber();
-                    instructionsTextArea.setText("Player " + currentPlayerNumber +" has already rolled the die. Waiting for selection of piece to move.");
+                    instructionsTextArea.setText("Player " + currentPlayerNumber + " has already rolled the die. Waiting for selection of piece to move.");
+                    if(controller.getMovingNumber() == 6){
+                        instructionsTextArea.setText("Player " + currentPlayerNumber + " has already rolled the die. Waiting for selection of piece to move.\n" +
+                                "Since they rolled a 6 after moving roll the die again.");
+                    }
                     if(controller.getMovingNumber() == 20){
-                        instructionsTextArea.setText("Player " + currentPlayerNumber +" has captured another piece. Waiting for selection of piece to move 20.");
+                        instructionsTextArea.setText("Player " + currentPlayerNumber +" has captured another piece.\n" +
+                                "Waiting for selection of piece to move 20.");
                     }
                     if(controller.getMovingNumber() == 10){
-                        instructionsTextArea.setText("Player " + currentPlayerNumber +" has reached the end with one piece. Waiting for selection of piece to move 10.");
+                        instructionsTextArea.setText("Player " + currentPlayerNumber +" has reached the end with one piece.\n" +
+                                "Waiting for selection of piece to move 10.");
                     }
                     return;
                 }
@@ -546,16 +593,20 @@ public class GameViewController implements Initializable{
                 int dieNumber = controller.diceRoll();
 
                 if(dieNumber == 5 && controller.getMovingNumber() == 0){
-
                     int playerRollingNow = controller.getCurrentPlayer().getIdNumber();
-                    instructionsTextArea.setText("Player " + playerThatRolled +" has rolled a 5. So a piece exited the house and entered to the board. Now is player " + playerRollingNow + "'s turn. First roll the die" );
+                    Image currentDieImage = new Image(new ByteArrayInputStream(controller.getDieImageData(dieNumber)));
+                    dieRollImageView.setImage(currentDieImage);
                     applyChangesToBoard();
+                    instructionsTextArea.setText("Player " + playerThatRolled +" has rolled a 5. So a piece exited the house and entered to the board.\n" +
+                            "It is now player " + playerRollingNow + "'s turn. First roll the die" );
                     return;
                 }
 
                 if(dieNumber == -1){
                     int playerRollingNow = controller.getCurrentPlayer().getIdNumber();
-                    instructionsTextArea.setText("Player " + playerThatRolled +" has rolled a 6 three times in a row. If possible, their most advanced piece returned to the house. Now is player " + playerRollingNow + "'s turn. First roll the die." );
+                    instructionsTextArea.setText("Player " + playerThatRolled +" has rolled a 6 three times in a row.\n" +
+                            "If possible, this player's most advanced piece returned to the house. " +
+                            "\nIt is now player " + playerRollingNow + "'s turn. First roll the die." );
                     applyChangesToBoard();
                     return;
                 }
@@ -563,9 +614,11 @@ public class GameViewController implements Initializable{
                 if(controller.getBoard().getHousePieces()[playerThatRolled-1] == 4){
                     int playerRollingNow = controller.getCurrentPlayer().getIdNumber();
                     if(dieNumber == 6){
-                        instructionsTextArea.setText("Since player " + playerThatRolled +" rolled a " + dieNumber + " they can roll again. Remember you need a 5 so a piece can enter the board." );
+                        instructionsTextArea.setText("Since player " + playerThatRolled +" rolled a " + dieNumber + " they can roll again.\n" +
+                                "Remember you need a 5 so a piece can enter the board." );
                     } else {
-                        instructionsTextArea.setText("Player " + playerThatRolled + " has rolled a " + dieNumber + ". You need a 5 so piece can enter the board. Now is player " + playerRollingNow + "'s turn.");
+                        instructionsTextArea.setText("Player " + playerThatRolled + " has rolled a " + dieNumber + ".\n" +
+                                "You need a 5 so a piece can enter the board. It is now player " + playerRollingNow + "'s turn.");
                     }
                     Image currentDieImage = new Image(new ByteArrayInputStream(controller.getDieImageData(dieNumber)));
                     dieRollImageView.setImage(currentDieImage);
@@ -573,7 +626,11 @@ public class GameViewController implements Initializable{
                     return;
                 }
 
-                instructionsTextArea.setText("Player " + playerThatRolled +" has rolled a " + dieNumber + ". Click on the piece you want to move " + dieNumber + " squares. If it was a 6 after moving you roll again." );
+                instructionsTextArea.setText("Player " + playerThatRolled +" has rolled a " + dieNumber + ".\n" +
+                        "Click on the piece you want to move " + dieNumber + " squares." );
+                if(dieNumber == 6){
+                    instructionsTextArea.setText(instructionsTextArea.getText() + "\nSince it was a 6 after moving this player rolls again.");
+                }
 
                 Image currentDieImage = new Image(new ByteArrayInputStream(controller.getDieImageData()));
                 dieRollImageView.setImage(currentDieImage);
