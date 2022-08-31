@@ -97,6 +97,7 @@ public class GameController1DieMode {
 
         movingNumber = die1Value;
 
+        //Check if a piece has left the house already. If all pieces are in the house the number on the die is irrelevant
         if(board.getHousePieces()[currentPlayer.getIdNumber()-1] == 4){
             movingNumber = 0;
             if(die1Value != 6) {
@@ -217,9 +218,9 @@ public class GameController1DieMode {
         }
 
         //Check for barriers. If there is a barrier the moving number will now be steps to barrier minus 1
-        int stepsToBarrier = checkForBarriers(currentPlayer.getIdNumber(), boardPosition, movingNumber);
+        int stepsToBarrier = checkForBarriers(boardPosition, movingNumber);
         //If the steps of the piece go over 56 before  the barrier position is irrelevant for the movement
-        if(movingNumber > stepsToBarrier && movingPiece.getStepCounter() + stepsToBarrier < maxSteps){
+        if(movingNumber >= stepsToBarrier && movingPiece.getStepCounter() + stepsToBarrier < maxSteps){
             movingNumber = stepsToBarrier-1; //if barrier is encounter before reaching final squares the movement becomes steps to barrier minus 1.
         }
 
@@ -285,8 +286,8 @@ public class GameController1DieMode {
     }
 
     //This method goes along the squares a piece goes through if there is a barrier the method returns the steps to the barrier encounter
-    private int checkForBarriers(int player, int startingBoardPosition, int movingSteps){
-        int stepsToBarrier = movingSteps;
+    private int checkForBarriers( int startingBoardPosition, int movingSteps){
+        int stepsToBarrier = 60;
         for (int i = 1; i < movingSteps+1; i++) {
            Square testedSquareForBarrier = board.getBoardSquares()[(startingBoardPosition+i)%60];
            if(testedSquareForBarrier.isBlocked()){
