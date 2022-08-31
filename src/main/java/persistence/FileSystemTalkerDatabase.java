@@ -64,6 +64,11 @@ public class FileSystemTalkerDatabase implements DatabaseTalker {
             System.out.println("Could not find " + path);
             e.printStackTrace();
             return new byte[0];
-        }
+        }catch (NullPointerException e) {
+        // TODO: log
+        System.out.println("Could not find " + path);
+        e.printStackTrace();
+        return new byte[0];
+    }
     }
 }
