@@ -57,8 +57,10 @@ public class testController {
         GameController1DieMode controllerForTests = new GameController1DieMode();
 
         controllerForTests.newPieceEnters(1);
+        controllerForTests.newPieceEnters(1);
 
         int dieValue = controllerForTests.diceRoll();
+        System.out.println(dieValue);
 
         boolean pieceHasMoved = controllerForTests.movePiece(3,0);
 
