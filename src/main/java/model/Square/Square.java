@@ -43,7 +43,7 @@ public class Square {
         if(isSafe){
             currentPlayerPiece.add(piece);
         } else {
-            if(currentPlayerPiece.size() == 1 ){
+            if(currentPlayerPiece.size() == 1){
                 if(currentPlayerPiece.get(0).getPlayer() == piece.getPlayer()){
                     currentPlayerPiece.add(piece);
                 } else {

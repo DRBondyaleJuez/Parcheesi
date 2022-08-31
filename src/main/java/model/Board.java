@@ -155,24 +155,9 @@ public class Board {
 
         int startingPosition = 0;
         int newBoardPosition;
-        switch(player){
-            case 1:
-                startingPosition = 4;
-                break;
-            case 2:
-                startingPosition = 19;
-                break;
-            case 3:
-                startingPosition = 34;
-                break;
-            case 4:
-                startingPosition = 49;
-                break;
-            default:
-                break;
-        }
+        startingPosition = startSquares[player-1]-1;
         newBoardPosition = (startingPosition + stepCounter)%60;
-        return getBoardSquares()[newBoardPosition-1];
+        return getBoardSquares()[newBoardPosition];
     }
 
 }
