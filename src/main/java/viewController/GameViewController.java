@@ -147,6 +147,8 @@ public class GameViewController implements Initializable{
     private TextArea instructionsTextArea;
 
 
+    //Centre Trophee Image
+    private ImageView tropheeImageView;
 
 
 
@@ -182,12 +184,6 @@ public class GameViewController implements Initializable{
 
             Image emptyImage = new Image(new ByteArrayInputStream(controller.getPieceImageData("00",emptyImagePathOrientation)));
             stepImageViewArray[i].setImage(emptyImage);
-
-
-
-
-
-
         }
 
         // Final Steps creation and addition of corresponding imageView
@@ -245,8 +241,6 @@ public class GameViewController implements Initializable{
                 applyChangesToBoard();
             }
         };
-
-
     }
 
     private void buildBoardSteps(){
@@ -264,7 +258,6 @@ public class GameViewController implements Initializable{
                 stepImageViewArray[i].setOnMouseClicked(createStepImageViewClickedEventHandler(i, 0));
                 step7HBox.getChildren().add(stepImageViewArray[i]);
             }
-
 
             if (i > 6 && i < 14) {
                 stepImageViewArray[i].setOnMouseClicked(createStepImageViewClickedEventHandler(i, 0));
@@ -422,9 +415,7 @@ public class GameViewController implements Initializable{
 
                 int playerAfterMoving = controller.getCurrentPlayer().getIdNumber();
 
-                applyChangesToBoard();
-
-                //Messages in case a 6 has been rolled, a piece is captured or a piece reaches the end. In these situations the player does not changes
+                                //Messages in case a 6 has been rolled, a piece is captured or a piece reaches the end. In these situations the player does not changes
                 // and must select a piece to move or roll again the die.
                 if(playerBeforeMoving == playerAfterMoving){
                     int movingNumber = controller.getMovingNumber();
@@ -446,6 +437,8 @@ public class GameViewController implements Initializable{
                 } else {
                     instructionsTextArea.setText("It is player " + playerAfterMoving + "'s turn.\nFirst roll and then choose a piece to move.");
                 }
+
+                applyChangesToBoard();
             }
         };
     }
@@ -453,7 +446,6 @@ public class GameViewController implements Initializable{
     private void applyChangesToBoard(){
         for (int i = 0; i < stepImageViewArray.length; i++) {
            changeBoardSquare(i,0);
-
         }
 
         for (int player = 1 ; player < finalStepsImageViewArray.length+1; player++){
@@ -463,7 +455,6 @@ public class GameViewController implements Initializable{
         }
 
         applyChangesToLabels();
-
     }
 
     private void applyChangesToLabels(){
@@ -472,7 +463,7 @@ public class GameViewController implements Initializable{
             finishedLabelArray[i].setText("" + controller.getBoard().getFinishedPieces(i+1));
         }
 
-        String playerText = "Player" + controller.getCurrentPlayer().getIdNumber();
+        String playerText = "Player " + controller.getCurrentPlayer().getIdNumber();
         playerTurnLabel.setText(playerText);
         switch (controller.getCurrentPlayer().getIdNumber()){
             case 1:
@@ -489,6 +480,11 @@ public class GameViewController implements Initializable{
                 break;
             default:
                 break;
+        }
+
+        if(controller.isThereAWinner()){
+            playerTurnLabel.setText(playerTurnLabel.getText() + " WINS");
+            winnerTrophyImage(controller.getCurrentPlayer().getIdNumber());
         }
     }
 
@@ -639,6 +635,15 @@ public class GameViewController implements Initializable{
 
 
         };
+    }
+
+    //Handle trophy image when winner
+
+    //TODO: Check if the display of the trophies when there is a winner in the centre image
+    //TODO: Finish the display of die of different colours associated with the player that rolled it
+    private void winnerTrophyImage(int player){
+        Image winnerTrophyImage = new Image(new ByteArrayInputStream(controller.getTrophyImageData(player)));
+        dieRollImageView.setImage(winnerTrophyImage);
     }
 
 

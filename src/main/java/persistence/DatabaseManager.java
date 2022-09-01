@@ -26,5 +26,9 @@ public class DatabaseManager {
         return databaseTalker.getBoardImageData(version);
     }
 
+    public byte[] getTrophyImageData(int player) {
+        return databaseTalker.getTrophyImageData(player);
+    }
+
     public byte[] getDieImageData(int number){ return databaseTalker.getDieImageData(number);}
 }

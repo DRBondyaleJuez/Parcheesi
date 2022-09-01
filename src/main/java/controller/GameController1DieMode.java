@@ -238,6 +238,8 @@ public class GameController1DieMode {
             board.pieceReachesTheEnd(currentPlayer.getIdNumber());
             newSquare.getCurrentPieces().remove(0);
             movingNumber = 10;
+            //Check if this is the final piece
+            isThereAWinner();
             return true;
         }
 
@@ -331,6 +333,7 @@ public class GameController1DieMode {
     public byte[] getDieImageData(){
         return databaseManager.getDieImageData(movingNumber);
     }
+    public  byte[] getTrophyImageData(int player){return databaseManager.getTrophyImageData(player);}
 
     public byte[] getDieImageData(int dieNumber){
         return databaseManager.getDieImageData(dieNumber);

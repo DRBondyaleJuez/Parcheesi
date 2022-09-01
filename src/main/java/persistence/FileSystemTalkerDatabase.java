@@ -46,6 +46,11 @@ public class FileSystemTalkerDatabase implements DatabaseTalker {
         return loadFileData(path);
     }
 
+    @Override
+    public byte[] getTrophyImageData(int player) {
+        String path = "/images/Trophy/trophy" + player + ".png";
+        return loadFileData(path);
+    }
 
 
     private byte[] loadFileData(String path) {

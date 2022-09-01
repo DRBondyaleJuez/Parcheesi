@@ -15,6 +15,8 @@ public interface DatabaseTalker {
 
     byte[] getDieImageData(int number);
 
+    byte[] getTrophyImageData(int player);
+
 
 
 }
