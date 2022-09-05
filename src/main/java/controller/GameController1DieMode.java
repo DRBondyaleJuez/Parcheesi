@@ -330,14 +330,10 @@ public class GameController1DieMode {
     }
 
     //METHODS FOR IMAGE HANDLING
-    public byte[] getDieImageData(){
-        return databaseManager.getDieImageData(movingNumber);
+    public byte[] getDieImageData(String dieImageLocation){
+        return databaseManager.getDieImageData(dieImageLocation);
     }
     public  byte[] getTrophyImageData(int player){return databaseManager.getTrophyImageData(player);}
-
-    public byte[] getDieImageData(int dieNumber){
-        return databaseManager.getDieImageData(dieNumber);
-    }
 
     public byte[] getPieceImageData(String playerPieces, String orientation){
         return databaseManager.getPieceImageData(playerPieces, orientation);

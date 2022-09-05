@@ -13,7 +13,7 @@ public interface DatabaseTalker {
 
     byte[] getBoardImageData(int version);
 
-    byte[] getDieImageData(int number);
+    byte[] getDieImageData(String dieImageLocation);
 
     byte[] getTrophyImageData(int player);
 

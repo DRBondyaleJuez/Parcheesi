@@ -38,11 +38,9 @@ public class FileSystemTalkerDatabase implements DatabaseTalker {
     }
 
     @Override
-    public byte[] getDieImageData(int number) {
-        if( number > 7){
-        number = 7;
-        }
-            String path = "/images/DieFaces/Die" + number + ".jpg";
+    public byte[] getDieImageData(String dieImageLocation) {
+
+            String path = "/images/DieFaces/"+dieImageLocation+".jpg";
         return loadFileData(path);
     }
 

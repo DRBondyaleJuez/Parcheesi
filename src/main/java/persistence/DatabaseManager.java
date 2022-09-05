@@ -30,5 +30,5 @@ public class DatabaseManager {
         return databaseTalker.getTrophyImageData(player);
     }
 
-    public byte[] getDieImageData(int number){ return databaseTalker.getDieImageData(number);}
+    public byte[] getDieImageData(String dieImageLocation){ return databaseTalker.getDieImageData(dieImageLocation);}
 }

@@ -590,7 +590,8 @@ public class GameViewController implements Initializable{
 
                 if(dieNumber == 5 && controller.getMovingNumber() == 0){
                     int playerRollingNow = controller.getCurrentPlayer().getIdNumber();
-                    Image currentDieImage = new Image(new ByteArrayInputStream(controller.getDieImageData(dieNumber)));
+                    String dieImageLocation = "\\player"+playerThatRolled+"\\Die"+dieNumber;
+                    Image currentDieImage = new Image(new ByteArrayInputStream(controller.getDieImageData(dieImageLocation)));
                     dieRollImageView.setImage(currentDieImage);
                     applyChangesToBoard();
                     instructionsTextArea.setText("Player " + playerThatRolled +" has rolled a 5. So a piece exited the house and entered to the board.\n" +
@@ -616,7 +617,8 @@ public class GameViewController implements Initializable{
                         instructionsTextArea.setText("Player " + playerThatRolled + " has rolled a " + dieNumber + ".\n" +
                                 "You need a 5 so a piece can enter the board. It is now player " + playerRollingNow + "'s turn.");
                     }
-                    Image currentDieImage = new Image(new ByteArrayInputStream(controller.getDieImageData(dieNumber)));
+                    String dieImageLocation = "\\player"+playerThatRolled+"\\Die"+dieNumber;
+                    Image currentDieImage = new Image(new ByteArrayInputStream(controller.getDieImageData(dieImageLocation)));
                     dieRollImageView.setImage(currentDieImage);
                     applyChangesToLabels();
                     return;
@@ -628,12 +630,10 @@ public class GameViewController implements Initializable{
                     instructionsTextArea.setText(instructionsTextArea.getText() + "\nSince it was a 6 after moving this player rolls again.");
                 }
 
-                Image currentDieImage = new Image(new ByteArrayInputStream(controller.getDieImageData()));
+                String dieImageLocation = "\\player"+playerThatRolled+"\\Die"+dieNumber;
+                Image currentDieImage = new Image(new ByteArrayInputStream(controller.getDieImageData(dieImageLocation)));
                 dieRollImageView.setImage(currentDieImage);
-
             }
-
-
         };
     }
 
