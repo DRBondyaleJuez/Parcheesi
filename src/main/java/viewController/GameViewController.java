@@ -639,12 +639,9 @@ public class GameViewController implements Initializable{
 
     //Handle trophy image when winner
 
-    //TODO: Check if the display of the trophies when there is a winner in the centre image
-    //TODO: Finish the display of die of different colours associated with the player that rolled it
     private void winnerTrophyImage(int player){
         Image winnerTrophyImage = new Image(new ByteArrayInputStream(controller.getTrophyImageData(player)));
         dieRollImageView.setImage(winnerTrophyImage);
     }
-
 
 }
