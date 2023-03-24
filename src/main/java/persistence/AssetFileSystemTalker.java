@@ -1,7 +1,5 @@
 package persistence;
 
-import model.Color;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -10,10 +8,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * Provides the implementation of the DatabaseTalker. It implements the methods to retrieve the image data in the form
+ * Provides the implementation of the FileSystemTalker. It implements the methods to retrieve the image data in the form
  * of byte array from the resource folder. The image data is basically processed using a Files.readAllBytes method
  */
-public class FileSystemTalkerDatabase implements DatabaseTalker {
+public class AssetFileSystemTalker implements FileSystemTalker {
 
     @Override
     public byte[] getPieceImageData(String players,String orientation) {

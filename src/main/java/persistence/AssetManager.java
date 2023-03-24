@@ -4,23 +4,23 @@ package persistence;
  * Provides and instance of the object that mediates between the controller and the retrieval of files (images) from
  * resources folder.
  */
-public class DatabaseManager {
+public class AssetManager {
     // Singleton for the sake of unique calls
-    private final DatabaseTalker databaseTalker;
-    private static DatabaseManager instance;
+    private final FileSystemTalker fileSystemTalker;
+    private static AssetManager instance;
 
-    private DatabaseManager() {
-        databaseTalker = new FileSystemTalkerDatabase();
+    private AssetManager() {
+        fileSystemTalker = new AssetFileSystemTalker();
         instance = null;
     }
 
     /** Following the singleton design pattern the constructor is private and only a same instance of the class
      * can be used invoking this static method.
-     * @return DatabaseManager the same instance of database manager assigned to the instance attribute
+     * @return AssetManager the same instance of database manager assigned to the instance attribute
      */
-    public static DatabaseManager getInstance() {
+    public static AssetManager getInstance() {
         if(instance == null) {
-            instance = new DatabaseManager();
+            instance = new AssetManager();
         }
         return instance;
     }
@@ -37,7 +37,7 @@ public class DatabaseManager {
      * @return byte[] byte array corresponding to the desired piece image
      */
     public byte[] getPieceImageData(String players,String orientation){
-        return databaseTalker.getPieceImageData(players, orientation);
+        return fileSystemTalker.getPieceImageData(players, orientation);
     }
 
     /**
@@ -46,7 +46,7 @@ public class DatabaseManager {
      * @return byte[] byte array corresponding to the desired board image
      */
     public byte[] getBoardImageData(int version) {
-        return databaseTalker.getBoardImageData(version);
+        return fileSystemTalker.getBoardImageData(version);
     }
 
     /**
@@ -55,7 +55,7 @@ public class DatabaseManager {
      * @return byte[] byte array corresponding to the desired trophy image
      */
     public byte[] getTrophyImageData(int player) {
-        return databaseTalker.getTrophyImageData(player);
+        return fileSystemTalker.getTrophyImageData(player);
     }
 
     /**
@@ -63,5 +63,5 @@ public class DatabaseManager {
      * @param dieImageLocation
      * @return byte[] byte array corresponding to the desired die image
      */
-    public byte[] getDieImageData(String dieImageLocation){ return databaseTalker.getDieImageData(dieImageLocation);}
+    public byte[] getDieImageData(String dieImageLocation){ return fileSystemTalker.getDieImageData(dieImageLocation);}
 }

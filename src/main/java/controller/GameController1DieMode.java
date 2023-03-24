@@ -5,7 +5,7 @@ import model.Piece;
 import model.Player;
 import model.Square.NormalSquare;
 import model.Square.Square;
-import persistence.DatabaseManager;
+import persistence.AssetManager;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -23,12 +23,12 @@ public class GameController1DieMode {
     private int maxSteps = 56;
     private int isThereAWinner;
 
-    private final DatabaseManager databaseManager;
+    private final AssetManager assetManager;
 
 
     /**
      * This is the constructor. All game attributes are set to 0, the players and board are initiated and an instance of
-     * the DatabaseManager class is assigned to the databaseManager attribute.
+     * the AssetManager class is assigned to the assetManager attribute.
      */
     public GameController1DieMode() {
         createPlayers();
@@ -36,7 +36,7 @@ public class GameController1DieMode {
         dieRepetition = 0;
         board = new Board();
         isThereAWinner = 0;
-        databaseManager = DatabaseManager.getInstance();
+        assetManager = AssetManager.getInstance();
     }
 
     private void createPlayers() {
@@ -404,14 +404,14 @@ public class GameController1DieMode {
      * @return byte[] byte array corresponding to the desired die image
      */
     public byte[] getDieImageData(String dieImageLocation){
-        return databaseManager.getDieImageData(dieImageLocation);
+        return assetManager.getDieImageData(dieImageLocation);
     }
 
     /** Get from the persistence the corresponding image of the trophy in the form of a byte array.
      * @param player int between 1 and 4 corresponding to the player who won to get its trophy version
      * @return byte[] byte array corresponding to the desired trophy image
      */
-    public  byte[] getTrophyImageData(int player){return databaseManager.getTrophyImageData(player);}
+    public  byte[] getTrophyImageData(int player){return assetManager.getTrophyImageData(player);}
 
     /** Get from the persistence the corresponding image of the piece in the form of a byte array.
      * @param playerPieces String that corresponds to two numbers which indicate the combination of pieces desired.
@@ -423,14 +423,14 @@ public class GameController1DieMode {
      * @return byte[] byte array corresponding to the desired piece image
      */
     public byte[] getPieceImageData(String playerPieces, String orientation){
-        return databaseManager.getPieceImageData(playerPieces, orientation);
+        return assetManager.getPieceImageData(playerPieces, orientation);
     }
 
     /** Get from the persistence the corresponding image of the board in the form of a byte array.
      * @return byte[] byte array corresponding to the desired board image
      */
     public byte[] getBoardImageData(){
-        return databaseManager.getBoardImageData(1);
+        return assetManager.getBoardImageData(1);
     }
 
 

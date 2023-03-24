@@ -1,13 +1,11 @@
 package persistence;
 
-import model.Color;
-
 /**
- * Provides the abstract methods necessary for a proper use by calls from the DatabaseManager Class basically for retrieving
+ * Provides the abstract methods necessary for a proper use by calls from the AssetManager Class basically for retrieving
  * The appropriate images from the resource folder. The class which implements this interface will need to implement the methods
  *  to read images from resources.
  */
-public interface DatabaseTalker {
+public interface FileSystemTalker {
 
     /**
      * Get from the resources the corresponding image of the piece or pieces in the form of a byte array.
