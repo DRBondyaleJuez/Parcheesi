@@ -10,10 +10,26 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 
+/**
+ * This the entry point of the application launch called by the main
+ * <p>
+ *     Inheriting from application requiring an implementation of abstract class start that allows the display of the view
+ * </p>
+ * @author Daniel R Bondyale Juez
+ * @version 1.0
+ */
 public class ParcheesiLaunch extends Application {
 
     private Stage mainStage;
 
+    /**
+     * This is the implementation of the start abstract method of the extended class Application.
+     *  * <p>
+     *     This method is called during the execution of the Application class static method launch. It loads the FXMl files,
+     *     therefore, it builds its controllers too and mainStage is built and displayed with the method show of the Stage class.
+     *  * </p>
+     * @param stage Stage object provided during the static launch method execution.
+     */
     @Override public void start(Stage stage) throws Exception {
         mainStage = stage;
         loadingMainScene();

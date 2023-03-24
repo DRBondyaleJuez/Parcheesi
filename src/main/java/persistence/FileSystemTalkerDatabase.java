@@ -9,6 +9,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Provides the implementation of the DatabaseTalker. It implements the methods to retrieve the image data in the form
+ * of byte array from the resource folder. The image data is basically processed using a Files.readAllBytes method
+ */
 public class FileSystemTalkerDatabase implements DatabaseTalker {
 
     @Override

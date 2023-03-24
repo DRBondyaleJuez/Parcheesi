@@ -7,6 +7,9 @@ import model.Square.Square;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * Provides an object that represents a parcheesi board made of arrays of Square objects
+ */
 public class Board {
 
     private NormalSquare[] boardNormalSquares;
@@ -18,6 +21,10 @@ public class Board {
     private int[] finalSquares = {60,15,30,45};
     private int maxSteps = 57;
 
+    /**
+     * This is the constructor. When declared it builds the array of squares and the matrix of final squares where
+     * each row corresponds to a player.
+     */
     public Board() {
 
         //Setting initial configuration of houses
@@ -78,6 +85,11 @@ public class Board {
         return newBoardFinalSquares;
     }
 
+    /**
+     * This method is triggered when a player rolls three 6s causing their most advance piece to return to the house
+     * @param player The player whose most advance piece needs to be returned.
+     * @return boolean true if the punishment took place correctly
+     */
     public boolean punishMostAdvancePiece(int player){
         int furthestBoardPosition = finalSquares[player-1];
         for (int i = furthestBoardPosition-1; i > furthestBoardPosition-maxSteps-1; i--) {
@@ -110,7 +122,7 @@ public class Board {
         return false;
     }
 
-
+// GETTERS
     public int getNumberOfPiecesInHouse(int player){
         int position = player-1;
         return housePieces[position];
@@ -129,24 +141,45 @@ public class Board {
     }
 
     public int[] getHousePieces(){ return housePieces;}
-
+    public int getFinishedPieces(int player){
+        return finishedPieces[player-1];
+    }
+    /**
+     * Modify counters related to the number of pieces in house. In this case reducing the number that corresponded to
+     * one of the players.
+     * @param player int that corresponds to the player whose piece is leaving the house
+     */
     public void exitPieceFromHouse(int player){
         housePieces[player-1]--;
     }
 
+    /**
+     * Modify counters related to the number of pieces in house. In this case icreasing the number that corresponded to
+     * one of the players.
+     * @param player int that corresponds to the player whose piece is returnin to the house
+     */
     public void returnPieceToHouse(int player){
         housePieces[player-1]++;
     }
 
+    /**
+     * Increasing counters associated with pieces reaching the end of the board when a piece finishes its whole path
+     * @param player int  corresponding to the player whose piece has reached the end
+     */
     public void pieceReachesTheEnd(int player){
         int position = player-1;
         finishedPieces[position]++;
     }
-    
-    public int getFinishedPieces(int player){
-        return finishedPieces[player-1];
-    }
 
+    /**
+     * Get a particular board square
+     * @param player int corresponding to the player 1 to 4
+     * @param finalStepCounter int number of steps of the final path
+     * @param stepCounter int number of steps covered from the starting position
+     * @return Square which corresponds to the square a piece would be provided all the parameters. This means the player
+     * to determine the starting position or the row in the finalSquares then using the steps the corresponding square
+     * of the arrays in the attributes of the board can be found and returned.
+     */
     public Square getCorrespondingBoardSquare(int player, int finalStepCounter, int stepCounter){
 
         if(finalStepCounter > -1){

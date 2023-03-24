@@ -18,6 +18,10 @@ import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Provides the controller of the GameView.fxml view therefore controlling the effects of interactions
+ * with the view. It implements initializable so the the methods initialize is overridden.
+ */
 public class GameViewController implements Initializable{
 
     private GameController1DieMode controller;
@@ -151,12 +155,26 @@ public class GameViewController implements Initializable{
     private ImageView tropheeImageView;
 
 
-
+    /**
+     * This is the constructor. It initilizes a controller of the Class GameController1DieMode and assigns it to
+     * the controller attribute.
+     */
     //CONSTRUCTOR
     public GameViewController() {
         controller = new GameController1DieMode();
     }
 
+    /**
+     * This is the implementation of the initialize abstarct method.
+     * <p>
+     *     When this is called during the construction of the view a series of methods are called to assign
+     *     events to the different elements of the view that can be interacted with.
+     *     This includes all the clickable sections of the board.
+     *     Also setting the initial visual state of the elements in the view.
+     * </p>
+     * @param url the URL type argument required by the Initializable interface
+     * @param resourceBundle the ResourceBundle type argument required by the Initializable interface
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
