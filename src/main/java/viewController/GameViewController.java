@@ -257,6 +257,9 @@ public class GameViewController implements Initializable{
             public void handle(MouseEvent mouseEvent) {
                 controller = new GameController1DieMode();
                 applyChangesToBoard();
+                instructionsTextArea.setText("In case their is any doubt consult this section for relevant instructions.\n" +
+                        "Player 1 starts. Roll the die.");
+                dieRollImageView.setImage(null);
             }
         };
     }

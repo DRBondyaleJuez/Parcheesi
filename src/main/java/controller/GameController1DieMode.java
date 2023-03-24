@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Provides the object controller of the game with the resposibility of intermediating the viewController and the model and the persistence
+ * Provides the object controller of the game with the responsibility of intermediating the viewController and the model and the persistence
  */
 public class GameController1DieMode {
 
@@ -312,7 +312,12 @@ public class GameController1DieMode {
             newSquare.setCurrentPiece(movingPiece);
             board.pieceReachesTheEnd(currentPlayer.getIdNumber());
             newSquare.getCurrentPieces().remove(0);
-            movingNumber = 10;
+
+            if(board.getHousePieces()[currentPlayer.getIdNumber() - 1] < 4 - board.getFinishedPieces(currentPlayer.getIdNumber())){
+                movingNumber = 10;
+            } else {
+                movingNumber = 0;
+            }
             //Check if this is the final piece
             isThereAWinner();
             return true;
