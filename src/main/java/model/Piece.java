@@ -79,10 +79,6 @@ public class Piece {
             if(tempFinalStepCounter<1){tempFinalStepCounter = 0;}
             return tempFinalStepCounter;
         }
-        //If it reaches the end square
-        if(tempFinalStepCounter == 7){
-            return 7;
-        }
         //If the steps don't reach the end square
         return tempFinalStepCounter;
     }

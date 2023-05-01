@@ -156,7 +156,7 @@ public class GameViewController implements Initializable{
 
 
     /**
-     * This is the constructor. It initilizes a controller of the Class GameController1DieMode and assigns it to
+     * This is the constructor. It initializes a controller of the Class GameController1DieMode and assigns it to
      * the controller attribute.
      */
     //CONSTRUCTOR

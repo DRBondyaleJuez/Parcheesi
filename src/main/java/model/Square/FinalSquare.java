@@ -1,13 +1,12 @@
 package model.Square;
 
-import model.Piece;
 
 /**
  * Provides objects that represent the final squares of the board. These are children of square. which means they extend square
  */
 public class FinalSquare extends Square{
 
-    private int player;
+    private final int player;
 
     /**
      * This is the constructor which follows that of the Square Class with the addition of the attribute player which indicates which player this is the square of. Also in case it is the last final square

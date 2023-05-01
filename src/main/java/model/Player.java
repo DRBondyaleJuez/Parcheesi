@@ -9,9 +9,9 @@ package model;
  */
 public class Player {
 
-    private int idNumber;
-    private String name;
-    private Color color;
+    private final int idNumber;
+    private final String name;
+    private final Color color;
 
     /**
      * This is the constructor. The attributes idNumber and name are assigned based on arguments and the color

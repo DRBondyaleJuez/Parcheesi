@@ -2,14 +2,12 @@ package model.Square;
 
 import model.Piece;
 
-import java.util.Arrays;
-
 /**
  * Provides a particular children of the Square class i.e. extends Square, which represents those square which are not he finalSquares of the board.
  */
 public class NormalSquare extends Square{
 
-    private int isStart;
+    private final int isStart;
 
     /**
      * This is the constructor which follows the square requirements with the addition of the isStart int.

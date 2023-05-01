@@ -7,8 +7,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
 
 /**
  * This the entry point of the application launch called by the main
@@ -30,7 +28,7 @@ public class ParcheesiLaunch extends Application {
      *  * </p>
      * @param stage Stage object provided during the static launch method execution.
      */
-    @Override public void start(Stage stage) throws Exception {
+    @Override public void start(Stage stage) {
         mainStage = stage;
         loadingMainScene();
 
@@ -57,7 +55,6 @@ public class ParcheesiLaunch extends Application {
         } catch (IOException e) {
             //Todo: log!!
             System.out.println("The FXML file could not be loaded.");
-            System.out.println(e);
             return null;
         }
     }

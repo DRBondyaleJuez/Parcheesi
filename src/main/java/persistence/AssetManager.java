@@ -60,7 +60,7 @@ public class AssetManager {
 
     /**
      * Get from the resources the corresponding image of the die in the form of a byte array.
-     * @param dieImageLocation
+     * @param dieImageLocation String path of the die which combines the player and the number that the die shows
      * @return byte[] byte array corresponding to the desired die image
      */
     public byte[] getDieImageData(String dieImageLocation){ return fileSystemTalker.getDieImageData(dieImageLocation);}

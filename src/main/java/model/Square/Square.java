@@ -9,10 +9,10 @@ import java.util.ArrayList;
  */
 public class Square {
 
-    private int squareNumber;
-    private ArrayList<Piece> currentPlayerPiece;
+    private final int squareNumber;
+    private final ArrayList<Piece> currentPlayerPiece;
 
-    private boolean isSafe;
+    private final boolean isSafe;
 
     private boolean isTheEnd;
 

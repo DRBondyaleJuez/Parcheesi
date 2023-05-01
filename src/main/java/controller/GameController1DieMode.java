@@ -19,8 +19,8 @@ public class GameController1DieMode {
     private Player[] players;
     private int movingNumber;
     private int dieRepetition;
-    private Board board;
-    private int maxSteps = 56;
+    private final Board board;
+    private final int maxSteps = 56;
     private int isThereAWinner;
 
     private final AssetManager assetManager;
@@ -223,9 +223,8 @@ public class GameController1DieMode {
         if(currentPlayer.getIdNumber() != playerIfFinalSquare && playerIfFinalSquare>0) return false;
 
         //The square clicked does not have a piece or one that corresponds to the current player
-        boolean isCorrectPieceThere = checkPlayerPieceInBoardPosition(position,playerIfFinalSquare);
 
-        return isCorrectPieceThere;
+        return checkPlayerPieceInBoardPosition(position,playerIfFinalSquare);
     }
 
     /**
@@ -233,7 +232,7 @@ public class GameController1DieMode {
      * @param boardPosition int corresponding to the numerical index of the board square
      * @param playerIfFinalSquare int associated with the player that clicked, but it is only used if
      *                            a final square of the board was clicked.
-     * @return
+     * @return boolean if the board position contains a piece of the current player it returns true, otherwise false
      */
     //Method to verify the presence of a corresponding piece in a position of the board. BoardPosition is an integer associated with the square in the board
     // For normal squares goes from 0 to 59 and for final squares from 0 to 6
@@ -262,11 +261,7 @@ public class GameController1DieMode {
             }
         }
 
-        if (possiblePlayerPieceInSquare1 == currentPlayer.getIdNumber() || possiblePlayerPieceInSquare2 == currentPlayer.getIdNumber()) {
-            return true;
-        }
-
-        return false;
+        return possiblePlayerPieceInSquare1 == currentPlayer.getIdNumber() || possiblePlayerPieceInSquare2 == currentPlayer.getIdNumber();
     }
 
 

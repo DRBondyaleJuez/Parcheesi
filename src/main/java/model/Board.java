@@ -12,14 +12,14 @@ import java.util.Arrays;
  */
 public class Board {
 
-    private NormalSquare[] boardNormalSquares;
-    private FinalSquare[][] boardFinalSquares;
-    private int[] housePieces; //These are the pieces not played by each player
-    private int[] finishedPieces; //This is the pieces that have reached the end
-    private int[] startSquares = {4,19,34,49};
-    private int[] safeSquares = {4,11,15,19,26,30,34,41,45,49,56,60};
-    private int[] finalSquares = {60,15,30,45};
-    private int maxSteps = 57;
+    private final NormalSquare[] boardNormalSquares;
+    private final FinalSquare[][] boardFinalSquares;
+    private final int[] housePieces; //These are the pieces not played by each player
+    private final int[] finishedPieces; //This is the pieces that have reached the end
+    private final int[] startSquares = {4,19,34,49};
+    private final int[] safeSquares = {4,11,15,19,26,30,34,41,45,49,56,60};
+    private final int[] finalSquares = {60,15,30,45};
+    private final int maxSteps = 57;
 
     /**
      * This is the constructor. When declared it builds the array of squares and the matrix of final squares where
@@ -29,9 +29,7 @@ public class Board {
 
         //Setting initial configuration of houses
         housePieces = new int[4];
-        for (int i=0; i<housePieces.length; i++ ) {
-            housePieces[i] = 4;
-        };
+        Arrays.fill(housePieces, 4);
 
         //Building boardSquares, finalSquares and Pieces
         boardNormalSquares = buildBoardSquares();
@@ -65,8 +63,8 @@ public class Board {
 
     //This method is used to compare a squareNumber with the numbers in the array of safeSquares
     private boolean isSquareSafe(int squareNumber){
-        for (int i = 0; i < safeSquares.length; i++) {
-            if(squareNumber == safeSquares[i]) {
+        for (int safeSquare : safeSquares) {
+            if (squareNumber == safeSquare) {
                 return true;
             }
         }

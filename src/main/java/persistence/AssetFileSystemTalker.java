@@ -1,11 +1,9 @@
 package persistence;
 
+import org.apache.commons.io.IOUtils;
+
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.InputStream;
 
 /**
  * Provides the implementation of the FileSystemTalker. It implements the methods to retrieve the image data in the form
@@ -55,25 +53,17 @@ public class AssetFileSystemTalker implements FileSystemTalker {
 
     private byte[] loadFileData(String path) {
         try {
-            URI fileUri = getClass().getResource(path).toURI();
-            Path completePath = Paths.get(fileUri);
-            byte[] fileContent = Files.readAllBytes(completePath);
-            return fileContent;
-        } catch (URISyntaxException e) {
-            // TODO log
-            System.out.println("Unable to get resource URI");
-            e.printStackTrace();
-            return new byte[0];
+            InputStream currentInputStream = AssetFileSystemTalker.class.getResourceAsStream(path);
+            if(currentInputStream == null ){
+                throw new IOException();
+            }
+
+            return IOUtils.toByteArray(currentInputStream);
         } catch (IOException e) {
             // TODO: log
             System.out.println("Could not find " + path);
             e.printStackTrace();
             return new byte[0];
-        }catch (NullPointerException e) {
-        // TODO: log
-        System.out.println("Could not find " + path);
-        e.printStackTrace();
-        return new byte[0];
         }
     }
 }
