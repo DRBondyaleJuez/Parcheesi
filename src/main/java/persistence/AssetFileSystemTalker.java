@@ -1,6 +1,8 @@
 package persistence;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +13,7 @@ import java.io.InputStream;
  */
 public class AssetFileSystemTalker implements FileSystemTalker {
 
+    private static Logger logger = LogManager.getLogger(AssetFileSystemTalker.class);
     @Override
     public byte[] getPieceImageData(String players,String orientation) {
         String path = "/images/Pieces/" + orientation + "PiecePlayer" + players + ".png";
@@ -59,10 +62,9 @@ public class AssetFileSystemTalker implements FileSystemTalker {
             }
 
             return IOUtils.toByteArray(currentInputStream);
-        } catch (IOException e) {
-            // TODO: log
-            System.out.println("Could not find " + path);
-            e.printStackTrace();
+        } catch (IOException exception) {
+            // ---- LOG ----
+            logger.error("Could no find file in path: " + path + ") could not be loaded. ERROR:\n ",  exception);
             return new byte[0];
         }
     }

@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
@@ -18,6 +20,7 @@ import java.io.IOException;
  */
 public class ParcheesiLaunch extends Application {
 
+    private static Logger logger = LogManager.getLogger(ParcheesiLaunch.class);
     private Stage mainStage;
 
     /**
@@ -52,17 +55,15 @@ public class ParcheesiLaunch extends Application {
     private Parent loadPaneLoader(FXMLLoader paneLoader) {
         try {
             return paneLoader.load();
-        } catch (IOException e) {
-            //Todo: log!!
+        } catch (IOException exception) {
             System.out.println("The FXML file could not be loaded.");
+            logger.error("The FXML file (" + paneLoader.toString() + ") could not be loaded. ERROR:\n ",  exception);
             return null;
         }
     }
 
     private void gracefulShutdown(){
-        // Show something to the user if apply
-        // save a new log if a apply
-        System.out.println("HERE");
+        logger.info("There has been a fatal error. I am shutting down.");
         System.exit(-1);
     }
 
